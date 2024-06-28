@@ -1,6 +1,6 @@
 package com.managereventi.managereventi.model.mo;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Evento {
     private String idEvento;
@@ -10,7 +10,6 @@ public class Evento {
     private Date dataFine;
     private Integer numEsibizioni;
     private Organizzatore organizzatore;
-
     private Esibizione[] esibizioni;
 
     // Metodi getter e setter per ogni campo
