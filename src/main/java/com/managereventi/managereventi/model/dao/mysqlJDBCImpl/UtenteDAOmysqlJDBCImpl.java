@@ -65,7 +65,31 @@ public class UtenteDAOmysqlJDBCImpl implements UtenteDAO {
 
     @Override
     public Utente getUtenteById(String idUtente) {
-        return null;
+        PreparedStatement ps;
+        Utente utente = null;
+
+        try{
+            String sql
+                    = " SELECT * "
+                    + " FROM utente "
+                    + " WHERE IdUtente = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, idUtente);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+               utente = read(rs);
+            }
+            rs.close();
+            ps.close();
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return utente;
     }
 
     @Override

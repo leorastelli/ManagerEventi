@@ -9,7 +9,7 @@ import java.util.Map;
 public abstract class DAOFactory {
 
   // List of DAO types supported by the factory
-  public static final String MYSQLJDBCIMPL = "MySQLJDBCImpl";
+  public static final String MYSQLJDBCIMPL = "mysqlJDBCImpl";
   public static final String COOKIEIMPL= "CookieImpl";
 
   public abstract void beginTransaction();

@@ -3,7 +3,7 @@ package com.managereventi.managereventi.model.dao.mysqlJDBCImpl;
 import com.managereventi.managereventi.model.dao.*;
 
 import com.managereventi.managereventi.model.dao.CookieImpl.OrganizzatoreDAOCookieImpl;
-import com.managereventi.managereventi.services.config.Configuration;
+import com.managereventi.managereventi.services.Config.Configuration;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
