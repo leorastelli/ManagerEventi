@@ -74,7 +74,6 @@
             <input type="text" id="username"  name="username" maxlength="40" required>
             <label for="password">Password</label>
             <input type="password" id="password" name="password" maxlength="40" required>
-
             <input type="radio" id="userTypeUser" name="userType" value="utente">
             <label for="userTypeUser">Utente</label>
 

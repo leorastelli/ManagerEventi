@@ -1,4 +1,4 @@
-%@page session="false"%>
+<%@page session="false"%>
 <%@page import="com.managereventi.managereventi.model.mo.Utente"%>
 
 <%
@@ -32,6 +32,7 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             text-align: center;
+            width: 200px;
         }
         h2 {
             margin-bottom: 20px;
@@ -41,15 +42,18 @@
             margin: 15px 0;
             font-size: 18px;
         }
-        input[type="email"], input[type="password"] {
-            width: calc(100% - 20px);
+        input[type="text"], input[type="password"] {
+            calc(100% - 20px);
             padding: 10px;
             margin-bottom: 10px;
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            box-sizing: border-box;
         }
         button {
+            display: block;
+            width: 100%;
             margin-top: 20px;
             padding: 10px 20px;
             font-size: 16px;
@@ -69,7 +73,7 @@
             var passwordTextField = document.querySelector("#password");
             var passwordTextFieldMsg = "La password \xE8 obbligatoria.";
 
-            if (usernameTextField != undefined && passwordTextField != undefined ) {
+            if (usernameTextField !== undefined && passwordTextField !== undefined ) {
                 usernameTextField.setCustomValidity(usernameTextFieldMsg);
                 usernameTextField.addEventListener("change", function () {
                     this.setCustomValidity(this.validity.valueMissing ? usernameTextFieldMsg : "");
@@ -84,14 +88,14 @@
     <section id="login" class="clearfix">
         <form name="logonForm" action="Dispatcher" method="post">
             <h2>Accedi</h2>
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" required>
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
 
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
 
-            <input type="hidden" name="controllerAction" value="HomeManagement.logon"/>
-            <input type="submit">Entra</input>
+                <input type="hidden" name="controllerAction" value="HomeManagement.logon"/>
+                <input type="submit"></input>
         </form>
     </section>
 </body>

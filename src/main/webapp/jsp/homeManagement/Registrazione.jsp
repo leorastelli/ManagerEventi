@@ -38,7 +38,8 @@
             margin-bottom: 20px;
         }
         label {
-            display: block;
+            display: flex;
+            align-items: center;
             margin: 15px 0;
             font-size: 18px;
         }
@@ -73,7 +74,7 @@
             Organizzatore
         </label>
         <input type="hidden" name="controllerAction" value="HomeManagement.usertype"/>
-        <input type="submit">Prosegui</input>
+        <input type="submit"> </input>
     </form>
 </body>
 </html>
