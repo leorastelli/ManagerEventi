@@ -1,6 +1,7 @@
 package com.managereventi.managereventi.model.dao.CookieImpl;
 
 import com.managereventi.managereventi.model.dao.UtenteDAO;
+import com.managereventi.managereventi.model.mo.Biglietto;
 import com.managereventi.managereventi.model.mo.Utente;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -81,6 +82,11 @@ public class UtenteDAOCookieImpl implements UtenteDAO {
         }
 
         return loggedUser;
+    }
+
+    @Override
+    public List<Biglietto> getBigliettiUtente(Utente utente) {
+        return null;
     }
 
     private String encode(Utente loggedUser) {

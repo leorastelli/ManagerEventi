@@ -40,7 +40,7 @@ public class HomeManagement {
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
-            request.setAttribute("viewUrl", "homeManagement/view");
+            request.setAttribute("viewUrl", "homeManagement/login");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -85,6 +85,7 @@ public class HomeManagement {
             String username = request.getParameter("username");
             String password = request.getParameter("password");
 
+
             UtenteDAO userDAO = daoFactory.getUtenteDAO();
             Utente user = userDAO.getUtenteById(username);
 
@@ -102,7 +103,7 @@ public class HomeManagement {
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "homeManagement/view");
+            request.setAttribute("viewUrl", "homeManagement/login");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -143,7 +144,7 @@ public class HomeManagement {
 
             request.setAttribute("loggedOn",false);
             request.setAttribute("loggedUser", null);
-            request.setAttribute("viewUrl", "homeManagement/view");
+            request.setAttribute("viewUrl", "homeManagement/login");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -160,4 +161,86 @@ public class HomeManagement {
             }
         }
     }
+
+
+    public static void logon2(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory= null;
+        DAOFactory daoFactory = null;
+        Utente loggedUser;
+        String applicationMessage = null;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUser = sessionUserDAO.findLoggedUser();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+            daoFactory.beginTransaction();
+
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            String userType = request.getParameter("userType");
+
+            UtenteDAO userDAO = daoFactory.getUtenteDAO();
+            Utente user = userDAO.getUtenteById(username);
+
+            if (user == null || !user.getPassword().equals(password)) {
+                sessionUserDAO.deleteUtente(null);
+                applicationMessage = "Username e password errati!";
+                loggedUser=null;
+            } else {
+                loggedUser = sessionUserDAO.createUtente(user);
+            }
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("applicationMessage", applicationMessage);
+
+            switch (userType){
+                case "azienda":
+                    request.setAttribute("viewUrl", "homeManagement/login");
+                    break;
+                case "utente":
+                    request.setAttribute("viewUrl", "homeManagement/login");
+                    break;
+                case "organizzatore":
+                    request.setAttribute("viewUrl", "homeManagement/login");
+                    break;
+                default:
+                    request.setAttribute("viewUrl", "homeManagement/login");
+                    break;
+            }
+
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) daoFactory.closeTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
 }

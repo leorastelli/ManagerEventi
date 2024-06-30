@@ -2,12 +2,12 @@ package com.managereventi.managereventi.model.dao.mysqlJDBCImpl;
 
 import com.managereventi.managereventi.model.dao.OrganizzatoreDAO;
 import com.managereventi.managereventi.model.dao.UtenteDAO;
-import com.managereventi.managereventi.model.mo.Organizzatore;
-import com.managereventi.managereventi.model.mo.Utente;
+import com.managereventi.managereventi.model.mo.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UtenteDAOmysqlJDBCImpl implements UtenteDAO {
@@ -37,6 +37,33 @@ public class UtenteDAOmysqlJDBCImpl implements UtenteDAO {
 
         return utente;
     }
+
+    Biglietto readBiglietto(ResultSet rs) {
+        Biglietto biglietto = new Biglietto();
+        Utente utente = new Utente();
+        Esibizione esibizione = new Esibizione();
+        Evento evento = new Evento();
+        biglietto.setIdUtente(utente);
+        biglietto.setIdEsibizione(esibizione);
+        biglietto.setIdEvento(evento);
+        try {
+            biglietto.setIdBiglietto(rs.getString("IdBiglietto"));
+            biglietto.getIdUtente().setIdUtente(rs.getString("IdUtente"));
+            biglietto.getIdEvento().setIdEvento(rs.getString("IdEvento"));
+            biglietto.getIdEsibizione().setIdEsibizione(rs.getString("IdEsibizione"));
+            biglietto.setStato(rs.getInt("Stato"));
+            biglietto.setTipo(rs.getString("Tipo"));
+            biglietto.setPrezzo(rs.getLong("Prezzo"));
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return biglietto;
+    }
+
+
     @Override
     public Utente createUtente(Utente utente) {
         PreparedStatement ps;
@@ -152,4 +179,36 @@ public class UtenteDAOmysqlJDBCImpl implements UtenteDAO {
     public Utente findLoggedUser() {
         return null;
     }
+
+    @Override
+    public List<Biglietto> getBigliettiUtente(Utente utente) {
+        PreparedStatement ps;
+        List<Biglietto> biglietti = new ArrayList<>();
+
+        try {
+            String sql
+                    = " SELECT * "
+                    + " FROM Biglietto "
+                    + " WHERE IdUtente = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, utente.getIdUtente());
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Biglietto biglietto = new Biglietto();
+                biglietto = readBiglietto(rs);
+                biglietti.add(biglietto);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return biglietti;
+    }
+
+
 }
