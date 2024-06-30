@@ -63,6 +63,26 @@ public class UtenteDAOmysqlJDBCImpl implements UtenteDAO {
         return biglietto;
     }
 
+    Abbonamento readAbbonamento(ResultSet rs) {
+        Abbonamento abbonamento = new Abbonamento();
+        Utente utente = new Utente();
+        Evento evento = new Evento();
+        abbonamento.setIdUtente(utente);
+        abbonamento.setIdEvento(evento);
+        try {
+            abbonamento.setIdAbbonamento(rs.getString("IdAbbonamento"));
+            abbonamento.getIdUtente().setIdUtente(rs.getString("IdUtente"));
+            abbonamento.getIdEvento().setIdEvento(rs.getString("IdEvento"));
+            abbonamento.setPrezzo(rs.getLong("Prezzo"));
+            abbonamento.setTipo(rs.getString("Tipo"));
+            abbonamento.setEntrate(rs.getInt("Entrate"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return abbonamento;
+    }
+
 
     @Override
     public Utente createUtente(Utente utente) {
@@ -208,6 +228,36 @@ public class UtenteDAOmysqlJDBCImpl implements UtenteDAO {
             throw new RuntimeException(e);
         }
         return biglietti;
+    }
+
+    @Override
+    public List<Abbonamento> getAbbonamentiUtente(Utente utente) {
+        PreparedStatement ps;
+        List<Abbonamento> abbonamenti = new ArrayList<>();
+
+        try {
+            String sql
+                    = " SELECT * "
+                    + " FROM Abbonamento "
+                    + " WHERE IdUtente = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, utente.getIdUtente());
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Abbonamento abbonamento = new Abbonamento();
+                abbonamento = readAbbonamento(rs);
+                abbonamenti.add(abbonamento);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return abbonamenti;
     }
 
 

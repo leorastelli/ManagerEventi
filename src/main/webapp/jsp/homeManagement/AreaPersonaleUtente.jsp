@@ -6,12 +6,15 @@
 <%@page import="com.managereventi.managereventi.model.mo.Abbonamento"%>
 
 <%
-  boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
-  Utente loggedUser = (Utente) request.getAttribute("loggedUser");
-  List<Biglietto> biglietti = (List<Biglietto>) request.getAttribute("biglietti");
-  List<Abbonamento> abbonamenti = (List<Abbonamento>) request.getAttribute("abbonamenti");
-  String applicationMessage = (String) request.getAttribute("applicationMessage");
-  String menuActiveLink = "Home";
+    Boolean loggedOnObj = (Boolean) request.getAttribute("loggedOn");
+    boolean loggedOn = (loggedOnObj != null) ? loggedOnObj : false;
+
+    int i;
+    Utente loggedUser = (Utente) request.getAttribute("loggedUser");
+    String applicationMessage = (String) request.getAttribute("applicationMessage");
+    String menuActiveLink = "Home";
+    List<Biglietto> biglietti = (List<Biglietto>) request.getAttribute("biglietti");
+    List <Abbonamento> abbonamenti = (List<Abbonamento>) request.getAttribute("abbonamenti");
 %>
 
 <!DOCTYPE html>
@@ -130,12 +133,26 @@
 <body>
 
     <header>
+        <form name="logoutForm" action="Dispatcher" method="post">
+            <input type="hidden" name="controllerAction" value="HomeManagement.logout"/>
+        </form>
         <h1>PrimEvent</h1>
         <nav>
             <ul>
-                <li><a href="home.html">Home</a></li>
-                <li><a href="login.html">Accedi</a></li>
-                <li><a href="registrazione1.html">Iscriviti</a></li>
+                <li <%=menuActiveLink.equals("Home") ? "class=\"active\"" : ""%>>
+                    <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
+                </li>
+                <% if (loggedOn) { %>
+                <li <%=menuActiveLink.equals("Home Utente") ? "class=\"active\"" : ""%>>
+                    <a href="Dispatcher?controllerAction=UserManagement.view">Home Utente</a>
+                </li>
+                <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+                <% } else { %>
+                <li <%= menuActiveLink.equals("Accedi") ? "class=\"acrive\"": ""%>>
+                    <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a></li>
+                <li <%=menuActiveLink.equals("Registrati")?"class=\"active\"":""%>>
+                    <a href="Dispatcher?controllerAction=UserManagement.gotoRegistration">Registrati</a>
+                        <%}%>
             </ul>
         </nav>
     </header>
@@ -150,52 +167,59 @@
 
         <div class="content">
             <div id="dati-personali" class="section">
-                <h2>I miei dati personali</h2>
-                <p>Nome: <input type="text" value="<%= loggedUser.getNome() %>" disabled></p>
-                <p>Cognome: <input type="text" value="<%= loggedUser.getCognome() %>" disabled></p>
-                <p>Email: <input type="email" value="<%= loggedUser.getEmail() %>" disabled></p>
-                <p>Password: <input type="password" value="********" disabled></p>
-                <p><input type="checkbox" style="display: none;"> Modifica i dati personali</p>
-                <button onclick="toggleEdit('dati-personali')">Modifica i dati personali</button>
+                <form method="post" action="Dispatcher" name="modifyForm">
+                    <input type="text" name="nome" value="<%= loggedUser.getNome() %>"  >
+                    <input type="text" name="cognome" value="<%= loggedUser.getCognome() %>">
+                    <input type="text" name="email" value="<%=loggedUser.getEmail()%>" >
+                    <input type="text" name="password" value="<%=loggedUser.getPassword()%>" >
+                    <input type="text" name="idutente" value="<%=loggedUser.getIdUtente()%>" >
+                    <!--<button onclick="toggleEdit('dati-personali')">Modifica i dati personali</button>-->
+                    <input type="hidden" name="controllerAction" value="UserManagement.modifyUtente"/>
+                    <input type="submit" value="Salva modifiche" >
+                </form>
             </div>
 
             <div id="biglietti" class="section">
                 <h2>I miei biglietti</h2>
-                <% for (Biglietto biglietto : biglietti) { %>
+                <%if (biglietti != null && !biglietti.isEmpty()){ %>
+                <% for (i=0; i<biglietti.size();i++){%>
                 <div class="ticket">
-                    <img src="<%= biglietto.getImmagine() %>" alt="Concerto">
                     <div>
-                        <p><%= biglietto.getNomeEvento() %></p>
-                        <p><%= biglietto.getDataEvento() %></p>
-                        <p>Nome: <%= biglietto.getNomeAcquirente() %></p>
-                        <p>Tipo biglietto: <%= biglietto.getTipoBiglietto() %></p>
-                        <p>Totale: <%= biglietto.getPrezzo() %> €</p>
+                        <span class="nome"><%= biglietti.get(i).getIdEvento().getNome() %></span>
+                        <span class="data"><%= biglietti.get(i).getIdEvento().getDataInizio() %></span>
+                        <span class="nome">Nome: <%=biglietti.get(i).getIdUtente().getNome()%></span>
+                        <span class="cognome">Cognome: <%=biglietti.get(i).getIdUtente().getCognome()%></span>
+                        <span class="prezzo">Prezzo: <%=biglietti.get(i).getPrezzo()%> €</span>
+                        <span class="tipo">Tipo: <%=biglietti.get(i).getTipo()%></span>
                     </div>
                 </div>
-                <% } %>
+                <% }} %>
                 <button onclick="toggleEdit('biglietti')">Modifica nominativi</button>
             </div>
 
             <div id="abbonamenti" class="section">
-                <h2>I miei abbonamenti</h2>
-                <% for (Abbonamento abbonamento : abbonamenti) { %>
-                <div class="subscription">
-                    <img src="<%= abbonamento.getImmagine() %>" alt="Abbonamento">
+                <h2>I miei Abbonamenti</h2>
+                <%if (biglietti != null && !biglietti.isEmpty()){ %>
+                <% for (i=0; i<abbonamenti.size();i++){%>
+                <div class="ticket">
                     <div>
-                        <p><%= abbonamento.getNomeEvento() %></p>
-                        <p><%= abbonamento.getDataInizio() %> - <%= abbonamento.getDataFine() %></p>
-                        <p>Nome: <%= loggedUser.getNome() %> <%= loggedUser.getCognome() %></p>
-                        <p>Tipo abbonamento: <%= abbonamento.getTipoAbbonamento() %></p>
-                        <p>Totale: <%= abbonamento.getPrezzo() %> €</p>
+                        <span class="nome"><%= abbonamenti.get(i).getIdEvento().getNome() %></span>
+                        <span class="data"><%= abbonamenti.get(i).getIdEvento().getDataInizio() %></span>
+                        <span class="nome">Nome: <%=abbonamenti.get(i).getIdUtente().getNome()%></span>
+                        <span class="cognome">Cognome: <%=abbonamenti.get(i).getIdUtente().getCognome()%></span>
+                        <span class="prezzo">Prezzo: <%=abbonamenti.get(i).getPrezzo()%> €</span>
+                        <span class="tipo">Tipo: <%=abbonamenti.get(i).getTipo()%></span>
+                        <span class="entrate">Entrate: <%=abbonamenti.get(i).getEntrate()%></span>
                     </div>
                 </div>
-                <% } %>
-                <button onclick="toggleEdit('abbonamenti')">Modifica abbonamenti</button>
+                <% } }%>
+                <button onclick="toggleEdit('abbonamenti')">Modifica nominativi</button>
             </div>
         </div>
         <% } else { %>
         <p>Effettua il login per vedere i tuoi dati.</p>
         <% } %>
+
     </main>
 
     <footer>

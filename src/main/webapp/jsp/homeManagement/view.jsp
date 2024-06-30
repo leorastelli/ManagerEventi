@@ -104,29 +104,32 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
         <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
       </li>
       <% if (loggedOn) { %>
-      <li <%=menuActiveLink.equals("Rubrica") ? "class=\"active\"" : ""%>>
-        <a href="Dispatcher?controllerAction=AddressBookManagement.view">Rubrica</a>
+      <li <%=menuActiveLink.equals("Home Utente") ? "class=\"active\"" : ""%>>
+        <a href="Dispatcher?controllerAction=UserManagement.view">Home Utente</a>
       </li>
       <li><a href="javascript:logoutForm.submit()">Logout</a></li>
       <% } else { %>
-      <li><a href="login.html">Accedi</a></li>
-      <li><a href="RegistrazioneUtente.jsp">Iscriviti</a></li>
-      <% } %>
+      <li <%= menuActiveLink.equals("Accedi") ? "class=\"acrive\"": ""%>>
+        <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a></li>
+      <li <%=menuActiveLink.equals("Registrati")?"class=\"active\"":""%>>
+        <a href="Dispatcher?controllerAction=UserManagement.gotoRegistration">Registrati</a>
+          <%}%>
     </ul>
   </nav>
 </header>
 <main>
+
   <h1>Scopri Eventi Unici!</h1>
   <div class="image-box" onclick="location.href='pagamento.html'">
-    <img src="../../images/evento.jpg" alt="Eventi">
+    <img src="images/evento.jpg" alt="Eventi">
     <p>Eventi</p>
   </div>
   <div class="image-box" onclick="location.href='pagamento.html'">
-    <img src="recensioni.jpeg" alt="Cosa dicono di noi">
+    <img src="images/recensioni.jpeg" alt="Cosa dicono di noi">
     <p>Cosa dicono di noi</p>
   </div>
   <div class="image-box" onclick="location.href='pagamento.html'">
-    <img src="lavoraconnoi.jpg" alt="Lavora con Noi">
+    <img src="images/lavoraconnoi.jpg" alt="Lavora con Noi">
     <p>Lavora con Noi</p>
   </div>
 </main>

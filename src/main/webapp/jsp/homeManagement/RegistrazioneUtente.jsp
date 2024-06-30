@@ -1,20 +1,18 @@
-<!-- L'utente può registrarsi al sito inserendo i propri dati personali. Una volta registrato viene riportato alla pagina di Home(?)-->
+<!-- L'utente può registrarsi al sito inserendo i propri dati personali. Una volta registrato viene riportato
+alla pagina di Home(?)-->
 
 
 <%@page session="false"%>
 <%@page import="com.managereventi.managereventi.model.mo.Utente"%>
 
 <%
-    boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
-    Utente loggedUser = (Utente) request.getAttribute("loggedUser");
-    String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "Home";
 %>
 
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <%@include file="/include/htmlHead.inc"%>
+    <%//@include file="/include/htmlHead.inc"%>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrazione</title>
@@ -74,39 +72,23 @@
             <li <%=menuActiveLink.equals("Home")?"class=\"active\"":""%>>
                 <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
             </li>
-            <% if (loggedOn) { %>
-            <li <%=menuActiveLink.equals("Rubrica")?"class=\"active\"":""%>>
-                <a href="Dispatcher?controllerAction=AddressBookManagement.view">Rubrica</a>
-            </li>
-            <li><a href="javascript:logoutForm.submit()">Logout</a></li>
-            <% } %>
         </ul>
     </nav>
-    <% if (!loggedOn) { %>
-    <section id="login" class="clearfix">
-        <form name="logonForm" action="Dispatcher" method="post">
-            <label for="username">Utente</label>
-            <input type="text" id="username" name="username" maxlength="40" required>
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" maxlength="40" required>
-            <input type="hidden" name="controllerAction" value="HomeManagement.logon"/>
-            <input type="submit" value="Ok">
-        </form>
-    </section>
-    <% } %>
 </header>
-<%@include file="/include/footer.inc"%>
+<%//@include file="/include/footer.inc"%>
 
-<form>
+<form action="Dispatcher" method="post">
     <h2>Dati personali</h2>
     <input type="text" name="nome" placeholder="Nome" required>
     <input type="text" name="cognome" placeholder="Cognome" required>
     <input type="email" name="email" placeholder="E-mail" required>
     <input type="password" name="password" placeholder="Password" required>
+    <input type="text" name="username" id="username" placeholder="Username" required>
     <label>
-        <input type="checkbox" name="newsletter"> Acconsento a ricevere newsletter e aggiornamenti a fini commerciali
+        <!--<input type="checkbox" name="newsletter"> Acconsento a ricevere newsletter e aggiornamenti a fini commerciali-->
     </label>
-    <button type="submit">Registrati</button>
+    <input type="hidden" name="controllerAction" value="UserManagement.registration"/>
+    <input type="submit" value="Registrati">
 </form>
 
 <script>

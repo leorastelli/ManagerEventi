@@ -40,7 +40,7 @@ public class HomeManagement {
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
-            request.setAttribute("viewUrl", "homeManagement/login");
+            request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -103,7 +103,7 @@ public class HomeManagement {
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "homeManagement/login");
+            request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -144,7 +144,7 @@ public class HomeManagement {
 
             request.setAttribute("loggedOn",false);
             request.setAttribute("loggedUser", null);
-            request.setAttribute("viewUrl", "homeManagement/login");
+            request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -162,8 +162,11 @@ public class HomeManagement {
         }
     }
 
+    public static void gotoLogin(HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("viewUrl", "homeManagement/Registrazione");
+    }
 
-    public static void logon2(HttpServletRequest request, HttpServletResponse response) {
+    public static void usertype(HttpServletRequest request, HttpServletResponse response) {
 
         DAOFactory sessionDAOFactory= null;
         DAOFactory daoFactory = null;
@@ -186,26 +189,26 @@ public class HomeManagement {
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
             daoFactory.beginTransaction();
 
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
+            //String username = request.getParameter("username");
+            //String password = request.getParameter("password");
             String userType = request.getParameter("userType");
 
-            UtenteDAO userDAO = daoFactory.getUtenteDAO();
-            Utente user = userDAO.getUtenteById(username);
-
+            //UtenteDAO userDAO = daoFactory.getUtenteDAO();
+            //Utente user = userDAO.getUtenteById(username);
+/*
             if (user == null || !user.getPassword().equals(password)) {
                 sessionUserDAO.deleteUtente(null);
                 applicationMessage = "Username e password errati!";
                 loggedUser=null;
             } else {
                 loggedUser = sessionUserDAO.createUtente(user);
-            }
+            }*/
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
-            request.setAttribute("loggedOn",loggedUser!=null);
-            request.setAttribute("loggedUser", loggedUser);
+            //request.setAttribute("loggedOn",loggedUser!=null);
+           // request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("applicationMessage", applicationMessage);
 
             switch (userType){
@@ -213,7 +216,7 @@ public class HomeManagement {
                     request.setAttribute("viewUrl", "homeManagement/login");
                     break;
                 case "utente":
-                    request.setAttribute("viewUrl", "homeManagement/login");
+                    request.setAttribute("viewUrl", "homeManagement/LoginAnna");
                     break;
                 case "organizzatore":
                     request.setAttribute("viewUrl", "homeManagement/login");

@@ -58,21 +58,22 @@
     </style>
 </head>
 <body>
-    <form action="Dispatcher" method="post">
+    <form name="FormRadio" action="Dispatcher" method="post">
         <h2>Iscriviti come</h2>
         <label>
-            <input type="radio" name="role" value="utente" required>
+            <input type="radio" id="userTypeUser" name="userType" value="utente">
             Utente
         </label>
         <label>
-            <input type="radio" name="role" value="azienda" required>
+            <input type="radio" id="userTypeCompany" name="userType" value="azienda">
             Azienda
         </label>
         <label>
-            <input type="radio" name="role" value="organizzatore" required>
+            <input type="radio" id="userTypeOrganizer" name="userType" value="organizzatore">
             Organizzatore
         </label>
-        <button type="submit">Prosegui</button>
+        <input type="hidden" name="controllerAction" value="HomeManagement.usertype"/>
+        <input type="submit">Prosegui</input>
     </form>
 </body>
 </html>

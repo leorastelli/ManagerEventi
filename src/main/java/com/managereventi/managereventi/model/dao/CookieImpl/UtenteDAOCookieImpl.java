@@ -1,6 +1,7 @@
 package com.managereventi.managereventi.model.dao.CookieImpl;
 
 import com.managereventi.managereventi.model.dao.UtenteDAO;
+import com.managereventi.managereventi.model.mo.Abbonamento;
 import com.managereventi.managereventi.model.mo.Biglietto;
 import com.managereventi.managereventi.model.mo.Utente;
 import jakarta.servlet.http.Cookie;
@@ -86,6 +87,11 @@ public class UtenteDAOCookieImpl implements UtenteDAO {
 
     @Override
     public List<Biglietto> getBigliettiUtente(Utente utente) {
+        return null;
+    }
+
+    @Override
+    public List<Abbonamento> getAbbonamentiUtente(Utente utente) {
         return null;
     }
 
