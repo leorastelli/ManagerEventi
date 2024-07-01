@@ -1,76 +1,106 @@
-<!--Pagina di login-->
 <%@page session="false"%>
 <%@page import="com.managereventi.managereventi.model.mo.Utente"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.managereventi.managereventi.model.mo.Biglietto" %>
 
 <%
-  boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
-  Utente loggedUser = (Utente) request.getAttribute("loggedUser");
-  String applicationMessage = (String) request.getAttribute("applicationMessage");
-  String menuActiveLink = "Home";
+    Boolean loggedOnObj = (Boolean) request.getAttribute("loggedOn");
+    boolean loggedOn = (loggedOnObj != null) ? loggedOnObj : false;
+
+    Utente loggedUser = (Utente) request.getAttribute("loggedUser");
+    String applicationMessage = (String) request.getAttribute("applicationMessage");
+    String menuActiveLink = "Home";
+
 %>
 
 <!DOCTYPE html>
-<html lang="it">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - PrimEvent</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        form {
-            border: 1px solid #ccc;
-            padding: 20px;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        h2 {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin: 15px 0;
-            font-size: 18px;
-        }
-        input[type="email"], input[type="password"] {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: white;
-            background-color: #6fa3ef;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
+    <%@include file="/include/htmlHead.inc"%>
 </head>
 <body>
-    <form name="logonForm" action="Dispatcher" method="post">
-        <h2>Accedi</h2>
-        <label for="email">E-mail</label>
-        <input type="email" id="email" name="email" required>
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
-        <input type="hidden" name="controllerAction" value="HomeManagement.logon"/>
-        <button type="submit">Entra</button>
+<script>
+    function headerOnLoadHandler() {
+        var usernameTextField = document.querySelector("#username");
+        var usernameTextFieldMsg = "Lo username \xE8 obbligatorio.";
+        var passwordTextField = document.querySelector("#password");
+        var passwordTextFieldMsg = "La password \xE8 obbligatoria.";
+
+        if (usernameTextField != undefined && passwordTextField != undefined ) {
+            usernameTextField.setCustomValidity(usernameTextFieldMsg);
+            usernameTextField.addEventListener("change", function () {
+                this.setCustomValidity(this.validity.valueMissing ? usernameTextFieldMsg : "");
+            });
+            passwordTextField.setCustomValidity(passwordTextFieldMsg);
+            passwordTextField.addEventListener("change", function () {
+                this.setCustomValidity(this.validity.valueMissing ? passwordTextFieldMsg : "");
+            });
+        }
+    }
+</script>
+
+<header class="clearfix"><!-- Defining the header section of the page -->
+
+    <h1 class="logo"><!-- Defining the logo element -->
+        ManagerEventi
+    </h1>
+
+    <form name="logoutForm" action="Dispatcher" method="post">
+        <input type="hidden" name="controllerAction" value="HomeManagement.logout"/>
     </form>
-</body>
+
+    <nav><!-- Defining the navigation menu -->
+        <ul>
+            <li <%=menuActiveLink.equals("Home")?"class=\"active\"":""%>>
+                <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
+            </li>
+            <%if (!loggedOn) {%>
+            <li <%=menuActiveLink.equals("Registrati")?"class=\"active\"":""%>>
+                <a href="Dispatcher?controllerAction=UserManagement.view">Registrati</a>
+            <%}%>
+            <%if (loggedOn) {%>
+            <li <%=menuActiveLink.equals("Home Utente")?"class=\"active\"":""%>>
+                <a href="Dispatcher?controllerAction=UserManagement.view">Home Utente</a>
+            </li>
+            <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+            <%}%>
+        </ul>
+    </nav>
+
+    <%if (!loggedOn) {%>
+    <section id="login" class="clearfix">
+        <form name="logonForm" action="Dispatcher" method="post">
+            <label for="username">Utente</label>
+            <input type="text" id="username"  name="username" maxlength="40" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" maxlength="40" required>
+
+            <input type="radio" id="userTypeUser" name="userType" value="utente">
+            <label for="userTypeUser">Utente</label>
+
+            <input type="radio" id="userTypeOrganizer" name="userType" value="organizzatore">
+            <label for="userTypeOrganizer">Organizzatore</label>
+
+            <input type="radio" id="userTypeCompany" name="userType" value="azienda">
+            <label for="userTypeCompany">Azienda</label>
+
+            <input type="hidden" name="controllerAction" value="HomeManagement.logon2"/>
+            <input type="submit" value="Ok">
+        </form>
+    </section>
+    <%}%>
+
+</header>
+<main>
+    <%if (loggedOn) {%>
+    Benvenuto <%=loggedUser.getNome()%> <%=loggedUser.getCognome()%>!<br/>
+    Clicca sulla voce "Rubrica" del men&ugrave; per gestire i tuoi contatti.
+    <%} else {%>
+    Benvenuto.
+    Fai il logon per gestire la tua rubrica.
+
+    <%}%>
+
+</main>
+<%@include file="/include/footer.inc"%>
 </html>
