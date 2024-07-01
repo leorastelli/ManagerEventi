@@ -1,10 +1,7 @@
 package com.managereventi.managereventi.controller;
 
-import com.managereventi.managereventi.model.dao.DAOFactory;
-import com.managereventi.managereventi.model.dao.UtenteDAO;
-import com.managereventi.managereventi.model.mo.Abbonamento;
-import com.managereventi.managereventi.model.mo.Biglietto;
-import com.managereventi.managereventi.model.mo.Utente;
+import com.managereventi.managereventi.model.dao.*;
+import com.managereventi.managereventi.model.mo.*;
 import com.managereventi.managereventi.services.Config.Configuration;
 import com.managereventi.managereventi.services.Logservice.LogService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,6 +27,8 @@ public class UserManagement {
         Utente loggedUser;
         List<Biglietto > biglietti;
         List<Abbonamento> abbonamenti;
+        List<Recensione> recensioni;
+        List<String> nomiEventi;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -48,11 +47,17 @@ public class UserManagement {
             daoFactory.beginTransaction();
 
             UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
+            RecensioneDAO recensioneDAO = daoFactory.getRecensioneDAO();
+            BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
+            AbbonamentoDAO abbonamentoDAO = daoFactory.getAbbonamentoDAO();
+            EventoDAO eventoDAO = daoFactory.getEventoDAO();
 
             Utente utente = utenteDAO.getUtenteById(loggedUser.getIdUtente());
 
-            biglietti = utenteDAO.getBigliettiUtente(utente);
-            abbonamenti = utenteDAO.getAbbonamentiUtente(utente);
+            biglietti = bigliettoDAO.getBigliettiUtente(loggedUser);
+            abbonamenti = abbonamentoDAO.getAbbonamentiUtente(loggedUser);
+            recensioni = recensioneDAO.getRecensioniByUtente(loggedUser.getIdUtente());
+            nomiEventi = eventoDAO.getNomiEventibyId(bigliettoDAO.getIdEventiUtente(utente));
 
             sessionDAOFactory.commitTransaction();
             daoFactory.commitTransaction();
@@ -61,6 +66,8 @@ public class UserManagement {
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("biglietti", biglietti);
             request.setAttribute("abbonamenti", abbonamenti);
+            request.setAttribute("recensioni", recensioni);
+            request.setAttribute("pastEvents", nomiEventi);
             request.setAttribute("viewUrl", "homeManagement/AreaPersonaleUtente");
 
         } catch (Exception e) {
@@ -141,6 +148,7 @@ public class UserManagement {
 
 
     }
+
     public static void registration(HttpServletRequest request, HttpServletResponse response) {
         DAOFactory sessionDAOFactory= null;
         Utente loggedUser;
@@ -234,4 +242,184 @@ public class UserManagement {
             }
         }
     }
+
+    public static void deleteBiglietto(HttpServletRequest request, HttpServletResponse response) {
+        DAOFactory sessionDAOFactory= null;
+        Utente loggedUser;
+        DAOFactory daoFactory = null;
+        List<Biglietto > biglietti;
+        List<Abbonamento> abbonamenti;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUser = sessionUserDAO.findLoggedUser();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
+            BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
+            AbbonamentoDAO abbonamentoDAO = daoFactory.getAbbonamentoDAO();
+            Utente utente = utenteDAO.getUtenteById(loggedUser.getIdUtente());
+
+            bigliettoDAO.deleteBiglietto(request.getParameter("idBiglietto"));
+
+            biglietti = bigliettoDAO.getBigliettiUtente(loggedUser);
+            abbonamenti = abbonamentoDAO.getAbbonamentiUtente(loggedUser);
+
+            Properties properties = new Properties();
+            properties.put("mail.smtp.host", "out.virgilio.it");
+            properties.put("mail.smtp.port", "587");
+            properties.put("mail.smtp.auth", "true");
+            properties.put("mail.smtp.starttls.enable", "true");
+
+            String username = "primeevent@virgilio.it";
+            String password = "Eventiprimi1!";
+
+            String htmlContent = "<h1>Ci dispiace che tu non riesca a partecipare!" + utente.getIdUtente() + "</h1>"
+                    + "<p>Stiamo provvedendo ad effettuare il reso</p>"
+                    + "<p>PrimeEventi</p>";
+
+            Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(utente.getEmail()));
+            message.setSubject("Procedura di Reso");
+
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            mimeBodyPart.setContent(htmlContent, "text/html");
+
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mimeBodyPart);
+
+            message.setContent(multipart);
+
+            Transport.send(message);
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("biglietti", biglietti);
+            request.setAttribute("abbonamenti", abbonamenti);
+            request.setAttribute("viewUrl", "homeManagement/AreaPersonaleUtente");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        }
+    }
+
+    public static void deleteAbbonamento(HttpServletRequest request, HttpServletResponse response) {
+        DAOFactory sessionDAOFactory= null;
+        Utente loggedUser;
+        DAOFactory daoFactory = null;
+        List<Biglietto > biglietti;
+        List<Abbonamento> abbonamenti;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUser = sessionUserDAO.findLoggedUser();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
+            BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
+            AbbonamentoDAO abbonamentoDAO = daoFactory.getAbbonamentoDAO();
+            Utente utente = utenteDAO.getUtenteById(loggedUser.getIdUtente());
+
+
+            abbonamentoDAO.deleteAbbonamento(request.getParameter("idAbbonamento"));
+
+            biglietti = bigliettoDAO.getBigliettiUtente(loggedUser);
+            abbonamenti = abbonamentoDAO.getAbbonamentiUtente(loggedUser);
+
+            Properties properties = new Properties();
+            properties.put("mail.smtp.host", "out.virgilio.it");
+            properties.put("mail.smtp.port", "587");
+            properties.put("mail.smtp.auth", "true");
+            properties.put("mail.smtp.starttls.enable", "true");
+
+            String username = "primeevent@virgilio.it";
+            String password = "Eventiprimi1!";
+
+            String htmlContent = "<h1>Ci dispiace che tu non riesca a partecipare!" + utente.getIdUtente() + "</h1>"
+                    + "<p>Stiamo provvedendo ad effettuare il reso</p>"
+                    + "<p>PrimeEventi</p>";
+
+            Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(utente.getEmail()));
+            message.setSubject("Procedura di Reso");
+
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            mimeBodyPart.setContent(htmlContent, "text/html");
+
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mimeBodyPart);
+
+            message.setContent(multipart);
+
+            Transport.send(message);
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("biglietti", biglietti);
+            request.setAttribute("abbonamenti", abbonamenti);
+            request.setAttribute("viewUrl", "homeManagement/AreaPersonaleUtente");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        }
+    }
+
 }

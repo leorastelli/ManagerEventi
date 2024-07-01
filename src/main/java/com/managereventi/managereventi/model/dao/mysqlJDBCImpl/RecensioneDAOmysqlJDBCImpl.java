@@ -7,6 +7,7 @@ import com.managereventi.managereventi.model.mo.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecensioneDAOmysqlJDBCImpl implements RecensioneDAO {
@@ -21,7 +22,8 @@ public class RecensioneDAOmysqlJDBCImpl implements RecensioneDAO {
         Recensione recensione = new Recensione();
         Utente utente = new Utente();
         Evento evento = new Evento();
-        Esibizione esibizione = new Esibizione();
+        recensione.setIdUtente(utente);
+        recensione.setIdEvento(evento);
 
         try {
 
@@ -29,7 +31,6 @@ public class RecensioneDAOmysqlJDBCImpl implements RecensioneDAO {
             recensione.setDescrizione(rs.getString("Descrizione"));
             recensione.setStelle(rs.getInt("Stelle"));
             recensione.getIdUtente().setIdUtente(rs.getString("IdUtente"));
-            recensione.getIdEsibizione().setIdEsibizione(rs.getString("IdEsibizione"));
             recensione.getIdEvento().setIdEvento(rs.getString("IdEvento"));
 
         } catch (Exception e) {
@@ -69,7 +70,30 @@ public class RecensioneDAOmysqlJDBCImpl implements RecensioneDAO {
 
     @Override
     public List<Recensione> getRecensioniByUtente(String idUtente) {
-        return null;
+        PreparedStatement ps;
+        List<Recensione> recensioni = new ArrayList<>();
+
+        try{
+
+            String sql = "SELECT * FROM RECENSIONE WHERE IdUtente = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, idUtente);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                Recensione recensione = new Recensione();
+                recensione = read(rs);
+                recensioni.add(recensione);
+            }
+
+            ps.close();
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }
+
+        return recensioni;
     }
 
     @Override
@@ -78,8 +102,31 @@ public class RecensioneDAOmysqlJDBCImpl implements RecensioneDAO {
     }
 
     @Override
-    public List<Recensione> getRecensioniByEvento(String idEvento) {
-        return null;
+    public List<Recensione> getRecensioniByEvento(String IdEvento) {
+        PreparedStatement ps;
+        List<Recensione> recensioni = new ArrayList<>();
+
+        try{
+                String sql = "SELECT * FROM RECENSIONE WHERE IdEvento = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, IdEvento);
+
+                ResultSet rs = ps.executeQuery();
+
+                while(rs.next()){
+                    Recensione recensione = new Recensione();
+                    recensione = read(rs);
+                    recensioni.add(recensione);
+                }
+
+                ps.close();
+
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }
+
+        return recensioni;
     }
 
     @Override
@@ -119,5 +166,34 @@ public class RecensioneDAOmysqlJDBCImpl implements RecensioneDAO {
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Override
+    public List<Recensione> getRecensioniByEventoStelle(String idEvento, int stelle) {
+        PreparedStatement ps;
+        List<Recensione> recensioni = new ArrayList<>();
+
+        try{
+
+            String sql = "SELECT * FROM RECENSIONE WHERE IdEvento = ? AND Stelle = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, idEvento);
+            ps.setInt(2, stelle);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                Recensione recensione = new Recensione();
+                recensione = read(rs);
+                recensioni.add(recensione);
+            }
+
+            ps.close();
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }
+
+        return recensioni;
     }
 }

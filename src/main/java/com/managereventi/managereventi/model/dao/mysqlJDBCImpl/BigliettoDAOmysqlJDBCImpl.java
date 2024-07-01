@@ -2,14 +2,12 @@ package com.managereventi.managereventi.model.dao.mysqlJDBCImpl;
 
 import com.managereventi.managereventi.model.dao.AbbonamentoDAO;
 import com.managereventi.managereventi.model.dao.BigliettoDAO;
-import com.managereventi.managereventi.model.mo.Abbonamento;
-import com.managereventi.managereventi.model.mo.Biglietto;
-import com.managereventi.managereventi.model.mo.Evento;
-import com.managereventi.managereventi.model.mo.Utente;
+import com.managereventi.managereventi.model.mo.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
@@ -24,6 +22,10 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
         Biglietto biglietto = new Biglietto();
         Utente utente = new Utente();
         Evento evento = new Evento();
+        Esibizione esibizione = new Esibizione();
+        biglietto.setIdUtente(utente);
+        biglietto.setIdEsibizione(esibizione);
+        biglietto.setIdEvento(evento);
 
         try {
 
@@ -116,8 +118,82 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
 
     }
 
+    public List<Biglietto> getBigliettiUtente(Utente utente) {
+
+        PreparedStatement ps;
+        List<Biglietto> biglietti = new ArrayList<>();
+
+        try {
+            String sql
+                    = " SELECT * "
+                    + " FROM Biglietto "
+                    + " WHERE IdUtente = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, utente.getIdUtente());
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Biglietto biglietto = new Biglietto();
+                biglietto = read(rs);
+                biglietti.add(biglietto);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return biglietti;
+    }
+
+    @Override
+    public List<String> getIdEventiUtente(Utente utente) {
+        PreparedStatement ps;
+        List<String> idEventi = new ArrayList<>();
+
+        try {
+            String sql
+                    = " SELECT IdEvento "
+                    + " FROM Biglietto "
+                    + " WHERE IdUtente = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, utente.getIdUtente());
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                idEventi.add(rs.getString("IdEvento"));
+            }
+
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return idEventi;
+    }
+
     @Override
     public void deleteBiglietto(String idBiglietto) {
+        PreparedStatement ps;
 
+        try {
+            String sql
+                    = " DELETE FROM biglietto "
+                    + " WHERE IdBiglietto = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, idBiglietto);
+
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
+
 }

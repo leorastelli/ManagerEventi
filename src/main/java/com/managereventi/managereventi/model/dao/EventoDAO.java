@@ -9,4 +9,10 @@ public interface EventoDAO {
     public List<Evento> getAllEventi();
     public void updateEvento(Evento evento);
     public void deleteEvento(String idEvento);
+
+    public List<String> getNomiEventibyId(List<String> ideventi);
+
+    public List<String> getNomiEventi();
+
+    public List<Evento> getEventiByNome(String nome);
 }

@@ -10,6 +10,7 @@ import com.managereventi.managereventi.model.mo.Organizzatore;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventoDAOmysqlJDBCImpl implements EventoDAO {
@@ -135,4 +136,60 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
         }
 
     }
+
+    @Override
+    public List<String> getNomiEventibyId(List<String> ideventi) {
+        PreparedStatement ps;
+        List<String> nomiEventi = new ArrayList<>();
+        try{
+            for (String idEvento : ideventi) {
+                String sql = " SELECT Nome "
+                        + " FROM evento "
+                        + " WHERE "
+                        + "   IdEvento = ?";
+
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, idEvento);
+
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    nomiEventi.add(rs.getString("Nome"));
+                }
+            }
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return nomiEventi;
+    }
+
+    @Override
+    public List<String> getNomiEventi() {
+        PreparedStatement ps;
+        List<String> nomiEventi = new ArrayList<>();
+        try{
+            String sql = " SELECT Nome "
+                    + " FROM evento ";
+
+            ps = conn.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                nomiEventi.add(rs.getString("Nome"));
+            }
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return nomiEventi;
+    }
+
+    @Override
+    public List<Evento> getEventiByNome(String nome) {
+        return null;
+    }
+
+
 }

@@ -4,6 +4,7 @@
 <%@page import="java.util.List"%>
 <%@page import="com.managereventi.managereventi.model.mo.Biglietto"%>
 <%@page import="com.managereventi.managereventi.model.mo.Abbonamento"%>
+<%@ page import="com.managereventi.managereventi.model.mo.Recensione" %>
 
 <%
     Boolean loggedOnObj = (Boolean) request.getAttribute("loggedOn");
@@ -14,7 +15,9 @@
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "Home";
     List<Biglietto> biglietti = (List<Biglietto>) request.getAttribute("biglietti");
-    List <Abbonamento> abbonamenti = (List<Abbonamento>) request.getAttribute("abbonamenti");
+    List<Abbonamento> abbonamenti = (List<Abbonamento>) request.getAttribute("abbonamenti");
+    List<Recensione> recensioni = (List<Recensione>) request.getAttribute("recensioni");
+    List<String> pastEvents = (List<String>) request.getAttribute("pastEvents");
 %>
 
 <!DOCTYPE html>
@@ -191,6 +194,11 @@
                         <span class="cognome">Cognome: <%=biglietti.get(i).getIdUtente().getCognome()%></span>
                         <span class="prezzo">Prezzo: <%=biglietti.get(i).getPrezzo()%> €</span>
                         <span class="tipo">Tipo: <%=biglietti.get(i).getTipo()%></span>
+                        <form name="deletBiglietto" action="Dispatcher" method="post">
+                            <input type="hidden" name="controllerAction" value="UserManagement.deleteBiglietto"/>
+                            <input type="hidden" name="idBiglietto" value="<%=biglietti.get(i).getIdBiglietto()%>"/>
+                            <input type="submit" value="Annulla Biglietto">
+                        </form>
                     </div>
                 </div>
                 <% }} %>
@@ -210,6 +218,11 @@
                         <span class="prezzo">Prezzo: <%=abbonamenti.get(i).getPrezzo()%> €</span>
                         <span class="tipo">Tipo: <%=abbonamenti.get(i).getTipo()%></span>
                         <span class="entrate">Entrate: <%=abbonamenti.get(i).getEntrate()%></span>
+                        <form name="deleteAbbonamento" action="Dispatcher" method="post">
+                            <input type="hidden" name="controllerAction" value="UserManagement.deleteAbbonamento"/>
+                            <input type="hidden" name="idAbbonamento" value="<%=abbonamenti.get(i).getIdAbbonamento()%>"/>
+                            <input type="submit" value="Annulla Abbonamento">
+                        </form>
                     </div>
                 </div>
                 <% } }%>

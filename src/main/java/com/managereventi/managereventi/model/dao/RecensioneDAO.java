@@ -8,9 +8,12 @@ public interface RecensioneDAO {
     public Recensione getRecensioneById(String idRecensione);
     public List<Recensione> getRecensioniByUtente(String idUtente);
     public List<Recensione> getRecensioniByEsibizione(String idEsibizione);
-    public List<Recensione> getRecensioniByEvento(String idEvento);
+    public List<Recensione> getRecensioniByEvento(String IdEvento);
     public void updateRecensione(Recensione recensione);
     public void deleteRecensione(String idRecensione);
+    public List<Recensione> getRecensioniByEventoStelle(String idEvento, int stelle);
+
 }
+
 
 
