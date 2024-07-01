@@ -64,17 +64,17 @@ alla pagina di Home(?)-->
 </head>
 <body onload="headerOnLoadHandler()">
 <header>
-    <!--<h1 class="logo">ManagerEventi</h1>
+    <h1 class="logo">ManagerEventi</h1>
     <form name="logoutForm" action="Dispatcher" method="post">
         <input type="hidden" name="controllerAction" value="HomeManagement.logout"/>
     </form>
     <nav>
         <ul>
-            <li <%//=menuActiveLink.equals("Home")?"class=\"active\"":""%>>
+            <li <%=menuActiveLink.equals("Home")?"class=\"active\"":""%>>
                 <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
             </li>
         </ul>
-    </nav>-->
+    </nav>
 </header>
 <!--//@include file="/include/footer.inc"-->
 

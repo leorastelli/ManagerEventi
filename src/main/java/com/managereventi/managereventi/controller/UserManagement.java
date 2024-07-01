@@ -9,6 +9,10 @@ import com.managereventi.managereventi.services.Config.Configuration;
 import com.managereventi.managereventi.services.Logservice.LogService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Properties;
+import javax.mail.*;
+import javax.mail.internet.*;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -108,10 +112,11 @@ public class UserManagement {
             loggedUser.setCognome(request.getParameter("cognome"));
             loggedUser.setEmail(request.getParameter("email"));
             loggedUser.setPassword(request.getParameter("password"));
+            loggedUser.setIdUtente(request.getParameter("idutente"));
 
             try {
                 utenteDAO.updateUtente(loggedUser);
-
+                sessionUserDAO.updateUtente(loggedUser);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -173,6 +178,40 @@ public class UserManagement {
             catch (Exception e) {
                 throw new RuntimeException(e);
             }
+
+            Properties properties = new Properties();
+            properties.put("mail.smtp.host", "out.virgilio.it");
+            properties.put("mail.smtp.port", "587");
+            properties.put("mail.smtp.auth", "true");
+            properties.put("mail.smtp.starttls.enable", "true");
+
+            String username = "primeevent@virgilio.it";
+            String password = "Eventiprimi1!";
+
+            String htmlContent = "<h1>Grazie per la registrazione " + utente.getIdUtente() + "</h1>";
+
+            Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(utente.getEmail()));
+            message.setSubject("Registrazione avvenuta con successo");
+
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            mimeBodyPart.setContent(htmlContent, "text/html");
+
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mimeBodyPart);
+
+            message.setContent(multipart);
+
+            Transport.send(message);
+
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 

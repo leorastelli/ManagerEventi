@@ -95,7 +95,7 @@
                 <input type="password" id="password" name="password" required>
 
                 <input type="hidden" name="controllerAction" value="HomeManagement.logon"/>
-                <input type="submit"></input>
+                <input type="submit">
         </form>
     </section>
 </body>
