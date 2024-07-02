@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalTime;
+import java.sql.Time;
 
 public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
 
@@ -67,6 +69,10 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
 
             biglietto.getIdEsibizione().setIdEsibizione(rs.getString("IdEsibizione"));
             biglietto.getIdEsibizione().setNome(rs.getString("NomeEsibizione"));
+            biglietto.getIdEsibizione().setOraInizio(rs.getTime("OraInizio"));
+
+            biglietto.getIdUtente().setNome(rs.getString("NomeUtente"));
+            biglietto.getIdUtente().setCognome(rs.getString("CognomeUtente"));
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -156,8 +162,9 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
 
         try {
             String sql
-                    = " SELECT b.*, e.Nome as NomeEvento, e.DataInizio as DataInizioEvento, es.Nome as NomeEsibizione "
+                    = " SELECT b.*, e.Nome as NomeEvento, e.DataInzio as DataInzio, es.OraInizio as OraInzio, es.Nome as NomeEsibizione, u.Nome as NomeUtente, u.Cognome as CognomeUtente"
                     + " FROM Biglietto b "
+                    + " JOIN Utente u ON b.IdUtente = u.IdUtente "
                     + " JOIN Evento e ON b.IdEvento = e.IdEvento "
                     + " JOIN Esibizione es ON b.IdEsibizione = es.IdEsibizione "
                     + " WHERE b.IdUtente = ?";
