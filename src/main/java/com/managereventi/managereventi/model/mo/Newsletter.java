@@ -2,7 +2,7 @@ package com.managereventi.managereventi.model.mo;
 
 public class Newsletter {
     private Utente utente;
-    private Evento evento;
+    private String email;
 
     // Metodi getter e setter per ogni campo
     public Utente getIdUtente() {
@@ -13,12 +13,12 @@ public class Newsletter {
         this.utente = utente;
     }
 
-    public Evento getIdEvento() {
-        return evento;
+    public String getEmail() {
+        return email;
     }
 
-    public void setIdEvento(Evento evento) {
-        this.evento = evento;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }

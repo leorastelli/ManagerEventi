@@ -86,7 +86,7 @@ alla pagina di Home(?)-->
     <input type="password" name="password" placeholder="Password" required>
     <input type="text" name="username" id="username" placeholder="Username" required>
     <label>
-        <!--<input type="checkbox" name="newsletter"> Acconsento a ricevere newsletter e aggiornamenti a fini commerciali-->
+        <input type="checkbox" name="newsletter"> Acconsento a ricevere newsletter e aggiornamenti a fini commerciali
     </label>
     <input type="hidden" name="controllerAction" value="UserManagement.registration"/>
     <input type="submit" value="Registrati">

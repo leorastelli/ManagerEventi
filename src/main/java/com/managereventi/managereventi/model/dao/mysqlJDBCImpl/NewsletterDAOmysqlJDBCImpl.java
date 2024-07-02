@@ -24,13 +24,11 @@ public class NewsletterDAOmysqlJDBCImpl implements NewsletterDAO {
     Newsletter read(ResultSet rs) {
         Newsletter newsletter = new Newsletter();
         Utente utente = new Utente();
-        Evento evento = new Evento();
-
 
         try {
 
             newsletter.getIdUtente().setIdUtente(rs.getString("IdUtente"));
-            newsletter.getIdEvento().setIdEvento(rs.getString("IdEvento"));
+            newsletter.setEmail(rs.getString("Email"));
 
 
         } catch (Exception e) {
@@ -42,17 +40,17 @@ public class NewsletterDAOmysqlJDBCImpl implements NewsletterDAO {
 
 
     @Override
-    public Newsletter subscribeToNewsletter(String idUtente, String idEvento) {
+    public Newsletter subscribeToNewsletter(String idUtente, String email) {
 
         PreparedStatement ps;
 
         Newsletter newsletter = null;
 
         try {
-            String sql = "INSERT INTO Newsletter (IdUtente, IdEvento) VALUES (?, ?)";
+            String sql = "INSERT INTO Newsletter (IdUtente, Email) VALUES (?, ?)";
             ps = conn.prepareStatement(sql);
             ps.setString(1, idUtente);
-            ps.setString(2, idEvento);
+            ps.setString(2, email);
 
             ps.executeUpdate();
             ps.close();
@@ -64,15 +62,15 @@ public class NewsletterDAOmysqlJDBCImpl implements NewsletterDAO {
     }
 
     @Override
-    public void unsubscribeFromNewsletter(String idUtente, String idEvento) {
+    public void unsubscribeFromNewsletter(String idUtente, String Email) {
 
         PreparedStatement ps;
 
         try {
-            String sql = "DELETE FROM Newsletter WHERE IdUtente = ? AND IdEvento = ?";
+            String sql = "DELETE FROM Newsletter WHERE IdUtente = ? AND Email = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, idUtente);
-            ps.setString(2, idEvento);
+            ps.setString(2, Email);
 
             ps.executeUpdate();
             ps.close();
@@ -84,17 +82,33 @@ public class NewsletterDAOmysqlJDBCImpl implements NewsletterDAO {
     }
 
     @Override
-    public boolean isSubscribed(String idUtente, String idEvento) {
+    public boolean isSubscribed(String idUtente, String Email) {
         return false;
     }
 
-    @Override
-    public List<String> getSubscribedEvents(String idUtente) {
-        return null;
-    }
 
     @Override
-    public List<String> getSubscribers(String idEvento) {
-        return null;
+    public List<String> getMailList(String idUtente) {
+        PreparedStatement ps;
+        List<String> mailList = null;
+
+        try {
+            String sql = "SELECT Email FROM Newsletter WHERE IdUtente = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, idUtente);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                mailList.add(rs.getString("Email"));
+            }
+
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return mailList;
     }
 }

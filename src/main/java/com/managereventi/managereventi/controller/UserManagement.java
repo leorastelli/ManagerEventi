@@ -179,6 +179,13 @@ public class UserManagement {
             utente.setEmail(request.getParameter("email"));
             utente.setPassword(request.getParameter("password"));
             utente.setIdUtente(request.getParameter("username"));
+
+            if (!request.getParameter("newsletter").isBlank()){
+                Newsletter newsletter = new Newsletter();
+                NewsletterDAO newsletterDAO = daoFactory.getNewsletterDAO();
+                newsletterDAO.subscribeToNewsletter(utente.getIdUtente(), utente.getEmail());
+            }
+
             try{
                 utenteDAO.createUtente(utente);
             }
@@ -196,6 +203,10 @@ public class UserManagement {
             String password = "Eventiprimi1!";
 
             String htmlContent = "<h1>Grazie per la registrazione " + utente.getIdUtente() + "</h1>";
+
+            if (!request.getParameter("newsletter").isBlank()){
+                htmlContent += "<p>Ti sei iscritto alla nostra newsletter</p>";
+            }
 
             Session session = Session.getInstance(properties, new Authenticator() {
                 @Override
