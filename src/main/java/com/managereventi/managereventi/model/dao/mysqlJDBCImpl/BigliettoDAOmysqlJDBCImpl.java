@@ -65,7 +65,7 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
             // Assuming these fields exist in the ResultSet
             biglietto.getIdEvento().setIdEvento(rs.getString("IdEvento"));
             biglietto.getIdEvento().setNome(rs.getString("NomeEvento"));
-            biglietto.getIdEvento().setDataInizio(rs.getDate("DataInizioEvento"));
+            biglietto.getIdEvento().setDataInizio(rs.getDate("DataInizio"));
 
             biglietto.getIdEsibizione().setIdEsibizione(rs.getString("IdEsibizione"));
             biglietto.getIdEsibizione().setNome(rs.getString("NomeEsibizione"));
@@ -162,10 +162,10 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
 
         try {
             String sql
-                    = " SELECT b.*, e.Nome as NomeEvento, e.DataInzio as DataInzio, es.OraInizio as OraInzio, es.Nome as NomeEsibizione, u.Nome as NomeUtente, u.Cognome as CognomeUtente"
+                    = " SELECT b.*, e.Nome as NomeEvento, e.DataInizio as DataInizio, es.OraInizio as OraInizio, es.Nome as NomeEsibizione, u.Nome as NomeUtente, u.Cognome as CognomeUtente"
                     + " FROM Biglietto b "
-                    + " JOIN Utente u ON b.IdUtente = u.IdUtente "
                     + " JOIN Evento e ON b.IdEvento = e.IdEvento "
+                    + " JOIN Utente u ON b.IdUtente = u.IdUtente "
                     + " JOIN Esibizione es ON b.IdEsibizione = es.IdEsibizione "
                     + " WHERE b.IdUtente = ?";
 

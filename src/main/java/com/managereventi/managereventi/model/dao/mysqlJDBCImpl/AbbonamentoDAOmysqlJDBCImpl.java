@@ -148,6 +148,9 @@ public class AbbonamentoDAOmysqlJDBCImpl implements AbbonamentoDAO {
             abbonamento.getIdEvento().setNome(rs.getString("NomeEvento"));
             abbonamento.getIdEvento().setDataInizio(rs.getDate("DataInizioEvento"));
 
+            abbonamento.getIdUtente().setNome(rs.getString("NomeUtente"));
+            abbonamento.getIdUtente().setCognome(rs.getString("CognomeUtente"));
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -160,9 +163,10 @@ public class AbbonamentoDAOmysqlJDBCImpl implements AbbonamentoDAO {
         List<Abbonamento> abbonamenti = new ArrayList<>();
 
         try {
-            String sql = " SELECT a.*, e.Nome as NomeEvento, e.DataInizio as DataInizioEvento"
+            String sql = " SELECT a.*, e.Nome as NomeEvento, e.DataInizio as DataInizioEvento, u.Nome as NomeUtente, u.Cognome as CognomeUtente"
                     + " FROM Abbonamento a "
                     + " JOIN Evento e ON a.IdEvento = e.IdEvento "
+                    + " JOIN Utente u ON a.IdUtente = u.IdUtente"
                     + " WHERE a.IdUtente = ?";
 
             ps = conn.prepareStatement(sql);

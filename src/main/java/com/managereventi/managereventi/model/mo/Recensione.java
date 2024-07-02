@@ -5,7 +5,6 @@ public class Recensione {
     private String descrizione;
     private Integer stelle;
     private Utente utente;
-    private Esibizione esibizione;
     private Evento evento;
 
 
@@ -40,14 +39,6 @@ public class Recensione {
 
     public void setIdUtente(Utente utente) {
         this.utente = utente;
-    }
-
-    public Esibizione getIdEsibizione() {
-        return esibizione;
-    }
-
-    public void setIdEsibizione(Esibizione esibizione) {
-        this.esibizione = esibizione;
     }
 
     public Evento getIdEvento() {

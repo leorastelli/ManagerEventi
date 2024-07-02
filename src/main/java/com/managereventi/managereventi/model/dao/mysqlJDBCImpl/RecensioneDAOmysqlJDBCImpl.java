@@ -45,14 +45,13 @@ public class RecensioneDAOmysqlJDBCImpl implements RecensioneDAO {
         PreparedStatement ps;
 
         try{
-            String sql = "INSERT INTO Recensione (IdRecensione, Descrizione, Stelle, IdUtente, IdEsibizione, IdEvento) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Recensione (IdRecensione, Descrizione, Stelle, IdUtente, IdEvento) VALUES (?, ?, ?, ?, ?)";
             ps = conn.prepareStatement(sql);
             ps.setString(1, recensione.getIdRecensione());
             ps.setString(2, recensione.getDescrizione());
             ps.setInt(3, recensione.getStelle());
             ps.setString(4, recensione.getIdUtente().getIdUtente());
-            ps.setString(5, recensione.getIdEsibizione().getIdEsibizione());
-            ps.setString(6, recensione.getIdEvento().getIdEvento());
+            ps.setString(5, recensione.getIdEvento().getIdEvento());
 
             ps.executeUpdate();
             ps.close();

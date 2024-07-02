@@ -24,6 +24,7 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
     Evento read(ResultSet rs) {
         Evento evento = new Evento();
         Organizzatore organizzatore = new Organizzatore();
+        evento.setOrganizzatore(organizzatore);
 
         try {
             evento.setIdEvento(rs.getString("IdEvento"));
@@ -72,7 +73,28 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
 
     @Override
     public Evento getEventoById(String idEvento) {
-        return null;
+        PreparedStatement ps;
+        Evento evento = null;
+
+        try{
+            String sql = " SELECT * "
+                    + " FROM evento "
+                    + " WHERE "
+                    + "   IdEvento = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, idEvento);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                evento = read(rs);
+            }
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return evento;
     }
 
     @Override
@@ -189,6 +211,32 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
     @Override
     public List<Evento> getEventiByNome(String nome) {
         return null;
+    }
+
+    @Override
+    public String getEventoByNome(String nome) {
+        PreparedStatement ps;
+        String idEvento = null;
+
+        try{
+            String sql = " SELECT IdEvento "
+                    + " FROM evento "
+                    + " WHERE "
+                    + "   Nome = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, nome);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                idEvento = rs.getString("IdEvento");
+            }
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return idEvento;
     }
 
 

@@ -131,8 +131,7 @@ public class UserManagement {
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
-            request.setAttribute("loggedOn",loggedUser!=null);
-            request.setAttribute("loggedUser", loggedUser);
+            commonView(daoFactory, sessionDAOFactory, request);
             request.setAttribute("viewUrl", "homeManagement/AreaPersonaleUtente");
 
         } catch (Exception e) {
@@ -247,8 +246,6 @@ public class UserManagement {
         DAOFactory sessionDAOFactory= null;
         Utente loggedUser;
         DAOFactory daoFactory = null;
-        List<Biglietto > biglietti;
-        List<Abbonamento> abbonamenti;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -268,13 +265,10 @@ public class UserManagement {
 
             UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
             BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
-            AbbonamentoDAO abbonamentoDAO = daoFactory.getAbbonamentoDAO();
             Utente utente = utenteDAO.getUtenteById(loggedUser.getIdUtente());
 
             bigliettoDAO.deleteBiglietto(request.getParameter("idBiglietto"));
 
-            biglietti = bigliettoDAO.getBigliettiUtente(loggedUser);
-            abbonamenti = abbonamentoDAO.getAbbonamentiUtente(loggedUser);
 
             Properties properties = new Properties();
             properties.put("mail.smtp.host", "out.virgilio.it");
@@ -314,10 +308,7 @@ public class UserManagement {
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
-            request.setAttribute("loggedOn",loggedUser!=null);
-            request.setAttribute("loggedUser", loggedUser);
-            request.setAttribute("biglietti", biglietti);
-            request.setAttribute("abbonamenti", abbonamenti);
+            commonView(daoFactory, sessionDAOFactory, request);
             request.setAttribute("viewUrl", "homeManagement/AreaPersonaleUtente");
 
         } catch (Exception e) {
@@ -336,8 +327,6 @@ public class UserManagement {
         DAOFactory sessionDAOFactory= null;
         Utente loggedUser;
         DAOFactory daoFactory = null;
-        List<Biglietto > biglietti;
-        List<Abbonamento> abbonamenti;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -356,15 +345,12 @@ public class UserManagement {
             daoFactory.beginTransaction();
 
             UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
-            BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
             AbbonamentoDAO abbonamentoDAO = daoFactory.getAbbonamentoDAO();
             Utente utente = utenteDAO.getUtenteById(loggedUser.getIdUtente());
 
 
             abbonamentoDAO.deleteAbbonamento(request.getParameter("idAbbonamento"));
 
-            biglietti = bigliettoDAO.getBigliettiUtente(loggedUser);
-            abbonamenti = abbonamentoDAO.getAbbonamentiUtente(loggedUser);
 
             Properties properties = new Properties();
             properties.put("mail.smtp.host", "out.virgilio.it");
@@ -404,10 +390,7 @@ public class UserManagement {
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
-            request.setAttribute("loggedOn",loggedUser!=null);
-            request.setAttribute("loggedUser", loggedUser);
-            request.setAttribute("biglietti", biglietti);
-            request.setAttribute("abbonamenti", abbonamenti);
+            commonView(daoFactory, sessionDAOFactory, request);
             request.setAttribute("viewUrl", "homeManagement/AreaPersonaleUtente");
 
         } catch (Exception e) {
@@ -420,6 +403,124 @@ public class UserManagement {
             throw new RuntimeException(e);
 
         }
+    }
+
+    public static void submitReview(HttpServletRequest request, HttpServletResponse response){
+
+        DAOFactory sessionDAOFactory= null;
+        Utente loggedUser;
+        DAOFactory daoFactory = null;
+        List<Biglietto > biglietti;
+        List<Abbonamento> abbonamenti;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+
+
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUser = sessionUserDAO.findLoggedUser();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            RecensioneDAO recensioneDAO = daoFactory.getRecensioneDAO();
+            EventoDAO eventoDAO = daoFactory.getEventoDAO();
+
+            Recensione recensione = new Recensione();
+
+
+            String nomeEvento = request.getParameter("nomeEvento");
+            String IdEvento = eventoDAO.getEventoByNome(request.getParameter("nomeEvento"));
+
+            if (nomeEvento == null || nomeEvento.isEmpty()) {
+                throw new RuntimeException("Event name cannot be null or empty.");
+            }
+
+            Evento evento = eventoDAO.getEventoById(IdEvento);
+
+            recensione.setIdUtente(loggedUser);
+            recensione.setIdEvento(evento);
+            recensione.setIdRecensione(RandomString(6));
+            recensione.setDescrizione(request.getParameter("descrizione"));
+            recensione.setStelle(Integer.parseInt(request.getParameter("rating")));
+
+            recensioneDAO.createRecensione(recensione);
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            commonView(daoFactory, sessionDAOFactory, request);
+            request.setAttribute("viewUrl", "homeManagement/AreaPersonaleUtente");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
+    private static void commonView(DAOFactory daoFactory, DAOFactory sessionDAOFactory, HttpServletRequest request){
+        List<Biglietto > biglietti;
+        List<Abbonamento> abbonamenti;
+        List<Recensione> recensioni;
+        List<String> nomiEventi;
+        Utente loggedUser;
+
+        UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+        loggedUser = sessionUserDAO.findLoggedUser();
+
+        UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
+        RecensioneDAO recensioneDAO = daoFactory.getRecensioneDAO();
+        BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
+        AbbonamentoDAO abbonamentoDAO = daoFactory.getAbbonamentoDAO();
+        EventoDAO eventoDAO = daoFactory.getEventoDAO();
+
+        Utente utente = utenteDAO.getUtenteById(loggedUser.getIdUtente());
+
+        biglietti = bigliettoDAO.getBigliettiUtente(loggedUser);
+        abbonamenti = abbonamentoDAO.getAbbonamentiUtente(loggedUser);
+        recensioni = recensioneDAO.getRecensioniByUtente(loggedUser.getIdUtente());
+        nomiEventi = eventoDAO.getNomiEventibyId(bigliettoDAO.getIdEventiUtente(utente));
+
+        request.setAttribute("loggedOn",loggedUser!=null);
+        request.setAttribute("loggedUser", loggedUser);
+        request.setAttribute("biglietti", biglietti);
+        request.setAttribute("abbonamenti", abbonamenti);
+        request.setAttribute("recensioni", recensioni);
+        request.setAttribute("pastEvents", nomiEventi);
+    }
+
+    private static String RandomString(int n){
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789"
+                + "abcdefghijklmnopqrstuvxyz";
+
+        StringBuilder sb = new StringBuilder(n);
+
+        for (int i = 0; i < n; i++) {
+            int index = (int)(AlphaNumericString.length() * Math.random());
+            sb.append(AlphaNumericString.charAt(index));
+        }
+
+        return sb.toString();
     }
 
 }
