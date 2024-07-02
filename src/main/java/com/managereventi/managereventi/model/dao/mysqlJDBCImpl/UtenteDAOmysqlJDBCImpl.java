@@ -24,11 +24,12 @@ public class UtenteDAOmysqlJDBCImpl implements UtenteDAO {
 
 
         try {
+
             utente.setIdUtente(rs.getString("IdUtente"));
             utente.setNome(rs.getString("Nome"));
             utente.setCognome(rs.getString("Cognome"));
-            utente.setEmail(rs.getString("Email"));
-            utente.setPassword(rs.getString("Password"));
+            utente.setEmail(rs.getString("mail"));
+            utente.setPassword(rs.getString("pwd"));
 
 
         } catch (Exception e) {
@@ -117,7 +118,7 @@ public class UtenteDAOmysqlJDBCImpl implements UtenteDAO {
 
         try{
             String sql
-                    = " SELECT * "
+                    = " SELECT IdUtente as IdUtente, Nome as Nome, Cognome as Cognome, Email as mail, Password as pwd"
                     + " FROM utente "
                     + " WHERE IdUtente = ?";
 

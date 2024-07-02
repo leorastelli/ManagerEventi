@@ -44,6 +44,37 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
         return biglietto;
     }
 
+    Biglietto read1(ResultSet rs) {
+        Biglietto biglietto = new Biglietto();
+        Utente utente = new Utente();
+        Evento evento = new Evento();
+        Esibizione esibizione = new Esibizione();
+        biglietto.setIdUtente(utente);
+        biglietto.setIdEvento(evento);
+        biglietto.setIdEsibizione(esibizione);
+
+        try {
+            biglietto.setIdBiglietto(rs.getString("IdBiglietto"));
+            biglietto.setPrezzo(rs.getLong("Prezzo"));
+            biglietto.setTipo(rs.getString("Tipo"));
+            biglietto.setStato(rs.getInt("Stato"));
+            biglietto.getIdUtente().setIdUtente(rs.getString("IdUtente"));
+
+            // Assuming these fields exist in the ResultSet
+            biglietto.getIdEvento().setIdEvento(rs.getString("IdEvento"));
+            biglietto.getIdEvento().setNome(rs.getString("NomeEvento"));
+            biglietto.getIdEvento().setDataInizio(rs.getDate("DataInizioEvento"));
+
+            biglietto.getIdEsibizione().setIdEsibizione(rs.getString("IdEsibizione"));
+            biglietto.getIdEsibizione().setNome(rs.getString("NomeEsibizione"));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return biglietto;
+    }
+
     @Override
     public Biglietto createBiglietto(Biglietto biglietto) {
        PreparedStatement ps;
@@ -125,9 +156,11 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
 
         try {
             String sql
-                    = " SELECT * "
-                    + " FROM Biglietto "
-                    + " WHERE IdUtente = ?";
+                    = " SELECT b.*, e.Nome as NomeEvento, e.DataInizio as DataInizioEvento, es.Nome as NomeEsibizione "
+                    + " FROM Biglietto b "
+                    + " JOIN Evento e ON b.IdEvento = e.IdEvento "
+                    + " JOIN Esibizione es ON b.IdEsibizione = es.IdEsibizione "
+                    + " WHERE b.IdUtente = ?";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, utente.getIdUtente());
@@ -136,7 +169,7 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
 
             while (rs.next()) {
                 Biglietto biglietto = new Biglietto();
-                biglietto = read(rs);
+                biglietto = read1(rs);
                 biglietti.add(biglietto);
             }
 

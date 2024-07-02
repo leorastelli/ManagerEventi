@@ -129,15 +129,41 @@ public class AbbonamentoDAOmysqlJDBCImpl implements AbbonamentoDAO {
         return abbonamento;
     }
 
+    Abbonamento read1(ResultSet rs) {
+        Abbonamento abbonamento = new Abbonamento();
+        Utente utente = new Utente();
+        Evento evento = new Evento();
+        abbonamento.setIdUtente(utente);
+        abbonamento.setIdEvento(evento);
+
+        try {
+            abbonamento.setIdAbbonamento(rs.getString("IdAbbonamento"));
+            abbonamento.setTipo(rs.getString("Tipo"));
+            abbonamento.setPrezzo(rs.getLong("Prezzo"));
+            abbonamento.setEntrate(rs.getInt("Entrate"));
+            abbonamento.getIdUtente().setIdUtente(rs.getString("IdUtente"));
+
+            // Assuming these fields exist in the ResultSet
+            abbonamento.getIdEvento().setIdEvento(rs.getString("IdEvento"));
+            abbonamento.getIdEvento().setNome(rs.getString("NomeEvento"));
+            abbonamento.getIdEvento().setDataInizio(rs.getDate("DataInizioEvento"));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return abbonamento;
+    }
+
     public List<Abbonamento> getAbbonamentiUtente(Utente utente) {
         PreparedStatement ps;
         List<Abbonamento> abbonamenti = new ArrayList<>();
 
         try {
-            String sql
-                    = " SELECT * "
-                    + " FROM Abbonamento "
-                    + " WHERE IdUtente = ?";
+            String sql = " SELECT a.*, e.Nome as NomeEvento, e.DataInizio as DataInizioEvento"
+                    + " FROM Abbonamento a "
+                    + " JOIN Evento e ON a.IdEvento = e.IdEvento "
+                    + " WHERE a.IdUtente = ?";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, utente.getIdUtente());
@@ -146,7 +172,7 @@ public class AbbonamentoDAOmysqlJDBCImpl implements AbbonamentoDAO {
 
             while (rs.next()) {
                 Abbonamento abbonamento = new Abbonamento();
-                abbonamento = read(rs);
+                abbonamento = read1(rs);
                 abbonamenti.add(abbonamento);
             }
 
