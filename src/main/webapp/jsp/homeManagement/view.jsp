@@ -1,22 +1,23 @@
-<%@ page session="false" %>
-<%@ page import="com.managereventi.managereventi.model.mo.Utente" %>
-<%@ page import="java.util.List" %>
-<%@ page import="com.managereventi.managereventi.model.mo.Recensione" %>
+<!--Dalla Home è possibile accedere attraverso il tasto "Accedi", oppure iscriversi attraverso il tasto "Iscriviti"
+Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si accede spingendoci su-->
+
+<%@page session="false"%>
+<%@page import="com.managereventi.managereventi.model.mo.Utente"%>
 
 <%
-  Boolean loggedOnObj = (Boolean) request.getAttribute("loggedOn");
-  boolean loggedOn = (loggedOnObj != null) ? loggedOnObj : false;
-
+  boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
-  List<Recensione> recensioni = (List<Recensione>) request.getAttribute("recensioni");
+  String applicationMessage = (String) request.getAttribute("applicationMessage");
+  String menuActiveLink = "Home";
 %>
 
 <!DOCTYPE html>
 <html lang="it">
 <head>
+  <%@include file="/include/htmlHead.inc"%>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cosa dicono di noi - PrimEvent</title>
+  <title>PrimEvent - Home</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -28,7 +29,9 @@
       background-color: #6fa3ef;
       padding: 10px;
       color: #fff;
-      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     header h1 {
       margin: 0;
@@ -37,7 +40,6 @@
     }
     nav {
       display: flex;
-      justify-content: center;
       align-items: center;
     }
     nav ul {
@@ -54,26 +56,32 @@
       text-decoration: none;
     }
     main {
-      margin: 20px;
+      text-align: center;
+      margin-top: 20px;
     }
-    .search-bar {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
+    h1 {
+      font-size: 2em;
     }
-    .search-bar input[type="text"],
-    .search-bar select {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      margin-right: 10px;
+    .image-box {
+      margin: 20px auto;
+      width: 80%;
+      max-width: 400px;
+      position: relative;
+      cursor: pointer;
     }
-    .review {
-      background-color: white;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      margin-bottom: 20px;
+    .image-box img {
+      width: 100%;
+      height: auto;
+    }
+    .image-box p {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      margin: 0;
+      padding: 5px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-size: 1.2em;
     }
     footer {
       text-align: center;
@@ -85,54 +93,49 @@
   </style>
 </head>
 <body>
-
 <header>
   <h1>PrimEvent</h1>
+  <form name="logoutForm" action="Dispatcher" method="post">
+    <input type="hidden" name="controllerAction" value="HomeManagement.logout"/>
+  </form>
   <nav>
     <ul>
-      <li><a href="homeManagement/view.jsp">Home</a></li>
-      <li><a href="homeManagement/Registrazione.jsp">Accedi</a></li>
-      <li><a href="homeManagement/Registrazione.jsp">Iscriviti</a></li>
+      <li <%=menuActiveLink.equals("Home") ? "class=\"active\"" : ""%>>
+        <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
+      </li>
+      <% if (loggedOn) { %>
+      <li <%=menuActiveLink.equals("Home Utente") ? "class=\"active\"" : ""%>>
+        <a href="Dispatcher?controllerAction=UserManagement.view">Home Utente</a>
+      </li>
+      <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+      <% } else { %>
+      <li <%= menuActiveLink.equals("Accedi") ? "class=\"acrive\"": ""%>>
+        <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a></li>
+      <li <%=menuActiveLink.equals("Registrati")?"class=\"active\"":""%>>
+        <a href="Dispatcher?controllerAction=UserManagement.gotoRegistration">Registrati</a>
+          <%}%>
     </ul>
   </nav>
 </header>
-
 <main>
-  <h2>Cosa dicono di noi</h2>
-  <div class="search-bar">
-    <form action="Dispatcher" method="get">
-      <input type="hidden" name="controllerAction" value="ReviewManagement.filterReviews"/>
-      <input type="text" name="nomeEvento" placeholder="Cerca recensione per evento">
-      <select name="numeroStelle">
-        <option value="">Tutte le stelle</option>
-        <option value="1">1 stella</option>
-        <option value="2">2 stelle</option>
-        <option value="3">3 stelle</option>
-        <option value="4">4 stelle</option>
-        <option value="5">5 stelle</option>
-      </select>
-      <input type="submit" value="Cerca">
-    </form>
-  </div>
 
-  <% if (recensioni != null && !recensioni.isEmpty()) { %>
-  <% for (Recensione recensione : recensioni) { %>
-  <div class="review">
-    <p><strong>Nome Evento:</strong> <%= recensione.getIdEvento().getNome() %></p>
-    <p><strong>Nome Utente:</strong> <%= recensione.getIdUtente().getNome() %></p>
-    <p><strong>Numero di Stelle:</strong> <%= recensione.getStelle() %></p>
-    <p><strong>Descrizione:</strong> <%= recensione.getDescrizione() %></p>
+  <h1>Scopri Eventi Unici!</h1>
+  <div class="image-box" onclick="location.href='pagamento.html'">
+    <img src="images/evento.jpg" alt="Eventi">
+    <p>Eventi</p>
   </div>
-  <% } %>
-  <% } else { %>
-  <p>Nessuna recensione disponibile.</p>
-  <% } %>
+  <div class="image-box" onclick="location.href='pagamento.html'">
+    <img src="images/recensioni.jpeg" alt="Cosa dicono di noi">
+    <p>Cosa dicono di noi</p>
+  </div>
+  <div class="image-box" onclick="location.href='pagamento.html'">
+    <img src="images/lavoraconnoi.jpg" alt="Lavora con Noi">
+    <p>Lavora con Noi</p>
+  </div>
 </main>
-
 <footer>
-  &copy; 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>
+  © 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>
   Credits: Leonardo Rastelli e Anna Ferri
 </footer>
-
 </body>
 </html>
