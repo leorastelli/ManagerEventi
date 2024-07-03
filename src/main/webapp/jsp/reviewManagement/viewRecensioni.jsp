@@ -2,7 +2,7 @@
 <%@ page import="com.managereventi.managereventi.model.mo.Utente" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.managereventi.managereventi.model.mo.Recensione" %>
-<%@ page import="com.managereventi.managereventi.model.mo.Evento" %>
+
 
 <%
     Boolean loggedOnObj = (Boolean) request.getAttribute("loggedOn");
@@ -11,7 +11,7 @@
     Utente loggedUser = (Utente) request.getAttribute("loggedUser");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "Home";
-    List<Recensione> recensioni = (List<Recensione>) request.getAttribute("recensione");
+    List<Recensione> recensioni = (List<Recensione>) request.getAttribute("recensioni");
 
 %>
 
@@ -153,12 +153,12 @@
     </div>
     <% if (recensioni != null && !recensioni.isEmpty()) { %>
     <% for (Recensione recensione : recensioni) { %>
-        <div class="review">
-            <p><strong>Nome Evento:</strong> <%= recensione.getIdEvento().getNome()%></p>
-            <p><strong>Nome Utente:</strong> <%= recensione.getIdUtente().getNome() %></p>
-            <p><strong>Numero di Stelle:</strong> <%= recensione.getStelle() %></p>
-            <p><strong>Descrizione:</strong> <%= recensione.getDescrizione() %></p>
-        </div>
+    <div class="review">
+        <p><label>Nome Evento:</label> <%= recensione.getIdEvento().getNome()%></p>
+        <p><label>Nome Utente:</label> <%= recensione.getIdUtente().getNome() %></p>
+        <p><label>Numero di Stelle:</label> <%= recensione.getStelle() %></p>
+        <p><label>Descrizione:</label> <%= recensione.getDescrizione() %></p>
+    </div>
     <% } %>
     <% } else { %>
     <p>Nessuna recensione disponibile.</p>

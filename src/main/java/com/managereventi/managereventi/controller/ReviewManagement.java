@@ -4,6 +4,7 @@ import com.managereventi.managereventi.model.dao.DAOFactory;
 import com.managereventi.managereventi.model.dao.EventoDAO;
 import com.managereventi.managereventi.model.dao.RecensioneDAO;
 import com.managereventi.managereventi.model.dao.UtenteDAO;
+import com.managereventi.managereventi.model.mo.Evento;
 import com.managereventi.managereventi.model.mo.Recensione;
 import com.managereventi.managereventi.model.mo.Utente;
 import com.managereventi.managereventi.services.Config.Configuration;
@@ -57,7 +58,7 @@ public class ReviewManagement {
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("recensioni", recensioni);
             request.setAttribute("eventi", eventi);
-            request.setAttribute("viewUrl", "reviewManagement/view");
+            request.setAttribute("viewUrl", "reviewManagement/viewRecensioni.jsp");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -75,47 +76,52 @@ public class ReviewManagement {
         }
     }
 
-    public static void filter(HttpServletRequest request, HttpServletRequest response){
-
-        DAOFactory sessionDAOFactory= null;
+    public static void filter(HttpServletRequest request, HttpServletRequest response) {
+        DAOFactory sessionDAOFactory = null;
         Utente loggedUser;
         List<Recensione> recensioni;
+        List<Evento> eventi;
 
         Logger logger = LogService.getApplicationLogger();
 
-        try{
-            Map sessionFactoryParameters=new HashMap<String,Object>();
-            sessionFactoryParameters.put("request",request);
-            sessionFactoryParameters.put("response",response);
-            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+        try {
+            Map<String, Object> sessionFactoryParameters = new HashMap<>();
+            sessionFactoryParameters.put("request", request);
+            sessionFactoryParameters.put("response", response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL, sessionFactoryParameters);
             sessionDAOFactory.beginTransaction();
 
             UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
             loggedUser = sessionUserDAO.findLoggedUser();
 
             DAOFactory daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
-
             daoFactory.beginTransaction();
 
             RecensioneDAO recensioneDAO = daoFactory.getRecensioneDAO();
             EventoDAO eventoDAO = daoFactory.getEventoDAO();
 
-            String IdEvento = eventoDAO.getEventoByNome(request.getParameter("nomeEvento"));
+            String nomeEvento = request.getParameter("nomeEvento");
+            String stelleString = request.getParameter("numeroStelle");
 
-            if(request.getParameter("stelle").isBlank()) {
-                recensioni = recensioneDAO.getRecensioniByEvento(IdEvento);
-            }
-            else{
-                recensioni = recensioneDAO.getRecensioniByEventoStelle(IdEvento, Integer.parseInt(request.getParameter("stelle")));
+            if (nomeEvento != null && !nomeEvento.isEmpty()) {
+                String idEvento = eventoDAO.getEventoByNome(nomeEvento);
+                if (stelleString != null && !stelleString.isBlank()) {
+                    int stelle = Integer.parseInt(stelleString);
+                    recensioni = recensioneDAO.getRecensioniByEventoStelle(idEvento, stelle);
+                } else {
+                    recensioni = recensioneDAO.getRecensioniByEvento(idEvento);
+                }
+            } else {
+                recensioni = recensioneDAO.findAll();
             }
 
             sessionDAOFactory.commitTransaction();
             daoFactory.commitTransaction();
 
-            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("loggedOn", loggedUser != null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("recensioni", recensioni);
-            request.setAttribute("viewUrl", "reviewManagement/view");
+            request.setAttribute("viewUrl", "reviewManagement/viewRecensioni.jsp");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -131,6 +137,6 @@ public class ReviewManagement {
             } catch (Throwable t) {
             }
         }
-
     }
+
 }
