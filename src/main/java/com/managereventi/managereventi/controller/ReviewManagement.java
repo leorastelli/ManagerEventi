@@ -10,6 +10,7 @@ import com.managereventi.managereventi.model.mo.Utente;
 import com.managereventi.managereventi.services.Config.Configuration;
 import com.managereventi.managereventi.services.Logservice.LogService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +59,7 @@ public class ReviewManagement {
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("recensioni", recensioni);
             request.setAttribute("eventi", eventi);
-            request.setAttribute("viewUrl", "reviewManagement/viewRecensioni.jsp");
+            request.setAttribute("viewUrl", "reviewManagement/viewRecensioni");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -121,7 +122,7 @@ public class ReviewManagement {
             request.setAttribute("loggedOn", loggedUser != null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("recensioni", recensioni);
-            request.setAttribute("viewUrl", "reviewManagement/viewRecensioni.jsp");
+            request.setAttribute("viewUrl", "reviewManagement/viewRecensioni");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
