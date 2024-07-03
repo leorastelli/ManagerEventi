@@ -40,6 +40,32 @@ public class RecensioneDAOmysqlJDBCImpl implements RecensioneDAO {
         return recensione;
     }
 
+    Recensione read1(ResultSet rs) {
+        Recensione recensione = new Recensione();
+        Utente utente = new Utente();
+        Evento evento = new Evento();
+        recensione.setIdUtente(utente);
+        recensione.setIdEvento(evento);
+
+        try {
+            recensione.setIdRecensione(rs.getString("IdRecensione"));
+            recensione.setDescrizione(rs.getString("Descrizione"));
+            recensione.setStelle(rs.getInt("Stelle"));
+
+            recensione.getIdUtente().setIdUtente(rs.getString("IdUtente"));
+            recensione.getIdUtente().setNome(rs.getString("NomeUtente"));
+            recensione.getIdUtente().setCognome(rs.getString("CognomeUtente"));
+
+            recensione.getIdEvento().setIdEvento(rs.getString("IdEvento"));
+            recensione.getIdEvento().setNome(rs.getString("NomeEvento"));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return recensione;
+    }
+
     @Override
     public Recensione createRecensione(Recensione recensione) {
         PreparedStatement ps;
@@ -174,7 +200,12 @@ public class RecensioneDAOmysqlJDBCImpl implements RecensioneDAO {
 
         try{
 
-            String sql = "SELECT * FROM RECENSIONE WHERE IdEvento = ? AND Stelle = ?";
+            String sql = "SELECT Recensione.*, Utente.Nome as NomeUtente," +
+                    " Utente.Cognome as CognomeUtente, Evento.Nome as NomeEvento  " +
+                    "FROM RECENSIONE join Utente on Recensione.IdUtente = Utente.IdUtente" +
+                    " join Evento on Recensione.IdEvento = Evento.IdEvento" +
+                    " WHERE Recensione.IdEvento = ? AND Recensione.Stelle = ?";
+
             ps = conn.prepareStatement(sql);
             ps.setString(1, idEvento);
             ps.setInt(2, stelle);
@@ -183,7 +214,7 @@ public class RecensioneDAOmysqlJDBCImpl implements RecensioneDAO {
 
             while(rs.next()){
                 Recensione recensione = new Recensione();
-                recensione = read(rs);
+                recensione = read1(rs);
                 recensioni.add(recensione);
             }
 
@@ -203,14 +234,17 @@ public class RecensioneDAOmysqlJDBCImpl implements RecensioneDAO {
 
         try{
 
-            String sql = "SELECT * FROM RECENSIONE";
+            String sql = "SELECT Recensione.*, Utente.Nome as NomeUtente," +
+                    " Utente.Cognome as CognomeUtente, Evento.Nome as NomeEvento  " +
+                    "FROM RECENSIONE join Utente on Recensione.IdUtente = Utente.IdUtente" +
+                    " join Evento on Recensione.IdEvento = Evento.IdEvento";
             ps = conn.prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
                 Recensione recensione = new Recensione();
-                recensione = read(rs);
+                recensione = read1(rs);
                 recensioni.add(recensione);
             }
 

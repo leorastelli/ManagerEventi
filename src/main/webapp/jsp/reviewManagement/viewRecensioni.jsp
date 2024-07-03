@@ -12,7 +12,7 @@
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "Home";
     List<Recensione> recensioni = (List<Recensione>) request.getAttribute("recensioni");
-
+    List <String> eventi = (List<String>) request.getAttribute("eventi");
 %>
 
 <!DOCTYPE html>
@@ -139,7 +139,14 @@
     <div class="search-bar">
         <form action="Dispatcher" method="post">
             <input type="hidden" name="controllerAction" value="ReviewManagement.filter"/>
-            <input type="text" name="nomeEvento" placeholder="Cerca per nome evento">
+
+            <select name="nomeEvento">
+                <option value=""></option>
+                <% for (i=0; i< eventi.size(); i++) { %>
+                <option value="<%= eventi.get(i) %>"><%= eventi.get(i) %></option>
+                <% } %>
+            </select>
+
             <select name="numeroStelle" onchange="autoSubmit()">
                 <option value="">Tutte le stelle</option>
                 <option value="1">1 stella</option>
@@ -148,7 +155,7 @@
                 <option value="4">4 stelle</option>
                 <option value="5">5 stelle</option>
             </select>
-            <input type="hidden" name="submitButton" value="Cerca">
+            <input type="submit" name="submitButton" value="Cerca">
         </form>
     </div>
     <% if (recensioni != null && !recensioni.isEmpty()) { %>
