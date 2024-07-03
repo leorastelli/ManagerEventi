@@ -74,6 +74,7 @@ public class ReviewManagement {
                 if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
             } catch (Throwable t) {
             }
+
         }
     }
 
