@@ -25,6 +25,7 @@ public class ReviewManagement {
         DAOFactory sessionDAOFactory= null;
         Utente loggedUser;
         List<Recensione> recensioni;
+        List <String> eventi;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -44,8 +45,10 @@ public class ReviewManagement {
             daoFactory.beginTransaction();
 
             RecensioneDAO recensioneDAO = daoFactory.getRecensioneDAO();
+            EventoDAO eventoDAO = daoFactory.getEventoDAO();
 
             recensioni = recensioneDAO.findAll();
+            eventi = eventoDAO.getNomiEventi();
 
             sessionDAOFactory.commitTransaction();
             daoFactory.commitTransaction();
@@ -53,6 +56,7 @@ public class ReviewManagement {
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("recensioni", recensioni);
+            request.setAttribute("eventi", eventi);
             request.setAttribute("viewUrl", "reviewManagement/view");
 
         } catch (Exception e) {
