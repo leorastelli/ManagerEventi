@@ -246,4 +246,8 @@ public class HomeManagement {
 
     }
 
+    public static void viewRecensioni(HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("viewUrl", "reviewManagement/viewRecensioni");
+    }
+
 }
