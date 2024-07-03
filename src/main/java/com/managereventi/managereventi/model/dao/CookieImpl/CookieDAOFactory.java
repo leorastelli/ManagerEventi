@@ -103,4 +103,9 @@ public class CookieDAOFactory extends DAOFactory{
         return new UtenteDAOCookieImpl(request,response);
     }
 
+    @Override
+    public CandidatureDAO getCandidaturaDAO() {
+        return null;
+    }
+
 }

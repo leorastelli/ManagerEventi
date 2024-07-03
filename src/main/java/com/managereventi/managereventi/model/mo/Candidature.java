@@ -86,4 +86,7 @@ public class Candidature {
     public void setDescrizione(String descrizione) {
         Descrizione = descrizione;
     }
+
+    public void setDataNascita(String dataNascita) {
+    }
 }

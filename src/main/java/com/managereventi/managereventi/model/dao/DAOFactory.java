@@ -2,7 +2,6 @@ package com.managereventi.managereventi.model.dao;
 
 import com.managereventi.managereventi.model.dao.CookieImpl.CookieDAOFactory;
 import com.managereventi.managereventi.model.dao.mysqlJDBCImpl.mysqlJDBCDAOFactory;
-import com.managereventi.managereventi.model.mo.Azienda;
 
 import java.util.Map;
 
@@ -51,5 +50,8 @@ public abstract class DAOFactory {
       return null;
     }
   }
+
+  public abstract CandidatureDAO getCandidaturaDAO();
+
 }
 

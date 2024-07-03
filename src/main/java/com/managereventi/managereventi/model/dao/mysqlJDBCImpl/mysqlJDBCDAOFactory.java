@@ -126,4 +126,9 @@ public class mysqlJDBCDAOFactory extends DAOFactory{
     public UtenteDAO getUtenteDAO() {
         return new UtenteDAOmysqlJDBCImpl(connection);
     }
+
+    @Override
+    public CandidatureDAO getCandidaturaDAO() {
+        return null;
+    }
 }
