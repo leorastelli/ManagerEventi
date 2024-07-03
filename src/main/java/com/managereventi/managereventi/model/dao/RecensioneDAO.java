@@ -13,6 +13,8 @@ public interface RecensioneDAO {
     public void deleteRecensione(String idRecensione);
     public List<Recensione> getRecensioniByEventoStelle(String idEvento, int stelle);
 
+    public List<Recensione> findAll();
+
 }
 
 

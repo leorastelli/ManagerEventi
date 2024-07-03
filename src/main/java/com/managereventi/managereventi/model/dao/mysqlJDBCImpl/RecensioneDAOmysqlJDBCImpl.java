@@ -195,4 +195,31 @@ public class RecensioneDAOmysqlJDBCImpl implements RecensioneDAO {
 
         return recensioni;
     }
+
+    @Override
+    public List<Recensione> findAll() {
+        PreparedStatement ps;
+        List<Recensione> recensioni = new ArrayList<>();
+
+        try{
+
+            String sql = "SELECT * FROM RECENSIONE";
+            ps = conn.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                Recensione recensione = new Recensione();
+                recensione = read(rs);
+                recensioni.add(recensione);
+            }
+
+            ps.close();
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }
+
+        return recensioni;
+    }
 }
