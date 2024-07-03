@@ -28,6 +28,8 @@ public class UtenteDAOCookieImpl implements UtenteDAO {
         loggedUser.setIdUtente(utente.getIdUtente());
         loggedUser.setNome(utente.getNome());
         loggedUser.setCognome(utente.getCognome());
+        loggedUser.setEmail(utente.getEmail());
+        loggedUser.setPassword(utente.getPassword());
 
         Cookie cookie;
         cookie = new Cookie("loggedUser", encode(loggedUser));
@@ -98,7 +100,7 @@ public class UtenteDAOCookieImpl implements UtenteDAO {
     private String encode(Utente loggedUser) {
 
         String encodedLoggedUser;
-        encodedLoggedUser = loggedUser.getIdUtente() + "#" + loggedUser.getNome()+ "#" + loggedUser.getCognome();
+        encodedLoggedUser = loggedUser.getIdUtente() + "#" + loggedUser.getNome()+ "#" + loggedUser.getCognome() + "#" + loggedUser.getEmail() + "#" + loggedUser.getPassword();
         return encodedLoggedUser;
 
     }
@@ -109,9 +111,12 @@ public class UtenteDAOCookieImpl implements UtenteDAO {
 
         String[] values = encodedLoggedUser.split("#");
 
+
         loggedUser.setIdUtente(values[0]);
         loggedUser.setNome(values[1]);
         loggedUser.setCognome(values[2]);
+        loggedUser.setEmail(values[3]);
+        loggedUser.setPassword(values[4]);
 
         return loggedUser;
 
