@@ -132,7 +132,11 @@ public class RecensioneDAOmysqlJDBCImpl implements RecensioneDAO {
         List<Recensione> recensioni = new ArrayList<>();
 
         try{
-                String sql = "SELECT * FROM RECENSIONE WHERE IdEvento = ?";
+            String sql = "SELECT Recensione.*, Utente.Nome as NomeUtente," +
+                    " Utente.Cognome as CognomeUtente, Evento.Nome as NomeEvento  " +
+                    "FROM RECENSIONE join Utente on Recensione.IdUtente = Utente.IdUtente" +
+                    " join Evento on Recensione.IdEvento = Evento.IdEvento" +
+                    " WHERE Recensione.IdEvento = ?";
                 ps = conn.prepareStatement(sql);
                 ps.setString(1, IdEvento);
 
@@ -140,7 +144,7 @@ public class RecensioneDAOmysqlJDBCImpl implements RecensioneDAO {
 
                 while(rs.next()){
                     Recensione recensione = new Recensione();
-                    recensione = read(rs);
+                    recensione = read1(rs);
                     recensioni.add(recensione);
                 }
 
@@ -239,6 +243,39 @@ public class RecensioneDAOmysqlJDBCImpl implements RecensioneDAO {
                     "FROM RECENSIONE join Utente on Recensione.IdUtente = Utente.IdUtente" +
                     " join Evento on Recensione.IdEvento = Evento.IdEvento";
             ps = conn.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                Recensione recensione = new Recensione();
+                recensione = read1(rs);
+                recensioni.add(recensione);
+            }
+
+            ps.close();
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }
+
+        return recensioni;
+    }
+
+    @Override
+    public List<Recensione> getRecensioniByStelle(int stelle) {
+        PreparedStatement ps;
+        List<Recensione> recensioni = new ArrayList<>();
+
+        try{
+
+            String sql = "SELECT Recensione.*, Utente.Nome as NomeUtente," +
+                    " Utente.Cognome as CognomeUtente, Evento.Nome as NomeEvento  " +
+                    "FROM RECENSIONE join Utente on Recensione.IdUtente = Utente.IdUtente" +
+                    " join Evento on Recensione.IdEvento = Evento.IdEvento" +
+                    " WHERE Recensione.Stelle = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, stelle);
 
             ResultSet rs = ps.executeQuery();
 

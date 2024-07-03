@@ -15,6 +15,8 @@ public interface RecensioneDAO {
 
     public List<Recensione> findAll();
 
+    public List<Recensione> getRecensioniByStelle(int stelle);
+
 }
 
 

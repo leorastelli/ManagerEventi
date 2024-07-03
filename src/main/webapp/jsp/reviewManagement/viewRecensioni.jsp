@@ -13,6 +13,7 @@
     String menuActiveLink = "Home";
     List<Recensione> recensioni = (List<Recensione>) request.getAttribute("recensioni");
     List <String> eventi = (List<String>) request.getAttribute("eventi");
+
 %>
 
 <!DOCTYPE html>
@@ -114,6 +115,9 @@
 </script>
 <header>
     <h1>PrimEvent</h1>
+    <form name="logoutForm" action="Dispatcher" method="post">
+        <input type="hidden" name="controllerAction" value="HomeManagement.logout"/>
+    </form>
     <nav>
         <ul>
             <li <%=menuActiveLink.equals("Home") ? "class=\"active\"" : ""%>>

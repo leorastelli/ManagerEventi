@@ -22,7 +22,7 @@ public class ReviewManagement {
 
     private ReviewManagement(){}
 
-    public static void view(HttpServletRequest request, HttpServletRequest response){
+    public static void view(HttpServletRequest request, HttpServletResponse response){
 
         DAOFactory sessionDAOFactory= null;
         Utente loggedUser;
@@ -78,11 +78,11 @@ public class ReviewManagement {
         }
     }
 
-    public static void filter(HttpServletRequest request, HttpServletRequest response) {
+    public static void filter(HttpServletRequest request, HttpServletResponse response) {
         DAOFactory sessionDAOFactory = null;
         Utente loggedUser;
         List<Recensione> recensioni;
-        List<Evento> eventi;
+        List<String> eventi;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -102,6 +102,8 @@ public class ReviewManagement {
             RecensioneDAO recensioneDAO = daoFactory.getRecensioneDAO();
             EventoDAO eventoDAO = daoFactory.getEventoDAO();
 
+            eventi = eventoDAO.getNomiEventi();
+
             String nomeEvento = request.getParameter("nomeEvento");
             String stelleString = request.getParameter("numeroStelle");
 
@@ -113,7 +115,10 @@ public class ReviewManagement {
                 } else {
                     recensioni = recensioneDAO.getRecensioniByEvento(idEvento);
                 }
-            } else {
+            } else if (stelleString != null && !stelleString.isBlank()) {
+                recensioni = recensioneDAO.getRecensioniByStelle(Integer.parseInt(stelleString));
+            }
+            else {
                 recensioni = recensioneDAO.findAll();
             }
 
@@ -123,6 +128,7 @@ public class ReviewManagement {
             request.setAttribute("loggedOn", loggedUser != null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("recensioni", recensioni);
+            request.setAttribute("eventi", eventi);
             request.setAttribute("viewUrl", "reviewManagement/viewRecensioni");
 
         } catch (Exception e) {
