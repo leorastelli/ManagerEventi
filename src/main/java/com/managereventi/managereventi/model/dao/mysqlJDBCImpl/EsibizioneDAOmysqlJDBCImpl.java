@@ -7,6 +7,7 @@ import com.managereventi.managereventi.model.mo.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
@@ -150,5 +151,33 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Override
+    public List<Esibizione> getEsibizioniByOrganizzatore(String idOrganizzatore) {
+        PreparedStatement ps;
+        List<Esibizione> esibizioni = new ArrayList<>();
+
+        try{
+            String sql
+                    = " SELECT * "
+                    + " FROM esibizione "
+                    + " WHERE "
+                    + "   IdOrganizzatore = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, idOrganizzatore);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                esibizioni.add(read(rs));
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return esibizioni;
     }
 }

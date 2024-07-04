@@ -239,5 +239,31 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
         return idEvento;
     }
 
+    @Override
+    public List<Evento> getEventiByOrganizzatore(String idOrganizzatore) {
+        PreparedStatement ps;
+        List<Evento> eventi = new ArrayList<>();
+
+        try{
+            String sql = " SELECT * "
+                    + " FROM evento "
+                    + " WHERE "
+                    + "   IdOrganizzatore = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, idOrganizzatore);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                eventi.add(read(rs));
+            }
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return eventi;
+    }
+
 
 }

@@ -9,5 +9,6 @@ public interface EsibizioneDAO {
     public List<Esibizione> getAllEsibizioni();
     public void updateEsibizione(Esibizione esibizione);
     public void deleteEsibizione(String idEsibizione);
+    public List<Esibizione> getEsibizioniByOrganizzatore(String idOrganizzatore);
 }
 
