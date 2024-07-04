@@ -224,7 +224,7 @@ public class HomeManagement {
                     request.setAttribute("viewUrl", "homeManagement/LoginAnna");
                     break;
                 case "organizzatore":
-                    request.setAttribute("viewUrl", "homeManagement/login");
+                    request.setAttribute("viewUrl", "adminManagement/loginAdmin");
                     break;
                 default:
                     request.setAttribute("viewUrl", "homeManagement/login");

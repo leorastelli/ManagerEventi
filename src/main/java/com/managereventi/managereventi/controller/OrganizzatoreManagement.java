@@ -20,6 +20,64 @@ public class OrganizzatoreManagement {
     private OrganizzatoreManagement(){
 
     }
+    public static void modifyOrganizzatore(HttpServletRequest request, HttpServletResponse response) {
+        DAOFactory sessionDAOFactory= null;
+        Organizzatore loggedOrganizzatore;
+        DAOFactory daoFactory = null;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
+            loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+            daoFactory.beginTransaction();
+
+            OrganizzatoreDAO organizzatoreDAO = daoFactory.getOrganizzatoreDAO();
+            Organizzatore organizzatore = organizzatoreDAO.getOrganizzatoreById(request.getParameter("idorganizzatore"));
+
+            loggedOrganizzatore.setNome(request.getParameter("nome"));
+            loggedOrganizzatore.setCognome(request.getParameter("cognome"));
+            loggedOrganizzatore.setEmail(request.getParameter("email"));
+            loggedOrganizzatore.setPassword(request.getParameter("password"));
+            loggedOrganizzatore.setIdOrganizzatore(request.getParameter("idorganizzatore"));
+            loggedOrganizzatore.setCodiceAutorizzazione(request.getParameter("codiceautorizzazione"));
+
+            try {
+
+                organizzatoreDAO.updateOrganizzatore(loggedOrganizzatore);
+                sessionOrganizzatoreDAO.updateOrganizzatore(loggedOrganizzatore);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            commonView(daoFactory, sessionDAOFactory, request);
+            request.setAttribute("viewUrl", "adminManagement/homeAdmin");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        }
+
+
+    }
 
     public static void view(HttpServletRequest request, HttpServletResponse response){
         DAOFactory sessionDAOFactory= null;
@@ -30,6 +88,7 @@ public class OrganizzatoreManagement {
         List<Esibizione> esibizioni;
         List<Sponsorizzazione> sponsorizzazioni = new ArrayList<>();
         List<Recensione> recensioni = new ArrayList<>();
+        List<Candidature> candidature = new ArrayList<>();
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -48,6 +107,7 @@ public class OrganizzatoreManagement {
             EsibizioneDAO sessionEsibizioneDAO = sessionDAOFactory.getEsibizioneDAO();
             SponsorizzazioneDAO sessionSponsorizzazioneDAO = sessionDAOFactory.getSponsorizzazioneDAO();
             RecensioneDAO sessionRecensioneDAO = sessionDAOFactory.getRecensioneDAO();
+            CandidatureDAO sessionCandidatureDAO = sessionDAOFactory.getCandidaturaDAO();
 
             loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
             eventi = sessionEventoDAO.getEventiByOrganizzatore(loggedOrganizzatore.getIdOrganizzatore());
@@ -94,6 +154,7 @@ public class OrganizzatoreManagement {
         List<Esibizione> esibizioni;
         List<Sponsorizzazione> sponsorizzazioni = new ArrayList<>();
         List<Recensione> recensioni = new ArrayList<>();
+        List<Candidature> candidature = new ArrayList<>();
         Organizzatore loggedOrganizzatore;
 
         OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
@@ -101,6 +162,7 @@ public class OrganizzatoreManagement {
         EsibizioneDAO sessionEsibizioneDAO = sessionDAOFactory.getEsibizioneDAO();
         SponsorizzazioneDAO sessionSponsorizzazioneDAO = sessionDAOFactory.getSponsorizzazioneDAO();
         RecensioneDAO sessionRecensioneDAO = sessionDAOFactory.getRecensioneDAO();
+        CandidatureDAO sessionCandidatureDAO = sessionDAOFactory.getCandidaturaDAO();
 
         loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
         eventi = sessionEventoDAO.getEventiByOrganizzatore(loggedOrganizzatore.getIdOrganizzatore());

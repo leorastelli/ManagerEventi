@@ -32,7 +32,7 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             text-align: center;
-            width: 200px;
+            width: 350px;
         }
         h2 {
             margin-bottom: 20px;
@@ -51,18 +51,16 @@
             border-radius: 5px;
             box-sizing: border-box;
         }
-        button {
-            display: block;
-            width: 100%;
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: white;
+        .bottone-personalizzato {
             background-color: #6fa3ef;
+            color: white;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 10px;
         }
+
     </style>
 </head>
 <body>
@@ -93,9 +91,9 @@
 
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
-
+                <br>
                 <input type="hidden" name="controllerAction" value="HomeManagement.logon"/>
-                <input type="submit">
+                <input type="submit" class="bottone-personalizzato" value="Accedi">
         </form>
     </section>
 </body>

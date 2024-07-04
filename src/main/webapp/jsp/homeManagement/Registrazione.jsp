@@ -1,10 +1,13 @@
 <!--Qui vengono separati i vari tipi di utenti che vogliono iscriversi. Una volta spinto su una delle tre opzioni si viene reindirizzati alla 3 diverse pagine di registrazione -->
 <%@page session="false"%>
 <%@page import="com.managereventi.managereventi.model.mo.Utente"%>
+<%@page import="com.managereventi.managereventi.model.mo.Organizzatore"%>
+<%@page import="com.managereventi.managereventi.model.mo.Organizzatore"%>
 
 <%
   boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
+  Organizzatore loggedOrganizzatore = (Organizzatore) request.getAttribute("loggedOrganizzatore");
   String applicationMessage = (String) request.getAttribute("applicationMessage");
   String menuActiveLink = "Home";
 %>
@@ -14,7 +17,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iscriviti - PrimEvent</title>
+    <title>Accedi - PrimEvent</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -33,6 +36,7 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             text-align: center;
+            width: 300px;
         }
         h2 {
             margin-bottom: 20px;
@@ -44,23 +48,23 @@
             font-size: 18px;
         }
         input[type="radio"] {
-            margin-right: 10px;
+            width: 90px;
         }
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: white;
+
+        .bottone-personalizzato {
             background-color: #6fa3ef;
+            color: white;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
     <form name="FormRadio" action="Dispatcher" method="post">
-        <h2>Iscriviti come</h2>
+        <h2>Accedi come</h2>
         <label>
             <input type="radio" id="userTypeUser" name="userType" value="utente">
             Utente
@@ -74,7 +78,7 @@
             Organizzatore
         </label>
         <input type="hidden" name="controllerAction" value="HomeManagement.usertype"/>
-        <input type="submit"> </input>
+        <input type="submit" class="bottone-personalizzato" value="Accedi"> </input>
     </form>
 </body>
 </html>
