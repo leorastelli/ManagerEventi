@@ -1,6 +1,8 @@
 package com.managereventi.managereventi.model.mo;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.sql.Date;
 
 public class Candidature {
 
@@ -9,7 +11,7 @@ public class Candidature {
     private String Cognome;
     private String Email;
     private String Telefono;
-    private Date DataNascita;
+    private java.sql.Date DataNascita;
     private String Citta;
     private String Posizione;
     private String Descrizione;
@@ -55,13 +57,26 @@ public class Candidature {
         Telefono = telefono;
     }
 
-    public Date getDataNascita() {
+    public java.sql.Date getDataNascita() {
         return DataNascita;
     }
 
     public void setDataNascita(Date dataNascita) {
         DataNascita = dataNascita;
     }
+
+    public void setDataNascita1(String dataNascita) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            this.DataNascita = new java.sql.Date(sdf.parse(dataNascita).getTime());
+            System.out.println("Data di nascita impostata correttamente: " + this.DataNascita);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            this.DataNascita = null;
+            System.out.println("Errore nel parsing della data di nascita: " + dataNascita);
+        }
+    }
+
 
     public String getCitta() {
         return Citta;

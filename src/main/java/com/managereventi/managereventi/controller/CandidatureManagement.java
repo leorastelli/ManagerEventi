@@ -6,9 +6,16 @@ import com.managereventi.managereventi.services.Config.Configuration;
 import com.managereventi.managereventi.services.Logservice.LogService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -86,23 +93,63 @@ public class CandidatureManagement {
             CandidatureDAO candidaturaDAO = daoFactory.getCandidaturaDAO();
             Candidature candidatura = new Candidature();
 
-            candidatura.setPosizione(request.getParameter("posizione"));
-            candidatura.setNome(request.getParameter("nome"));
-            candidatura.setCognome(request.getParameter("cognome"));
+            candidatura.setPosizione(request.getParameter("position"));
+            candidatura.setNome(request.getParameter("name"));
+            candidatura.setCognome(request.getParameter("surname"));
             candidatura.setEmail(request.getParameter("email"));
-            candidatura.setDataNascita(request.getParameter("dataNascita"));
-            candidatura.setTelefono(request.getParameter("telefono"));
-            candidatura.setCitta(request.getParameter("citta"));
-            candidatura.setDescrizione(request.getParameter("descrizione"));
+            candidatura.setDataNascita1(request.getParameter("birthdate"));
+            candidatura.setTelefono(request.getParameter("phone"));
+            candidatura.setCitta(request.getParameter("city"));
+            candidatura.setDescrizione(request.getParameter("description"));
 
-            candidaturaDAO.createCandidature(candidatura);
+            try{
+                candidaturaDAO.createCandidature(candidatura);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            Properties properties = new Properties();
+            properties.put("mail.smtp.host", "out.virgilio.it");
+            properties.put("mail.smtp.port", "587");
+            properties.put("mail.smtp.auth", "true");
+            properties.put("mail.smtp.starttls.enable", "true");
+
+            String username = "primeevent@virgilio.it";
+            String password = "Eventiprimi1!";
+
+            String htmlContent = "<h1>Grazie per la candidatura " + candidatura.getNome() +
+                    " " + candidatura.getCognome() +  "</h1>"
+                    + "<p> Ti sei candidato per la posizione di: </p>" + candidatura.getPosizione();
+
+            Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(candidatura.getEmail()));
+            message.setSubject("Candidatura avvenuta con successo");
+
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            mimeBodyPart.setContent(htmlContent, "text/html");
+
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mimeBodyPart);
+
+            message.setContent(multipart);
+
+            Transport.send(message);
+
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn", loggedUser != null);
             request.setAttribute("loggedUser", loggedUser);
-            request.setAttribute("viewUrl", "candidatureManagement/viewCandidature");
+            request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);

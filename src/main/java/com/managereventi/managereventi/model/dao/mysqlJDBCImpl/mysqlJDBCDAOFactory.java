@@ -129,6 +129,6 @@ public class mysqlJDBCDAOFactory extends DAOFactory{
 
     @Override
     public CandidatureDAO getCandidaturaDAO() {
-        return null;
+        return new CandidatureDAOmysqlJDBCImpl(connection);
     }
 }

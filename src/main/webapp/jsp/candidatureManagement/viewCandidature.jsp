@@ -163,7 +163,7 @@
 <main>
     <h1 class="centrato"> Lavora con Noi! </h1>
     <p class="testo-centrato">Se desideri entrare a far parte del nostro Team, compila il modulo sottostante inserendo la posizione che preferisci ed inviaci la tua candidatura!</p>
-    <form id="applicationForm">
+    <form id="applicationForm" method="post" action="Dispatcher">
         <label for="position">Posizione Lavorativa</label>
         <select id="position" name="position">
             <option value="">Tutte le posizioni</option>
@@ -202,7 +202,9 @@
         <label for="descrizione">Breve presentazione, dicci chi sei e quali sono i tuoi punti di forza! </label>
         <textarea id="descrizione" name="description" rows="5" required></textarea>
 
-        <button type="submit">Invia candidatura</button>
+        <input type="hidden" name="controllerAction" value="CandidatureManagement.addCandidatura"/>
+        <input type="submit" class="bottone-personalizzato" value="Invia Candidatura">
+        <!--<button type="submit">Invia candidatura</button>-->
     </form>
 </main>
 <footer>
@@ -210,10 +212,10 @@
     Credits: Leonardo Rastelli e Anna Ferri
 </footer>
 <script>
-    document.getElementById('applicationForm').addEventListener('submit', function(event) {
+   /* document.getElementById('applicationForm').addEventListener('submit', function(event) {
         event.preventDefault();
         alert('Candidatura inviata con successo!');
-    });
+    });*/
 </script>
 </body>
 </html>

@@ -7,6 +7,7 @@ import com.managereventi.managereventi.model.mo.Candidature;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CandidatureDAOmysqlJDBCImpl implements CandidatureDAO {
@@ -44,19 +45,21 @@ public class CandidatureDAOmysqlJDBCImpl implements CandidatureDAO {
 
         try{
             String sql = "INSERT INTO Candidature " +
-                    "(Id, Nome, Cognome, Email, Posizione, Descrizione, DataNascita, Telefono, Citta) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    "(Nome, Cognome, Email, Posizione, Descrizione, DataNascita, Telefono, Citta) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             ps = conn.prepareStatement(sql);
-            ps.setString(1, String.valueOf(candidature.getId()));
-            ps.setString(2, candidature.getNome());
-            ps.setString(3, candidature.getCognome());
-            ps.setString(4, candidature.getEmail());
-            ps.setString(5, candidature.getPosizione());
-            ps.setString(6, candidature.getDescrizione());
-            ps.setDate(7, new java.sql.Date(candidature.getDataNascita().getTime()));
-            ps.setString(8, candidature.getTelefono());
-            ps.setString(9, candidature.getCitta());
+            ps.setString(1, candidature.getNome());
+            ps.setString(2, candidature.getCognome());
+            ps.setString(3, candidature.getEmail());
+            ps.setString(4, candidature.getPosizione());
+            ps.setString(5, candidature.getDescrizione());
+            ps.setDate(6, candidature.getDataNascita());
+            ps.setString(7, candidature.getTelefono());
+            ps.setString(8, candidature.getCitta());
+
+            ps.executeUpdate();
+
 
         }
         catch (Exception e) {
@@ -108,6 +111,25 @@ public class CandidatureDAOmysqlJDBCImpl implements CandidatureDAO {
 
     @Override
     public List<Candidature> findAll() {
-        return null;
+        PreparedStatement ps;
+        List<Candidature> candidature = new ArrayList<>();
+
+        try{
+            String sql = "SELECT * FROM Candidature";
+            ps = conn.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Candidature cand = new Candidature();
+                cand = read(rs);
+                candidature.add(cand);
+            }
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return candidature;
     }
 }
