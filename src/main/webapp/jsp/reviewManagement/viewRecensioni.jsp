@@ -43,6 +43,7 @@
             font-family: 'Arial Black', sans-serif;
             font-size: 24px;
         }
+
         nav {
             display: flex;
             align-items: center;
@@ -83,6 +84,27 @@
             border-radius: 5px;
             margin-bottom: 20px;
         }
+
+        .review label {
+            font-weight: bold;
+        }
+
+        .bottone-personalizzato {
+            background-color: #6fa3ef;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .centrato {
+            text-align: center; /* Centra il testo orizzontalmente */
+            margin: auto; /* Utile se vuoi centrare un blocco (es. div) orizzontalmente */
+            width: 100%; /* Assicura che l'elemento occupi tutta la larghezza */
+            /* Per centrare verticalmente potresti dover lavorare con altezza e display flex sul contenitore genitore */
+        }
         footer {
             text-align: center;
             padding: 10px;
@@ -106,10 +128,6 @@
         for (var i = 0; i < checkboxes.length; i++) {
             checkboxes[i].style.display = checkboxes[i].style.display === 'none' ? 'block' : 'none';
         }
-    }
-
-    function autoSubmit() {
-        document.getElementById('filterForm').submit();
     }
 
 </script>
@@ -139,19 +157,19 @@
 </header>
 
 <main>
-    <h2>Cosa dicono di noi</h2>
+    <h1 class="centrato">Scopri cosa dicono di noi</h1>
     <div class="search-bar">
         <form action="Dispatcher" method="post">
             <input type="hidden" name="controllerAction" value="ReviewManagement.filter"/>
 
             <select name="nomeEvento">
-                <option value=""></option>
+                <option value="">Tutti gli eventi</option>
                 <% for (i=0; i< eventi.size(); i++) { %>
                 <option value="<%= eventi.get(i) %>"><%= eventi.get(i) %></option>
                 <% } %>
             </select>
 
-            <select name="numeroStelle" onchange="autoSubmit()">
+            <select name="numeroStelle">
                 <option value="">Tutte le stelle</option>
                 <option value="1">1 stella</option>
                 <option value="2">2 stelle</option>
@@ -159,7 +177,7 @@
                 <option value="4">4 stelle</option>
                 <option value="5">5 stelle</option>
             </select>
-            <input type="submit" name="submitButton" value="Cerca">
+            <input type="submit" name="submitButton" class="bottone-personalizzato" value="Cerca">
         </form>
     </div>
     <% if (recensioni != null && !recensioni.isEmpty()) { %>

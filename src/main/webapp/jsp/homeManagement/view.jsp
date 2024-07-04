@@ -128,7 +128,7 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
     <img src="images/recensioni.jpeg" alt="Cosa dicono di noi">
     <p>Cosa dicono di noi</p>
   </div>
-  <div class="image-box" onclick="location.href='pagamento.html'">
+  <div class="image-box" onclick="location.href='Dispatcher?controllerAction=candidatureManagement.view'">
     <img src="images/lavoraconnoi.jpg" alt="Lavora con Noi">
     <p>Lavora con Noi</p>
   </div>
