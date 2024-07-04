@@ -1,7 +1,7 @@
 package com.managereventi.managereventi.model.dao;
 
 import com.managereventi.managereventi.model.mo.Candidature;
-import java.util.List
+import java.util.List;
 
 public interface CandidatureDAO {
 
