@@ -202,6 +202,36 @@ public class UtenteDAOmysqlJDBCImpl implements UtenteDAO {
     }
 
     @Override
+    public List<String> getEmailByEvento(String idEvento) {
+        PreparedStatement ps;
+        List<String> emails = new ArrayList<>();
+
+        try {
+            String sql
+                    = " SELECT Utente.Email as Email "
+                    + " FROM Biglietto "
+                    + " JOIN Utente ON Biglietto.IdUtente = Utente.IdUtente "
+                    + " WHERE Biglietto.IdEvento = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, idEvento);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                emails.add(rs.getString("Email"));
+            }
+
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return emails;
+    }
+
+    @Override
     public List<Biglietto> getBigliettiUtente(Utente utente) {
         PreparedStatement ps;
         List<Biglietto> biglietti = new ArrayList<>();

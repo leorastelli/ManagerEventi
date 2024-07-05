@@ -144,14 +144,17 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
 
         try{
             String sql
-                    = " DELETE FROM evento "
+                    = " UPDATE evento "
+                    + " SET "
+                    + "   deleted = 'Y'"
                     + " WHERE "
-                    + "   IdEvento = ?";
+                    + "   IdEvento = ? AND deleted = 'N'";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, idEvento);
 
             ps.executeUpdate();
+            ps.close();
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -168,7 +171,7 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
                 String sql = " SELECT Nome "
                         + " FROM evento "
                         + " WHERE "
-                        + "   IdEvento = ?";
+                        + "   IdEvento = ? AND deleted = 'N'";
 
                 ps = conn.prepareStatement(sql);
                 ps.setString(1, idEvento);
@@ -192,7 +195,7 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
         List<String> nomiEventi = new ArrayList<>();
         try{
             String sql = " SELECT Nome "
-                    + " FROM evento ";
+                    + " FROM evento  where deleted = 'N'";
 
             ps = conn.prepareStatement(sql);
 
@@ -222,7 +225,7 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
             String sql = " SELECT IdEvento "
                     + " FROM evento "
                     + " WHERE "
-                    + "   Nome = ?";
+                    + "   Nome = ? AND deleted = 'N'";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, nome);
@@ -248,7 +251,7 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
             String sql = " SELECT * "
                     + " FROM evento "
                     + " WHERE "
-                    + "   IdOrganizzatore = ?";
+                    + "IdOrganizzatore = ? AND deleted = 'N'";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, idOrganizzatore);

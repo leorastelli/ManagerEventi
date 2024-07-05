@@ -14,6 +14,7 @@ public interface UtenteDAO {
     public void deleteUtente(Utente utente);
     public Utente findLoggedUser();
 
+    public List<String> getEmailByEvento(String idEvento);
     public List<Biglietto> getBigliettiUtente(Utente utente);
 
     public List<Abbonamento> getAbbonamentiUtente(Utente utente);

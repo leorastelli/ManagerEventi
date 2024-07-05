@@ -375,6 +375,146 @@ public class OrganizzatoreManagement {
         }
     }
 
+    public static void deleteRecensione(HttpServletRequest request, HttpServletResponse response){
+
+        DAOFactory sessionDAOFactory= null;
+        Organizzatore loggedOrganizzatore;
+        DAOFactory daoFactory = null;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
+            loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+            daoFactory.beginTransaction();
+
+            RecensioneDAO recensioneDAO = daoFactory.getRecensioneDAO();
+
+            recensioneDAO.deleteRecensione(request.getParameter("idRecensione"));
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            commonView(daoFactory, sessionDAOFactory, request);
+
+            request.setAttribute("loggedOrganizzatore",loggedOrganizzatore);
+            request.setAttribute("viewUrl", "adminManagement/homeAdmin");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
+    public static void deleteEvento(HttpServletRequest request, HttpServletResponse response) {
+        DAOFactory sessionDAOFactory = null;
+        Organizzatore loggedOrganizzatore;
+        DAOFactory daoFactory = null;
+        List<String> emailList = new ArrayList<>();
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+            Map sessionFactoryParameters = new HashMap<String, Object>();
+            sessionFactoryParameters.put("request", request);
+            sessionFactoryParameters.put("response", response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL, sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
+            loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            EventoDAO eventoDAO = daoFactory.getEventoDAO();
+            UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
+
+            eventoDAO.deleteEvento(request.getParameter("idEvento"));
+            emailList = utenteDAO.getEmailByEvento(request.getParameter("idEvento"));
+
+            Properties properties = new Properties();
+            properties.put("mail.smtp.host", "out.virgilio.it");
+            properties.put("mail.smtp.port", "587");
+            properties.put("mail.smtp.auth", "true");
+            properties.put("mail.smtp.starttls.enable", "true");
+
+            String username = "primeevent@virgilio.it";
+            String password = "Eventiprimi1!";
+
+            String htmlContent = "<h1>Ci dispiace ma il tuo evento " + request.getParameter("idEvento") + " è stato annullato. Provvederemo ad eseguire il rimborso</h1>";
+
+            Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+
+            try {
+                Message message = new MimeMessage(session);
+                message.setFrom(new InternetAddress(username));
+
+                InternetAddress[] recipientAddresses = new InternetAddress[emailList.size()];
+                for (int i = 0; i < emailList.size(); i++) {
+                    recipientAddresses[i] = new InternetAddress(emailList.get(i));
+                }
+                message.setRecipients(Message.RecipientType.TO, recipientAddresses);
+
+                message.setSubject("Il tuo evento è stato annullato!");
+
+                MimeBodyPart mimeBodyPart = new MimeBodyPart();
+                mimeBodyPart.setContent(htmlContent, "text/html");
+
+                Multipart multipart = new MimeMultipart();
+                multipart.addBodyPart(mimeBodyPart);
+
+                message.setContent(multipart);
+
+                Transport.send(message);
+
+                System.out.println("Email inviate con successo!");
+
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+
+
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            commonView(daoFactory, sessionDAOFactory, request);
+
+
+            request.setAttribute("viewUrl", "adminManagement/homeAdmin");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+                // Handle rollback errors
+            }
+            throw new RuntimeException(e);
+        }
+    }
 
     private static void commonView(DAOFactory daoFactory, DAOFactory sessionDAOFactory, HttpServletRequest request){
         List<Evento> eventi;
@@ -413,6 +553,5 @@ public class OrganizzatoreManagement {
         request.setAttribute("esibizioni", esibizioni);
         request.setAttribute("sponsorizzazioni", sponsorizzazioni);
         request.setAttribute("recensioni", recensioni);
-
     }
 }

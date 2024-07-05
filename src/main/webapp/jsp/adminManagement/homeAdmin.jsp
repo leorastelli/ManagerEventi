@@ -209,8 +209,8 @@
                 <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
             </li>
             <% if (loggedOn) { %>
-            <li <%=menuActiveLink.equals("Home Utente") ? "class=\"active\"" : ""%>>
-                <a href="Dispatcher?controllerAction=adminManagement.adminManagement">Home Organizzatore</a>
+            <li <%=menuActiveLink.equals("Home Organizzatore") ? "class=\"active\"" : ""%>>
+                <a href="Dispatcher?controllerAction=OrganizzatoreManagement.view">Home Organizzatore</a>
             </li>
             <li><a href="javascript:logoutForm.submit()">Logout</a></li>
             <% } else { %>
@@ -309,11 +309,10 @@
 
                 <label for="descrizione-evento">Descrizione: </label>
                 <input type="text" id="descrizione-evento" name="descrizione-evento" value="<%= eventi.get(i).getDescrizione() %>" > <br>
-                <input type="hidden" name="controllerAction" value="commonView"/>
 
                 <form name="deleteEvento" action="Dispatcher" method="post">
                     <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.deleteEvento"/>
-                    <input type="hidden" name="idBiglietto" value="<%=eventi.get(i).getIdEvento()%>"/>
+                    <input type="hidden" name="idEvento" value="<%=eventi.get(i).getIdEvento()%>"/>
                     <input type="submit" class="bottone-personalizzato" value="Elimina evento">
                 </form>
             </form>
@@ -387,6 +386,12 @@
                 <label for="nome">Nome Utente: </label> <span class="nome"><%= recensioni.get(i).getIdUtente().getNome() %></span>
                 <label for="stelle">Numero stelle: </label> <span class="stelle"><%= recensioni.get(i).getStelle() %></span>
                 <label for="descrizione">Descrizione: </label> <span class="descrizione"><%= recensioni.get(i).getDescrizione() %></span>
+
+                    <form name="deleteRecensione" action="Dispatcher" method="post">
+                        <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.deleteRecensione"/>
+                        <input type="hidden" name="idRecensione" value="<%=recensioni.get(i).getIdRecensione()%>"/>
+                        <input type="submit" class="bottone-personalizzato" value="Elimina recensione">
+                    </form>
             </form>
             <% } %>
             <% } %>
