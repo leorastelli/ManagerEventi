@@ -129,6 +129,8 @@ public class UserManagement {
             sessionDAOFactory.commitTransaction();
 
             commonView(daoFactory, sessionDAOFactory, request);
+
+            request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("viewUrl", "homeManagement/AreaPersonaleUtente");
 
         } catch (Exception e) {

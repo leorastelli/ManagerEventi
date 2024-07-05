@@ -7,10 +7,12 @@ import com.managereventi.managereventi.services.Logservice.LogService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,21 +50,23 @@ public class OrganizzatoreManagement {
             loggedOrganizzatore.setCognome(request.getParameter("cognome"));
             loggedOrganizzatore.setEmail(request.getParameter("email"));
             loggedOrganizzatore.setPassword(request.getParameter("password"));
-            loggedOrganizzatore.setIdOrganizzatore(request.getParameter("idorganizzatore"));
-            loggedOrganizzatore.setCodiceAutorizzazione(request.getParameter("codiceautorizzazione"));
+            loggedOrganizzatore.setIdOrganizzatore(loggedOrganizzatore.getIdOrganizzatore());
+            loggedOrganizzatore.setCodiceAutorizzazione(request.getParameter("codiceaut"));
 
             try {
-
                 organizzatoreDAO.updateOrganizzatore(loggedOrganizzatore);
                 sessionOrganizzatoreDAO.updateOrganizzatore(loggedOrganizzatore);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
 
+
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
             commonView(daoFactory, sessionDAOFactory, request);
+
+            request.setAttribute("loggedOrganizzatore",loggedOrganizzatore);
             request.setAttribute("viewUrl", "adminManagement/homeAdmin");
 
         } catch (Exception e) {
@@ -218,6 +222,109 @@ public class OrganizzatoreManagement {
 
     }
 
+    public static void registration(HttpServletRequest request, HttpServletResponse response){
+        DAOFactory sessionDAOFactory= null;
+        Utente loggedUser;
+        Organizzatore loggedOrganizzatore;
+        DAOFactory daoFactory = null;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+
+
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+            OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
+
+            loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
+            loggedUser = sessionUserDAO.findLoggedUser();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+
+            OrganizzatoreDAO organizzatoreDAO = daoFactory.getOrganizzatoreDAO();
+            Organizzatore organizzatore = new Organizzatore();
+
+            organizzatore.setNome(request.getParameter("nome"));
+            organizzatore.setCognome(request.getParameter("cognome"));
+            organizzatore.setEmail(request.getParameter("email"));
+            organizzatore.setPassword(request.getParameter("password"));
+            organizzatore.setIdOrganizzatore(request.getParameter("username"));
+            organizzatore.setCodiceAutorizzazione(request.getParameter("codiceaut"));
+
+            try{
+                organizzatoreDAO.createOrganizzatore(organizzatore);
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            Properties properties = new Properties();
+            properties.put("mail.smtp.host", "out.virgilio.it");
+            properties.put("mail.smtp.port", "587");
+            properties.put("mail.smtp.auth", "true");
+            properties.put("mail.smtp.starttls.enable", "true");
+
+            String username = "primeevent@virgilio.it";
+            String password = "Eventiprimi1!";
+
+            String htmlContent = "<h1>Grazie per la registrazione come organizzatore " + organizzatore.getIdOrganizzatore() + "</h1>";
+
+
+            Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(organizzatore.getEmail()));
+            message.setSubject("Registrazione come organizzatore avvenuta con successo");
+
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            mimeBodyPart.setContent(htmlContent, "text/html");
+
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mimeBodyPart);
+
+            message.setContent(multipart);
+
+            Transport.send(message);
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("loggedOrganizzatore", loggedOrganizzatore);
+            request.setAttribute("viewUrl", "homeManagement/view");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
 
     public static void searchCandidature(HttpServletRequest request, HttpServletResponse response){
         DAOFactory sessionDAOFactory= null;

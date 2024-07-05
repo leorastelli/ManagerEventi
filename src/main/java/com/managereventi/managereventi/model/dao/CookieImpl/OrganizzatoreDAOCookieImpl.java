@@ -27,6 +27,9 @@ public class OrganizzatoreDAOCookieImpl implements OrganizzatoreDAO {
         loggedUser.setIdOrganizzatore(organizzatore.getIdOrganizzatore());
         loggedUser.setNome(organizzatore.getNome());
         loggedUser.setCognome(organizzatore.getCognome());
+        loggedUser.setEmail(organizzatore.getEmail());
+        loggedUser.setPassword(organizzatore.getPassword());
+        loggedUser.setCodiceAutorizzazione(organizzatore.getCodiceAutorizzazione());
 
         Cookie cookie;
         cookie = new Cookie("loggedOrganizzatore", encode(loggedUser));
@@ -89,7 +92,8 @@ public class OrganizzatoreDAOCookieImpl implements OrganizzatoreDAO {
     private String encode(Organizzatore loggedUser) {
 
         String encodedLoggedUser;
-        encodedLoggedUser = loggedUser.getIdOrganizzatore() + "#" + loggedUser.getNome()+ "#" + loggedUser.getCognome();
+        encodedLoggedUser = loggedUser.getIdOrganizzatore() + "#" + loggedUser.getNome()+ "#" + loggedUser.getCognome() +
+                "#" + loggedUser.getEmail() + "#" + loggedUser.getPassword() + "#" + loggedUser.getCodiceAutorizzazione() ;
         return encodedLoggedUser;
 
     }
@@ -103,6 +107,9 @@ public class OrganizzatoreDAOCookieImpl implements OrganizzatoreDAO {
         loggedUser.setIdOrganizzatore(values[0]);
         loggedUser.setNome(values[1]);
         loggedUser.setCognome(values[2]);
+        loggedUser.setEmail(values[3]);
+        loggedUser.setPassword(values[4]);
+        loggedUser.setCodiceAutorizzazione(values[5]);
 
         return loggedUser;
 

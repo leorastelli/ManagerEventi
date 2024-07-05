@@ -214,8 +214,8 @@
                 <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
             </li>
             <% if (loggedOn) { %>
-            <li <%=menuActiveLink.equals("Home Utente") ? "class=\"active\"" : ""%>>
-                <a href="Dispatcher?controllerAction=adminManagement.adminManagement">Home Organizzatore</a>
+            <li <%=menuActiveLink.equals("Home Organizzatore") ? "class=\"active\"" : ""%>>
+                <a href="Dispatcher?controllerAction=OrganizzatoreManagement.view">Home Organizzatore</a>
             </li>
             <li><a href="javascript:logoutForm.submit()">Logout</a></li>
             <% } else { %>
@@ -252,10 +252,10 @@
                 <label for="password">Password: </label>
                 <input type="text" id="password" name="password" value="<%=loggedOrganizzatore.getPassword()%>" > <br>
                 <label for="idorganizzatore">Username: </label>
-                <input type="text" id="idorganizzatore" name="idorganizzatore" value="<%=loggedOrganizzatore.getIdOrganizzatore()%>" > <br>
+                <input type="text" id="idorganizzatore" name="idorganizzatore" value="<%=loggedOrganizzatore.getIdOrganizzatore()%>" disabled> <br>
                 <label for="codiceautorizzazione">Codice di Autorizzazione: </label>
-                <input type="text" id="codiceautorizzazione" name="codiceaut" value="<%=loggedOrganizzatore.getCodiceAutorizzazione()%>" > <br>
-                <input type="hidden" name="controllerAction" value="modifyOrganizzatore"/>
+                <input type="text" id="codiceautorizzazione" name="codiceaut" value="<%=loggedOrganizzatore.getCodiceAutorizzazione()%>" disabled> <br>
+                <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.modifyOrganizzatore"/>
                 <input type="submit" class="bottone-personalizzato" value="Salva modifiche" >
             </form>
         </section>

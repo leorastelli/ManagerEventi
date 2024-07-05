@@ -334,7 +334,7 @@
                 <label for="password">Password </label>
                 <input type="text" id="password" name="password" value="<%=loggedUser.getPassword()%>" > <br>
                 <label for="idutente">Username </label>
-                <input type="text" id="idutente" name="idutente" value="<%=loggedUser.getIdUtente()%>" > <br>
+                <input type="text" id="idutente" name="idutente" value="<%=loggedUser.getIdUtente()%>" disabled> <br>
                 <!--<button onclick="toggleEdit('dati-personali')">Modifica i dati personali</button>-->
                 <input type="hidden" name="controllerAction" value="UserManagement.modifyUtente"/>
                 <input type="submit" class="bottone-personalizzato" value="Salva modifiche" >
