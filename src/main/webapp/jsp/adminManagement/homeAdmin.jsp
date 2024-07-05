@@ -140,6 +140,40 @@
             color: gold;
         }
 
+        section#dati-personali{
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        section#dati-personali h2, section#biglietti h2, section#abbonamenti h2, section#recensioni h2{
+            background-color: #A6FBFF;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        section#dati-personali form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2px;
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        section#dati-personali form label {
+            margin-right: 50px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        section#dati-personali form input[type="text"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
         .centrato {
             text-align: center; /* Centra il testo orizzontalmente */
             margin: auto; /* Utile se vuoi centrare un blocco (es. div) orizzontalmente */
