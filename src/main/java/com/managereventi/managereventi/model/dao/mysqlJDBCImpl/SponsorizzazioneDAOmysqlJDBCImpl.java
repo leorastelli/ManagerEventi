@@ -7,6 +7,7 @@ import com.managereventi.managereventi.model.mo.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SponsorizzazioneDAOmysqlJDBCImpl implements SponsorizzazioneDAO {
@@ -21,6 +22,9 @@ public class SponsorizzazioneDAOmysqlJDBCImpl implements SponsorizzazioneDAO {
         Sponsorizzazione sponsorizzazione = new Sponsorizzazione();
         Azienda azienda = new Azienda();
         Evento evento = new Evento();
+
+        sponsorizzazione.setPartitaIVA(azienda);
+        sponsorizzazione.setIdEvento(evento);
 
 
         try {
@@ -67,7 +71,7 @@ public class SponsorizzazioneDAOmysqlJDBCImpl implements SponsorizzazioneDAO {
 
         PreparedStatement ps;
 
-        List<Sponsorizzazione> sponsorizzazioni = null;
+        List<Sponsorizzazione> sponsorizzazioni = new ArrayList<>();
 
         try{
             String sql = "SELECT * FROM Sponsorizzazione WHERE PartitaIVA = ?";
@@ -94,7 +98,7 @@ public class SponsorizzazioneDAOmysqlJDBCImpl implements SponsorizzazioneDAO {
         PreparedStatement ps;
 
 
-        List<Sponsorizzazione> sponsorizzazioni = null;
+        List<Sponsorizzazione> sponsorizzazioni = new ArrayList<>();
 
         try{
             String sql = "SELECT * FROM Sponsorizzazione WHERE IdEvento = ?";

@@ -243,9 +243,9 @@
                 <label for="numero-artisti">Codice di Autorizzazione: </label>
                 <input type="text" id="numero-artisti" name="numero-artisti" value="<%= esibizioni.get(i).getNumeroArtisti() %>" > <br>
                 <label for="codiceevento">Codice evento al quale appartiene: </label>
-                <input type="text" id="codiceevento" name="codiceevento" value="<%= esibizioni.get(i).getIdEvento() %>" > <br>
+                <input type="text" id="codiceevento" name="codiceevento" value="<%= esibizioni.get(i).getIdEvento().getIdEvento()%>" > <br>
                 <label for="codice-luogo">Codice luogo nel quale si svolge: </label>
-                <input type="text" id="codice-luogo" name="codice-luogo" value="<%= esibizioni.get(i).getIdLuogo() %>" > <br>
+                <input type="text" id="codice-luogo" name="codice-luogo" value="<%= esibizioni.get(i).getIdLuogo().getIdLuogo() %>" > <br>
                 <label for="descrizione">Descrizione: </label>
                 <input type="text" id="descrizione" name="descrizione" value="<%= esibizioni.get(i).getDescrizione() %>" > <br>
 
@@ -290,9 +290,29 @@
             <br><button class="bottone-personalizzato" onclick="toggleEdit('eventi')">Modifica evento</button>
         </section>
         <section id="candidature" class="section">
+            <h2>Overview Candidature</h2>
+            <form method="post" action="Dispatcher" name="cercaCandidatura">
+                <select id="position" name="position">
+                    <option value="">Tutte le posizioni</option>
+                    <option value="marketing">Marketing</option>
+                    <option value="socialmedia">Social Media</option>
+                    <option value="eventmanager">Event Manager</option>
+                    <option value="photographer">Photographer</option>
+                    <option value="videomaker">Videomaker</option>
+                    <option value="graphicdesigner">Graphic Designer</option>
+                    <option value="uxuidesigner">UX/UI Designer</option>
+                    <option value="sales">Sales</option>
+                    <option value="content manager">Content Manager</option>
+                    <option value="developer">Developer</option>
+                    <option value="designer">Designer</option>
+                    <option value="manager">Manager</option>
+                </select>
+                <input type="submit" class="bottone-personalizzato" value="Cerca candidature">
+                <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.searchCandidature"/>
+            </form>
             <%if (candidature != null && !candidature.isEmpty()) { %>
             <% for (i=0; i<candidature.size();i++) {%>
-            <h2>Candidature</h2>
+            <h2>Candidati</h2>
             <form>
                 <%--@declare id="posizione"--%>
                 <%--@declare id="telefono"--%><%--@declare id="descrizione-candidatura"--%>
@@ -312,8 +332,8 @@
             <% for (i=0; i<sponsorizzazioni.size();i++) {%>
             <form>
                 <%--@declare id="partitaiva"--%><%--@declare id="logo"--%><%--@declare id="costo"--%>
-                <label for="partitaIVA">Partita IVA dell'azienda: </label> <span class="partitaIVA"><%= sponsorizzazioni.get(i).getPartitaIVA() %></span>
-                <label for="codice-evento">Codice evento contenente lo spazio: </label> <span class="codice-evento"><%= sponsorizzazioni.get(i).getIdEvento() %></span>
+                <label for="partitaIVA">Partita IVA dell'azienda: </label> <span class="partitaIVA"><%= sponsorizzazioni.get(i).getPartitaIVA().getPartitaIVA() %></span>
+                <label for="codice-evento">Codice evento contenente lo spazio: </label> <span class="codice-evento"><%= sponsorizzazioni.get(i).getIdEvento().getIdEvento() %></span>
                 <label for="logo">Logo: </label> <span class="logo"><%= sponsorizzazioni.get(i).getLogo() %></span>
                 <label for="costo">Costo: </label> <span class="costo"><%= sponsorizzazioni.get(i).getCosto() %></span>
             </form>

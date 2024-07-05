@@ -3,10 +3,12 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
 
 <%@page session="false"%>
 <%@page import="com.managereventi.managereventi.model.mo.Utente"%>
+<%@ page import="com.managereventi.managereventi.model.mo.Organizzatore" %>
 
 <%
   boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
+  Organizzatore loggedOrganizzatore = (Organizzatore) request.getAttribute("loggedOrganizzatore");
   String applicationMessage = (String) request.getAttribute("applicationMessage");
   String menuActiveLink = "Home";
 %>
@@ -104,16 +106,25 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
         <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
       </li>
       <% if (loggedOn) { %>
+      <% if (loggedUser != null) { %>
       <li <%=menuActiveLink.equals("Home Utente") ? "class=\"active\"" : ""%>>
         <a href="Dispatcher?controllerAction=UserManagement.view">Home Utente</a>
       </li>
       <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+      <% } else if (loggedOrganizzatore != null) { %>
+      <li <%=menuActiveLink.equals("Home Organizzatore") ? "class=\"active\"" : ""%>>
+        <a href="Dispatcher?controllerAction=OrganizzatoreManagement.view">Home Organizzatore</a>
+      </li>
+      <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+      <% } %>
       <% } else { %>
-      <li <%= menuActiveLink.equals("Accedi") ? "class=\"acrive\"": ""%>>
-        <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a></li>
-      <li <%=menuActiveLink.equals("Registrati")?"class=\"active\"":""%>>
+      <li <%=menuActiveLink.equals("Accedi") ? "class=\"active\"" : ""%>>
+        <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a>
+      </li>
+      <li <%=menuActiveLink.equals("Registrati") ? "class=\"active\"" : ""%>>
         <a href="Dispatcher?controllerAction=UserManagement.gotoRegistration">Registrati</a>
-          <%}%>
+      </li>
+      <% } %>
     </ul>
   </nav>
 </header>

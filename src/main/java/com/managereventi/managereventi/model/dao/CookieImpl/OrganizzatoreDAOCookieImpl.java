@@ -29,7 +29,7 @@ public class OrganizzatoreDAOCookieImpl implements OrganizzatoreDAO {
         loggedUser.setCognome(organizzatore.getCognome());
 
         Cookie cookie;
-        cookie = new Cookie("loggedUser", encode(loggedUser));
+        cookie = new Cookie("loggedOrganizzatore", encode(loggedUser));
         cookie.setPath("/");
         response.addCookie(cookie);
 
@@ -51,7 +51,7 @@ public class OrganizzatoreDAOCookieImpl implements OrganizzatoreDAO {
     public void updateOrganizzatore(Organizzatore organizzatore) {
 
         Cookie cookie;
-        cookie = new Cookie("loggedUser", encode(organizzatore));
+        cookie = new Cookie("loggedOrganizzatore", encode(organizzatore));
         cookie.setPath("/");
         response.addCookie(cookie);
 
@@ -61,7 +61,7 @@ public class OrganizzatoreDAOCookieImpl implements OrganizzatoreDAO {
     public void deleteOrganizzatore(String idOrganizzatore) {
 
         Cookie cookie;
-        cookie = new Cookie("loggedUser", "");
+        cookie = new Cookie("loggedOrganizzatore", "");
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
@@ -76,7 +76,7 @@ public class OrganizzatoreDAOCookieImpl implements OrganizzatoreDAO {
 
         if (cookies != null) {
             for (int i = 0; i < cookies.length && loggedUser == null; i++) {
-                if (cookies[i].getName().equals("loggedUser")) {
+                if (cookies[i].getName().equals("loggedOrganizzatore")) {
                     loggedUser = decode(cookies[i].getValue());
                 }
             }

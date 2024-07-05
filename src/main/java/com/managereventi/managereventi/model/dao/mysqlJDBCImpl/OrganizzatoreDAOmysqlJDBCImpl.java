@@ -69,7 +69,30 @@ public class OrganizzatoreDAOmysqlJDBCImpl implements OrganizzatoreDAO {
 
     @Override
     public Organizzatore getOrganizzatoreById(String idOrganizzatore) {
-        return null;
+        PreparedStatement ps;
+
+        Organizzatore organizzatore = null;
+
+        try{
+            String sql
+                    = " SELECT * "
+                    + " FROM organizzatore "
+                    + " WHERE IdOrganizzatore = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, idOrganizzatore);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                organizzatore = read(rs);
+            }
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return organizzatore;
     }
 
     @Override

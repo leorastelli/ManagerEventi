@@ -121,7 +121,7 @@
         <label for="codiceaut">Codice Autorizzazione</label>
         <input type="text" id="codiceaut" name="codiceaut" required>
         <br>
-        <input type="hidden" name="controllerAction" value="HomeManagement.logon"/>
+        <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.logon"/>
         <input type="submit"  class="bottone-personalizzato" value="Accedi">
     </form>
 </section>

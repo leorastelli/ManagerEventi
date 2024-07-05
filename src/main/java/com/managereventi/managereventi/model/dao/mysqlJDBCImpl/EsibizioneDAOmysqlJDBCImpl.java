@@ -24,6 +24,10 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
         Evento evento = new Evento();
         Luogo luogo = new Luogo();
 
+        esibizione.setIdOrganizzatore(organizzatore);
+        esibizione.setIdEvento(evento);
+        esibizione.setIdLuogo(luogo);
+
         try {
 
             esibizione.setIdEsibizione(rs.getString("IdEsibizione"));

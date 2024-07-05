@@ -77,7 +77,7 @@ public class CandidatureDAOmysqlJDBCImpl implements CandidatureDAO {
     @Override
     public List<Candidature> getCandidatureByPosizione(String Posizione) {
         PreparedStatement ps;
-        List<Candidature> candidature = null;
+        List<Candidature> candidature = new ArrayList<>();
 
         try{
             String sql = "SELECT * FROM Candidature WHERE Posizione = ?";

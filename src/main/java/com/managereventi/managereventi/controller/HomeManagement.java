@@ -1,10 +1,8 @@
 package com.managereventi.managereventi.controller;
 
-import com.managereventi.managereventi.model.dao.DAOFactory;
-import com.managereventi.managereventi.model.dao.EventoDAO;
-import com.managereventi.managereventi.model.dao.RecensioneDAO;
-import com.managereventi.managereventi.model.dao.UtenteDAO;
+import com.managereventi.managereventi.model.dao.*;
 import com.managereventi.managereventi.model.mo.Evento;
+import com.managereventi.managereventi.model.mo.Organizzatore;
 import com.managereventi.managereventi.model.mo.Recensione;
 import com.managereventi.managereventi.model.mo.Utente;
 import com.managereventi.managereventi.services.Config.Configuration;
@@ -27,6 +25,7 @@ public class HomeManagement {
 
         DAOFactory sessionDAOFactory= null;
         Utente loggedUser;
+        Organizzatore loggedOrganizzatore;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -39,12 +38,16 @@ public class HomeManagement {
             sessionDAOFactory.beginTransaction();
 
             UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+            OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
+
             loggedUser = sessionUserDAO.findLoggedUser();
+            loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
 
             sessionDAOFactory.commitTransaction();
 
-            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("loggedOn",loggedUser!=null || loggedOrganizzatore!=null);
             request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("loggedOrganizzatore", loggedOrganizzatore);
             request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
@@ -107,6 +110,7 @@ public class HomeManagement {
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("loggedOrganizzatore", null);
             request.setAttribute("applicationMessage", applicationMessage);
             request.setAttribute("viewUrl", "homeManagement/view");
 
