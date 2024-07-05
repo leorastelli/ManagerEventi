@@ -6,6 +6,7 @@
 
 <%
   boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
+  boolean registration = (Boolean) request.getAttribute("registration");
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
   Organizzatore loggedOrganizzatore = (Organizzatore) request.getAttribute("loggedOrganizzatore");
   String applicationMessage = (String) request.getAttribute("applicationMessage");
@@ -63,22 +64,48 @@
     </style>
 </head>
 <body>
-    <form name="FormRadio" action="Dispatcher" method="post">
-        <h2>Accedi come</h2>
-        <label>
-            <input type="radio" id="userTypeUser" name="userType" value="utente">
-            Utente
-        </label>
-        <label>
-            <input type="radio" id="userTypeCompany" name="userType" value="azienda">
-            Azienda
-        </label>
-        <label>
-            <input type="radio" id="userTypeOrganizer" name="userType" value="organizzatore">
-            Organizzatore
-        </label>
-        <input type="hidden" name="controllerAction" value="HomeManagement.usertype"/>
-        <input type="submit" class="bottone-personalizzato" value="Accedi"> </input>
-    </form>
+
+    <% if (registration){ %>
+
+        <form name="FormRadio" action="Dispatcher" method="post">
+            <h2>Registrati come</h2>
+            <label>
+                <input type="radio" id="userTypeUserReg" name="userType" value="utente">
+                Utente
+            </label>
+            <label>
+                <input type="radio" id="userTypeCompanyReg" name="userType" value="azienda">
+                Azienda
+            </label>
+            <label>
+                <input type="radio" id="userTypeOrganizerReg" name="userType" value="organizzatore">
+                Organizzatore
+            </label>
+            <input type="hidden" name="registration" value="<%= request.getAttribute("registration") %>">
+            <input type="hidden" name="controllerAction" value="HomeManagement.usertype"/>
+            <input type="submit" class="bottone-personalizzato" value="Accedi"> </input>
+        </form>
+
+    <% } else {%>
+        <form name="FormRadio" action="Dispatcher" method="post">
+            <h2>Accedi come</h2>
+            <label>
+                <input type="radio" id="userTypeUser" name="userType" value="utente">
+                Utente
+            </label>
+            <label>
+                <input type="radio" id="userTypeCompany" name="userType" value="azienda">
+                Azienda
+            </label>
+            <label>
+                <input type="radio" id="userTypeOrganizer" name="userType" value="organizzatore">
+                Organizzatore
+            </label>
+
+            <input type="hidden" name="registration" value="<%= request.getAttribute("registration") %>">
+            <input type="hidden" name="controllerAction" value="HomeManagement.usertype"/>
+            <input type="submit" class="bottone-personalizzato" value="Accedi"> </input>
+        </form>
+    <% } %>
 </body>
 </html>

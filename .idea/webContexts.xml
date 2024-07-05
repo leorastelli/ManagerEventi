@@ -5,6 +5,7 @@
       <map>
         <entry key="file://$PROJECT_DIR$/src/main/webapp/jsp/adminManagement/homeAdmin.jsp" value="file://$PROJECT_DIR$/src/main/webapp/jsp/adminManagement" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/jsp/homeManagement/AreaPersonaleUtente.jsp" value="file://$PROJECT_DIR$/src/main/webapp/jsp/homeManagement" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/jsp/homeManagement/Registrazione.jsp" value="file://$PROJECT_DIR$/src/main/webapp/jsp/homeManagement" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/jsp/homeManagement/view.jsp" value="file://$PROJECT_DIR$/src/main/webapp/jsp/homeManagement" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/jsp/userManagement/homeUtente.jsp" value="file://$PROJECT_DIR$/src/main/webapp/jsp/userManagement" />
       </map>

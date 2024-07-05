@@ -87,9 +87,6 @@ public class UserManagement {
 
     }
 
-    public static void gotoRegistration(HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute("viewUrl", "homeManagement/RegistrazioneUtente");
-    }
 
     public static void modifyUtente(HttpServletRequest request, HttpServletResponse response) {
         DAOFactory sessionDAOFactory= null;

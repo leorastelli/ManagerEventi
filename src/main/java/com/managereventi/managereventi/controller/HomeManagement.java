@@ -147,12 +147,16 @@ public class HomeManagement {
             sessionDAOFactory.beginTransaction();
 
             UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+            OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
+
             sessionUserDAO.deleteUtente(null);
+            sessionOrganizzatoreDAO.deleteOrganizzatore(null);
 
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn",false);
             request.setAttribute("loggedUser", null);
+            request.setAttribute("loggedOrganizzatore", null);
             request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
@@ -172,6 +176,12 @@ public class HomeManagement {
     }
 
     public static void gotoLogin(HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("registration", false);
+        request.setAttribute("viewUrl", "homeManagement/Registrazione");
+    }
+
+    public static void gotoRegistration(HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("registration", true);
         request.setAttribute("viewUrl", "homeManagement/Registrazione");
     }
 
@@ -201,6 +211,7 @@ public class HomeManagement {
             //String username = request.getParameter("username");
             //String password = request.getParameter("password");
             String userType = request.getParameter("userType");
+            Boolean registration = Boolean.parseBoolean(request.getParameter("registration"));
 
             //UtenteDAO userDAO = daoFactory.getUtenteDAO();
             //Utente user = userDAO.getUtenteById(username);
@@ -220,21 +231,38 @@ public class HomeManagement {
            // request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("applicationMessage", applicationMessage);
 
-            switch (userType){
-                case "azienda":
-                    request.setAttribute("viewUrl", "homeManagement/login");
-                    break;
-                case "utente":
-                    request.setAttribute("viewUrl", "homeManagement/LoginAnna");
-                    break;
-                case "organizzatore":
-                    request.setAttribute("viewUrl", "adminManagement/loginAdmin");
-                    break;
-                default:
-                    request.setAttribute("viewUrl", "homeManagement/login");
-                    break;
-            }
+            if (!registration) {
+                switch (userType) {
+                    case "azienda":
+                        request.setAttribute("viewUrl", "homeManagement/login");
+                        break;
+                    case "utente":
+                        request.setAttribute("viewUrl", "homeManagement/LoginAnna");
+                        break;
+                    case "organizzatore":
+                        request.setAttribute("viewUrl", "adminManagement/loginAdmin");
+                        break;
+                    default:
+                        request.setAttribute("viewUrl", "homeManagement/login");
+                        break;
+                }
+            } else {
+                switch (userType) {
+                    case "azienda":
+                        request.setAttribute("viewUrl", "homeManagement/RegistrazioneAzienda");
+                        break;
+                    case "utente":
+                        request.setAttribute("viewUrl", "homeManagement/RegistrazioneUtente");
+                        break;
+                    case "organizzatore":
+                        request.setAttribute("viewUrl", "adminManagement/RegistrazioneAdmin");
+                        break;
+                    default:
+                        request.setAttribute("viewUrl", "homeManagement/view");
+                        break;
+                }
 
+            }
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);

@@ -122,7 +122,7 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
         <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a>
       </li>
       <li <%=menuActiveLink.equals("Registrati") ? "class=\"active\"" : ""%>>
-        <a href="Dispatcher?controllerAction=UserManagement.gotoRegistration">Registrati</a>
+        <a href="Dispatcher?controllerAction=HomeManagement.gotoRegistration">Registrati</a>
       </li>
       <% } %>
     </ul>
