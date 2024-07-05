@@ -247,6 +247,7 @@ public class OrganizzatoreManagement {
             sessionDAOFactory.commitTransaction();
             daoFactory.commitTransaction();
 
+
             commonView(daoFactory, sessionDAOFactory, request);
             request.setAttribute("candidature", candidature);
             request.setAttribute("viewUrl", "adminManagement/homeAdmin");
