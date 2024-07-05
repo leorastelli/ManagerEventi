@@ -66,24 +66,27 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
     }
     .image-box {
       margin: 20px auto;
-      width: 80%;
-      max-width: 400px;
+      width: 90%; /* Increased width for larger images */
+      height: 90%;
+      max-width: 700px;
+      max-height: 700px;/* Adjusted max-width for larger images */
       position: relative;
       cursor: pointer;
     }
     .image-box img {
-      width: 100%;
-      height: auto;
+      width: 100%; /* Ensure the image fits the container */
+      height: auto; /* Maintain aspect ratio */
     }
     .image-box p {
       position: absolute;
+      text-align: right;
       bottom: 10px;
       right: 10px;
       margin: 0;
       padding: 5px;
-      background-color: rgba(0, 0, 0, 0.5);
       color: white;
-      font-size: 1.2em;
+      font-weight: bolder;
+      font-size: 40px;
     }
     footer {
       text-align: center;
@@ -97,40 +100,39 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
 <body>
 <header>
   <h1>PrimEvent</h1>
-  <form name="logoutForm" action="Dispatcher" method="post">
-    <input type="hidden" name="controllerAction" value="HomeManagement.logout"/>
-  </form>
-  <nav>
-    <ul>
-      <li <%=menuActiveLink.equals("Home") ? "class=\"active\"" : ""%>>
-        <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
-      </li>
-      <% if (loggedOn) { %>
-      <% if (loggedUser != null) { %>
-      <li <%=menuActiveLink.equals("Home Utente") ? "class=\"active\"" : ""%>>
-        <a href="Dispatcher?controllerAction=UserManagement.view">Home Utente</a>
-      </li>
-      <li><a href="javascript:logoutForm.submit()">Logout</a></li>
-      <% } else if (loggedOrganizzatore != null) { %>
-      <li <%=menuActiveLink.equals("Home Organizzatore") ? "class=\"active\"" : ""%>>
-        <a href="Dispatcher?controllerAction=OrganizzatoreManagement.view">Home Organizzatore</a>
-      </li>
-      <li><a href="javascript:logoutForm.submit()">Logout</a></li>
-      <% } %>
-      <% } else { %>
-      <li <%=menuActiveLink.equals("Accedi") ? "class=\"active\"" : ""%>>
-        <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a>
-      </li>
-      <li <%=menuActiveLink.equals("Registrati") ? "class=\"active\"" : ""%>>
-        <a href="Dispatcher?controllerAction=HomeManagement.gotoRegistration">Registrati</a>
-      </li>
-      <% } %>
-    </ul>
-  </nav>
+    <form name="logoutForm" action="Dispatcher" method="post">
+      <input type="hidden" name="controllerAction" value="HomeManagement.logout"/>
+    </form>
+    <nav>
+      <ul>
+        <li <%=menuActiveLink.equals("Home") ? "class=\"active\"" : ""%>>
+          <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
+        </li>
+        <% if (loggedOn) { %>
+        <% if (loggedUser != null) { %>
+        <li <%=menuActiveLink.equals("Home Utente") ? "class=\"active\"" : ""%>>
+          <a href="Dispatcher?controllerAction=UserManagement.view">Home Utente</a>
+        </li>
+        <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+        <% } else if (loggedOrganizzatore != null) { %>
+        <li <%=menuActiveLink.equals("Home Organizzatore") ? "class=\"active\"" : ""%>>
+          <a href="Dispatcher?controllerAction=OrganizzatoreManagement.view">Home Organizzatore</a>
+        </li>
+        <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+        <% } %>
+        <% } else { %>
+        <li <%=menuActiveLink.equals("Accedi") ? "class=\"active\"" : ""%>>
+          <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a>
+        </li>
+        <li <%=menuActiveLink.equals("Registrati") ? "class=\"active\"" : ""%>>
+          <a href="Dispatcher?controllerAction=HomeManagement.gotoRegistration">Registrati</a>
+        </li>
+        <% } %>
+      </ul>
+    </nav>
 </header>
 <main>
-
-  <h1>Scopri Eventi Unici!</h1>
+  <h1> Scopri Eventi Unici!</h1>
   <div class="image-box" onclick="location.href='pagamento.html'">
     <img src="images/evento.jpg" alt="Eventi">
     <p>Eventi</p>

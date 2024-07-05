@@ -39,11 +39,13 @@
             justify-content: space-between;
             align-items: center;
         }
+
         header h1 {
             margin: 0;
             font-family: 'Arial Black', sans-serif;
             font-size: 24px;
         }
+
         nav {
             display: flex;
             align-items: center;
@@ -63,9 +65,9 @@
         }
         main {
             margin: 20px;
-            display: flex;
         }
         .sidebar {
+            float: left;
             width: 20%;
         }
         .sidebar a {
@@ -82,30 +84,20 @@
             background-color: #007FFF;
         }
         .content {
-            width: 75%;
-            margin-left: 5%;
+            width: 100%;
+            margin-left: auto;
+
         }
         .section {
             margin-bottom: 30px;
         }
+
         .section h2 {
             background-color: #007FFF;
             padding: 10px;
             border-radius: 5px;
-            color: white;
         }
-        .ticket, .subscription {
-            display: flex;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin: 10px 0;
-            background-color: white;
-        }
-        .ticket img, .subscription img {
-            max-width: 100px;
-            margin-right: 20px;
-        }
+
         form {
             display: grid;
             gap: 10px;
@@ -127,32 +119,32 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            width: 50%;
+            align-items: center;
+            display: block;
+            margin: auto;
         }
         .bottone-personalizzato:hover {
-            background-color: #007FFF;
+            background-color: #007FFF; /* Colore di sfondo al passaggio del mouse */
         }
-        .star {
-            font-size: 2rem;
-            cursor: pointer;
-            color: #ccc;
-        }
-        .star.selected {
-            color: gold;
-        }
-
-        section#dati-personali{
+        section#dati-personali, section#eventi, section#esibizioni, section#recensioni, section#spazi-pubblicitari, section#candidature {
             margin-bottom: 30px;
-            max-width: 600px;
+            max-width: 1000px;
             margin: 0 auto;
+
         }
 
-        section#dati-personali h2, section#biglietti h2, section#abbonamenti h2, section#recensioni h2{
+        section#dati-personali h2, section#eventi h2, section#esibizioni h2, section#recensioni h2, section#spazi-pubblicitari h2, section#candidature h2{
             background-color: #A6FBFF;
             padding: 10px;
             border-radius: 5px;
         }
 
-        section#dati-personali form {
+        section#candidature h3, section#esibizioni h3, section#eventi h3, section#recensioni h3, section#spazi-pubblicitari h3{
+            font-weight: bold;
+        }
+
+        section#dati-personali form, section#eventi form, section#esibizioni form, section#recensioni form, section#spazi-pubblicitari form, section#candidature form{
             display: grid;
             grid-template-columns: 1fr;
             gap: 2px;
@@ -160,15 +152,18 @@
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            width: 800px;
+            margin: auto;
         }
 
-        section#dati-personali form label {
+        section#dati-personali form label, section#esibizioni form label, section#recensioni form label, section#eventi form label, section#spazi-pubblicitari form label, section#candidature form label{
             margin-right: 50px;
             font-weight: bold;
             text-align: left;
+            gap: 10px;
         }
 
-        section#dati-personali form input[type="text"] {
+        section#dati-personali form input[type="text"], section#dati-personali form textarea, section#eventi form input[type="text"], section#eventi form textarea, section#esibizioni form input[type="text"], section#esibizioni form textarea, section#recensioni form input[type="text"], section#recensioni form textarea{
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -204,18 +199,18 @@
 </head>
 <body>
 <header>
+    <h1>PrimEvent</h1>
     <form name="logoutForm" action="Dispatcher" method="post">
         <input type="hidden" name="controllerAction" value="HomeManagement.logout"/>
     </form>
-    <h1>PrimEvent</h1>
     <nav>
         <ul>
             <li <%=menuActiveLink.equals("Home") ? "class=\"active\"" : ""%>>
                 <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
             </li>
             <% if (loggedOn) { %>
-            <li <%=menuActiveLink.equals("Home Organizzatore") ? "class=\"active\"" : ""%>>
-                <a href="Dispatcher?controllerAction=OrganizzatoreManagement.view">Home Organizzatore</a>
+            <li <%=menuActiveLink.equals("Home Utente") ? "class=\"active\"" : ""%>>
+                <a href="Dispatcher?controllerAction=adminManagement.adminManagement">Home Organizzatore</a>
             </li>
             <li><a href="javascript:logoutForm.submit()">Logout</a></li>
             <% } else { %>
@@ -254,7 +249,7 @@
                 <label for="idorganizzatore">Username: </label>
                 <input type="text" id="idorganizzatore" name="idorganizzatore" value="<%=loggedOrganizzatore.getIdOrganizzatore()%>" disabled> <br>
                 <label for="codiceautorizzazione">Codice di Autorizzazione: </label>
-                <input type="text" id="codiceautorizzazione" name="codiceaut" value="<%=loggedOrganizzatore.getCodiceAutorizzazione()%>" disabled> <br>
+                <input type="text" id="codiceautorizzazione" name="codiceaut" value="<%=loggedOrganizzatore.getCodiceAutorizzazione()%>" disabled > <br>
                 <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.modifyOrganizzatore"/>
                 <input type="submit" class="bottone-personalizzato" value="Salva modifiche" >
             </form>
@@ -263,6 +258,7 @@
             <h2>Overview esibizioni</h2>
             <%if (esibizioni != null && !esibizioni.isEmpty()) { %>
             <% for (i=0; i<esibizioni.size();i++) {%>
+            <h3>Esibizione n&deg; <%= i + 1 %></h3>
             <form method="post" action="Dispatcher" name="modifyForm">
                 <label for="codice-esibizione">Codice esibizione: </label>
                 <input type="text" id="codice-esibizione" name="codice-esibizione" value="<%= esibizioni.get(i).getIdEsibizione() %>"> <br>
@@ -284,20 +280,21 @@
                 <input type="text" id="descrizione" name="descrizione" value="<%= esibizioni.get(i).getDescrizione() %>" > <br>
 
                 <input type="hidden" name="controllerAction" value="commonView"/>
-            </form>
-            <form name="deleteEsibizione" action="Dispatcher" method="post">
-                <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.deleteEsibizione"/>
-                <input type="hidden" name="idBiglietto" value="<%=esibizioni.get(i).getIdEsibizione()%>"/>
-                <input type="submit" class="bottone-personalizzato" value="Elimina esibizione">
+                <form name="deleteEsibizione" action="Dispatcher" method="post">
+                    <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.deleteEsibizione"/>
+                    <input type="hidden" name="idBiglietto" value="<%=esibizioni.get(i).getIdEsibizione()%>"/>
+                    <input type="submit" class="bottone-personalizzato" value="Elimina esibizione">
+                </form>
             </form>
             <% } %>
             <% } %>
-            <br><button class="bottone-personalizzato" onclick="toggleEdit('esibizioni')">Modifica esibiziono</button>
+            <br><button class="bottone-personalizzato" onclick="toggleEdit('esibizioni')">Modifica esibizione</button>
         </section>
         <section id="eventi" class="section">
             <h2>Overview eventi</h2>
             <% if (eventi != null && !eventi.isEmpty()) {%>
             <% for (i=0; i<eventi.size();i++) {%>
+            <h3>Evento n&deg; <%= i + 1 %></h3>
             <form method="post" action="Dispatcher" name="modifyForm">
                 <label for="codice-evento">Codice evento: </label>
                 <input type="text" id="codice-evento" name="codice-evento" value="<%= eventi.get(i).getIdEvento() %>"> <br>
@@ -313,16 +310,18 @@
                 <label for="descrizione-evento">Descrizione: </label>
                 <input type="text" id="descrizione-evento" name="descrizione-evento" value="<%= eventi.get(i).getDescrizione() %>" > <br>
                 <input type="hidden" name="controllerAction" value="commonView"/>
-            </form>
-            <form name="deleteEvento" action="Dispatcher" method="post">
-                <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.deleteEvento"/>
-                <input type="hidden" name="idBiglietto" value="<%=eventi.get(i).getIdEvento()%>"/>
-                <input type="submit" class="bottone-personalizzato" value="Elimina evento">
+
+                <form name="deleteEvento" action="Dispatcher" method="post">
+                    <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.deleteEvento"/>
+                    <input type="hidden" name="idBiglietto" value="<%=eventi.get(i).getIdEvento()%>"/>
+                    <input type="submit" class="bottone-personalizzato" value="Elimina evento">
+                </form>
             </form>
             <% } %>
             <% } %>
             <br><button class="bottone-personalizzato" onclick="toggleEdit('eventi')">Modifica evento</button>
         </section>
+
         <section id="candidature" class="section">
             <h2>Overview Candidature</h2>
             <form method="post" action="Dispatcher" name="cercaCandidatura">
@@ -340,30 +339,32 @@
                     <option value="developer">Developer</option>
                     <option value="designer">Designer</option>
                     <option value="manager">Manager</option>
-                </select>
+                </select> <br>
                 <input type="submit" class="bottone-personalizzato" value="Cerca candidature">
                 <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.searchCandidature"/>
             </form>
             <%if (candidature != null && !candidature.isEmpty()) { %>
             <% for (i=0; i<candidature.size();i++) {%>
-            <h2>Candidati</h2>
+            <h3>Candidato n&deg; <%= i + 1 %></h3>
             <form>
                 <%--@declare id="posizione"--%>
                 <%--@declare id="telefono"--%><%--@declare id="descrizione-candidatura"--%>
-                <label for="posizione">Posizione lavorativa: </label> <span class="posizione"><%= candidature.get(i).getPosizione() %></span>
-                <label for="nome">Nome candidato/a: </label> <span class="nome"><%= candidature.get(i).getNome() %></span>
-                <label for="cognome">Cognome candidato/a: </label> <span class="cognome"><%= candidature.get(i).getCognome() %></span>
-                <label for="email">Email candidato/a: </label> <span class="email"><%= candidature.get(i).getEmail() %></span>
-                <label for="telefono">Telefono candidato/a: </label> <span class="telefono"><%= candidature.get(i).getTelefono() %></span>
+                <label for="posizione">Posizione lavorativa: </label> <span class="posizione"><%= candidature.get(i).getPosizione() %></span> <br>
+                <label for="nome">Nome candidato/a: </label> <span class="nome"><%= candidature.get(i).getNome() %></span> <br>
+                <label for="cognome">Cognome candidato/a: </label> <span class="cognome"><%= candidature.get(i).getCognome() %></span> <br>
+                <label for="email">Email candidato/a: </label> <span class="email"><%= candidature.get(i).getEmail() %></span> <br>
+                <label for="telefono">Telefono candidato/a: </label> <span class="telefono"><%= candidature.get(i).getTelefono() %></span> <br>
                 <label for="descrizione-candidatura">Descrizione: </label> <span class="descrizione-candidatura"><%= candidature.get(i).getDescrizione() %></span>
             </form>
             <% } %>
             <% } %>
         </section>
+
         <section id="spazi-pubblicitari" class="section">
             <h2>Spazi pubblicitari</h2>
             <%if (sponsorizzazioni != null && !sponsorizzazioni.isEmpty()) { %>
             <% for (i=0; i<sponsorizzazioni.size();i++) {%>
+            <h3>Spazio n&deg; <%= i + 1 %></h3>
             <form>
                 <%--@declare id="partitaiva"--%><%--@declare id="logo"--%><%--@declare id="costo"--%>
                 <label for="partitaIVA">Partita IVA dell'azienda: </label> <span class="partitaIVA"><%= sponsorizzazioni.get(i).getPartitaIVA().getPartitaIVA() %></span>
@@ -374,10 +375,12 @@
             <% } %>
             <% } %>
         </section>
+
         <section id="recensioni" class="section">
             <h2>Le recensioni ai tuoi eventi</h2>
             <%if (recensioni != null && !recensioni.isEmpty()) { %>
             <% for (i=0; i<recensioni.size();i++) {%>
+            <h3>Recensione n&deg; <%= i + 1 %></h3>
             <form>
                 <%--@declare id="stelle"--%>
                 <label for="nome-evento">Nome Evento: </label> <span class="nome-evento"><%= recensioni.get(i).getIdEvento().getNome() %></span>
@@ -389,7 +392,7 @@
             <% } %>
         </section>
     </div>
-    <% } else { %>
+    <% } else{ %>
     <p>Effettua il login per vedere i tuoi dati.</p>
     <% } %>
 </main>

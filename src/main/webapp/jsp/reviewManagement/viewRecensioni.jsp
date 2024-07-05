@@ -157,7 +157,7 @@
 </header>
 
 <main>
-    <h1 class="centrato">Scopri cosa dicono di noi</h1>
+    <h1 class="centrato">Scopri cosa dicono di noi!</h1> <br>
     <div class="search-bar">
         <form action="Dispatcher" method="post">
             <input type="hidden" name="controllerAction" value="ReviewManagement.filter"/>

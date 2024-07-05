@@ -172,11 +172,31 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            display: inline-block;
             margin-right: 10px;
+            width: 50%;
+            align-items: center;
+            display: block;
+            margin: auto;
         }
 
         .bottone-personalizzato:hover {
+            background-color: #007FFF; /* Colore di sfondo al passaggio del mouse */
+        }
+
+        .bottone-pers {
+            background-color: #6fa3ef;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            display: inline-block;
+            margin-right: 10px;
+            text-align: center;
+        }
+
+        .bottone-pers:hover {
             background-color: #007FFF; /* Colore di sfondo al passaggio del mouse */
         }
 
@@ -287,10 +307,10 @@
 <body>
 
 <header>
+    <h1>PrimEvent</h1>
     <form name="logoutForm" action="Dispatcher" method="post">
         <input type="hidden" name="controllerAction" value="HomeManagement.logout"/>
     </form>
-    <h1>PrimEvent</h1>
     <nav>
         <ul>
             <li <%=menuActiveLink.equals("Home") ? "class=\"active\"" : ""%>>
@@ -345,6 +365,7 @@
             <h2>I miei biglietti</h2>
             <%if (biglietti != null && !biglietti.isEmpty()){ %>
             <% for (i=0; i<biglietti.size();i++){%>
+            <h3>Biglietto n&deg; <%= i + 1 %></h3>
             <div>
                 <%--@declare id="data"--%><%--@declare id="prezzo"--%><%--@declare id="tipo"--%>
                 <%--@declare id="ora"--%>
@@ -360,7 +381,7 @@
             <form name="deletBiglietto" action="Dispatcher" method="post">
                 <input type="hidden" name="controllerAction" value="UserManagement.deleteBiglietto"/>
                 <input type="hidden" name="idBiglietto" value="<%=biglietti.get(i).getIdBiglietto()%>"/>
-                <input type="submit" class="bottone-personalizzato" value="Annulla Biglietto">
+                <input type="submit" class="bottone-pers" value="Annulla Biglietto">
             </form>
             <% }} %>
             <br><button class="bottone-personalizzato" onclick="toggleEdit('biglietti')">Modifica nominativi</button>
@@ -370,6 +391,7 @@
             <h2>I miei Abbonamenti</h2>
             <%if (biglietti != null && !biglietti.isEmpty()){ %>
             <% for (i=0; i<abbonamenti.size();i++){%>
+            <h3>Abbonamento n&deg; <%= i + 1 %></h3>
             <div>
                 <%--@declare id="entrate"--%>
                 <label for="nome">Nome Evento </label> <span class="nome"><%= abbonamenti.get(i).getIdEvento().getNome() %></span>
