@@ -64,25 +64,28 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
     h1 {
       font-size: 2em;
     }
+    .title {
+      font-size: 45px;
+    }
     .image-box {
       margin: 20px auto;
-      width: 90%; /* Increased width for larger images */
+      width: 90%;
       height: 90%;
       max-width: 700px;
-      max-height: 700px;/* Adjusted max-width for larger images */
+      max-height: 700px;
       position: relative;
       cursor: pointer;
     }
     .image-box img {
-      width: 100%; /* Ensure the image fits the container */
-      height: auto; /* Maintain aspect ratio */
+      width: 670px;
+      height: 670px;
     }
     .image-box p {
       position: absolute;
       text-align: right;
       bottom: 10px;
-      right: 10px;
-      margin: 0;
+      right: 15px;
+      margin: 2px;
       padding: 5px;
       color: white;
       font-weight: bolder;
@@ -132,7 +135,7 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
     </nav>
 </header>
 <main>
-  <h1> Scopri Eventi Unici!</h1>
+  <h1 class="title"> Scopri Eventi Unici!</h1>
   <div class="image-box" onclick="location.href='pagamento.html'">
     <img src="images/evento.jpg" alt="Eventi">
     <p>Eventi</p>

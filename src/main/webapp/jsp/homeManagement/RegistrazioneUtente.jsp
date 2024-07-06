@@ -48,33 +48,24 @@ alla pagina di Home(?)-->
         input[type="checkbox"] {
             margin-right: 10px;
         }
-        button {
-            margin-top: 20px;
+        .bottone-personalizzato {
+            background-color: #6fa3ef;
+            color: white;
             padding: 10px 20px;
             border: none;
-            background-color: #84D7FA;
-            color: white;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 10px;
         }
-        button:hover {
-            background-color: #72c7e8;
+
+        .bottone-personalizzato:hover {
+            background-color: #007FFF; /* Colore di sfondo al passaggio del mouse */
         }
+
     </style>
 </head>
 <body onload="headerOnLoadHandler()">
 <header>
-    <h1 class="logo">ManagerEventi</h1>
-    <form name="logoutForm" action="Dispatcher" method="post">
-        <input type="hidden" name="controllerAction" value="HomeManagement.logout"/>
-    </form>
-    <nav>
-        <ul>
-            <li <%=menuActiveLink.equals("Home")?"class=\"active\"":""%>>
-                <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
-            </li>
-        </ul>
-    </nav>
 </header>
 <!--//@include file="/include/footer.inc"-->
 
@@ -88,8 +79,8 @@ alla pagina di Home(?)-->
     <label>
         <input type="checkbox" name="newsletter"> Acconsento a ricevere newsletter e aggiornamenti a fini commerciali
     </label>
-    <input type="hidden" name="controllerAction" value="UserManagement.registration"/>
-    <input type="submit" value="Registrati">
+    <input type="hidden" name="controllerAction" value="UserManagement.registration"/> <br>
+    <input type="submit" class="bottone-personalizzato" value="Registrati">
 </form>
 
 <script>
