@@ -141,14 +141,28 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
         PreparedStatement ps;
 
         try{
-            String sql
-                    = " DELETE FROM esibizione "
+            String sql=
+                    " UPDATE esibizione "
+                    + " SET "
+                    + "   deleted = 'Y'"
                     + " WHERE "
-                    + "   IdEsibizione = ?";
+                    + "   IdEsibizione = ? AND deleted = 'N'";
+
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, idEsibizione);
 
+            ps.executeUpdate();
+
+            String sql2
+                    = " UPDATE biglietto "
+                    + " SET "
+                    + "   stato = 0"
+                    + " WHERE "
+                    + "   IdEsibizione = ? AND stato = 1";
+
+            ps = conn.prepareStatement(sql2);
+            ps.setString(1, idEsibizione);
             ps.executeUpdate();
 
         } catch (Exception e) {
@@ -167,7 +181,7 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
                     = " SELECT * "
                     + " FROM esibizione "
                     + " WHERE "
-                    + "   IdOrganizzatore = ?";
+                    + "   IdOrganizzatore = ? AND deleted = 'N'";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, idOrganizzatore);

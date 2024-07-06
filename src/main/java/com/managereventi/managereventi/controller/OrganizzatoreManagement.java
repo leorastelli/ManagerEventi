@@ -516,6 +516,102 @@ public class OrganizzatoreManagement {
         }
     }
 
+    public static void deleteEsibizione(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory = null;
+        Organizzatore loggedOrganizzatore;
+        DAOFactory daoFactory = null;
+        List<String> emailList = new ArrayList<>();
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+            Map sessionFactoryParameters = new HashMap<String, Object>();
+            sessionFactoryParameters.put("request", request);
+            sessionFactoryParameters.put("response", response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL, sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
+            loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            EsibizioneDAO esibizioneDAO = daoFactory.getEsibizioneDAO();
+            UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
+
+            esibizioneDAO.deleteEsibizione(request.getParameter("IdEsibizione"));
+            emailList = utenteDAO.getEmailByEsibizione(request.getParameter("IdEsibizione"));
+
+            Properties properties = new Properties();
+            properties.put("mail.smtp.host", "out.virgilio.it");
+            properties.put("mail.smtp.port", "587");
+            properties.put("mail.smtp.auth", "true");
+            properties.put("mail.smtp.starttls.enable", "true");
+
+            String username = "primeevent@virgilio.it";
+            String password = "Eventiprimi1!";
+
+            String htmlContent = "<h1>Ci dispiace ma la tua esibizione " + request.getParameter("IdEsibizione") + " è stata annullata. Provvederemo ad eseguire il rimborso</h1>";
+
+            Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+
+            try {
+                Message message = new MimeMessage(session);
+                message.setFrom(new InternetAddress(username));
+
+                InternetAddress[] recipientAddresses = new InternetAddress[emailList.size()];
+                for (int i = 0; i < emailList.size(); i++) {
+                    recipientAddresses[i] = new InternetAddress(emailList.get(i));
+                }
+                message.setRecipients(Message.RecipientType.TO, recipientAddresses);
+
+                message.setSubject("Esibizione annullata!");
+
+                MimeBodyPart mimeBodyPart = new MimeBodyPart();
+                mimeBodyPart.setContent(htmlContent, "text/html");
+
+                Multipart multipart = new MimeMultipart();
+                multipart.addBodyPart(mimeBodyPart);
+
+                message.setContent(multipart);
+
+                Transport.send(message);
+
+                System.out.println("Email inviate con successo!");
+
+            }   catch (MessagingException e) {
+
+                    e.printStackTrace();
+                }
+
+                daoFactory.commitTransaction();
+                sessionDAOFactory.commitTransaction();
+
+                commonView(daoFactory, sessionDAOFactory, request);
+
+                request.setAttribute("loggedOrganizzatore", loggedOrganizzatore);
+                request.setAttribute("viewUrl", "adminManagement/homeAdmin");
+
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, "Controller Error", e);
+                try {
+                    if (daoFactory != null) daoFactory.rollbackTransaction();
+                    if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+                } catch (Throwable t) {
+                }
+                throw new RuntimeException(e);
+
+            }
+
+    }
+
     private static void commonView(DAOFactory daoFactory, DAOFactory sessionDAOFactory, HttpServletRequest request){
         List<Evento> eventi;
         List<Esibizione> esibizioni;

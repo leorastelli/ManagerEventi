@@ -279,10 +279,9 @@
                 <label for="descrizione">Descrizione: </label>
                 <input type="text" id="descrizione" name="descrizione" value="<%= esibizioni.get(i).getDescrizione() %>" > <br>
 
-                <input type="hidden" name="controllerAction" value="commonView"/>
                 <form name="deleteEsibizione" action="Dispatcher" method="post">
                     <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.deleteEsibizione"/>
-                    <input type="hidden" name="idBiglietto" value="<%=esibizioni.get(i).getIdEsibizione()%>"/>
+                    <input type="hidden" name="IdEsibizione" value="<%=esibizioni.get(i).getIdEsibizione()%>"/>
                     <input type="submit" class="bottone-personalizzato" value="Elimina esibizione">
                 </form>
             </form>

@@ -211,10 +211,16 @@ public class UtenteDAOmysqlJDBCImpl implements UtenteDAO {
                     = " SELECT Utente.Email as Email "
                     + " FROM Biglietto "
                     + " JOIN Utente ON Biglietto.IdUtente = Utente.IdUtente "
-                    + " WHERE Biglietto.IdEvento = ?";
+                    + " WHERE Biglietto.IdEvento = ?"
+                    + " UNION "
+                    + " SELECT Utente.Email as Email "
+                    + " FROM Abbonamento "
+                    + " JOIN Utente ON Abbonamento.IdUtente = Utente.IdUtente "
+                    + " WHERE Abbonamento.IdEsibizione = ?";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, idEvento);
+            ps.setString(2, idEvento);
 
             ResultSet rs = ps.executeQuery();
 
@@ -259,6 +265,37 @@ public class UtenteDAOmysqlJDBCImpl implements UtenteDAO {
             throw new RuntimeException(e);
         }
         return biglietti;
+    }
+
+    @Override
+    public List<String> getEmailByEsibizione(String idEsibizione) {
+        PreparedStatement ps;
+        List<String> emails = new ArrayList<>();
+
+        try {
+
+            String sql
+                    = " SELECT Utente.Email as Email "
+                    + " FROM Biglietto "
+                    + " JOIN Utente ON Biglietto.IdUtente = Utente.IdUtente "
+                    + " WHERE Biglietto.IdEsibizione = ? ";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, idEsibizione);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                emails.add(rs.getString("Email"));
+            }
+
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return emails;
     }
 
     @Override

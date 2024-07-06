@@ -152,7 +152,27 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, idEvento);
+            ps.executeUpdate();
 
+            String sql2
+                    = " UPDATE esibizione "
+                    + " SET "
+                    + "   deleted = 'Y'"
+                    + " WHERE "
+                    + "   IdEvento = ? AND deleted = 'N'";
+
+            ps = conn.prepareStatement(sql2);
+            ps.setString(1, idEvento);
+            ps.executeUpdate();
+
+            String sql3 = "Update abbonamento set deleted = 'Y' where IdEvento = ? and deleted = 'N'";
+            ps = conn.prepareStatement(sql3);
+            ps.setString(1, idEvento);
+            ps.executeUpdate();
+
+            String sql4 = "Update biglietto set stato = 0 where IdEvento = ? and stato = 1";
+            ps = conn.prepareStatement(sql4);
+            ps.setString(1, idEvento);
             ps.executeUpdate();
             ps.close();
 

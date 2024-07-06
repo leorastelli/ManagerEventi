@@ -98,6 +98,11 @@ public class UtenteDAOCookieImpl implements UtenteDAO {
     }
 
     @Override
+    public List<String> getEmailByEsibizione(String idEsibizione) {
+        return null;
+    }
+
+    @Override
     public List<Abbonamento> getAbbonamentiUtente(Utente utente) {
         return null;
     }

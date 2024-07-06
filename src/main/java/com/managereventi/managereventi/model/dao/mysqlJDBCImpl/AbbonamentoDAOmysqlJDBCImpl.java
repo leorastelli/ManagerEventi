@@ -95,8 +95,7 @@ public class AbbonamentoDAOmysqlJDBCImpl implements AbbonamentoDAO {
 
         try {
             String sql
-                    = " DELETE FROM Abbonamento "
-                    + " WHERE IdAbbonamento = ?";
+                    = "Update abbonamento set deleted = 'Y' where IdAbbonamento = ? and deleted = 'N'";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, idAbbonamento);
@@ -167,7 +166,7 @@ public class AbbonamentoDAOmysqlJDBCImpl implements AbbonamentoDAO {
                     + " FROM Abbonamento a "
                     + " JOIN Evento e ON a.IdEvento = e.IdEvento "
                     + " JOIN Utente u ON a.IdUtente = u.IdUtente"
-                    + " WHERE a.IdUtente = ?";
+                    + " WHERE a.IdUtente = ? and a.deleted = 'N'";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, utente.getIdUtente());

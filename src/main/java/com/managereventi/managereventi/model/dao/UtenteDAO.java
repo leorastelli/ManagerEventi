@@ -17,6 +17,8 @@ public interface UtenteDAO {
     public List<String> getEmailByEvento(String idEvento);
     public List<Biglietto> getBigliettiUtente(Utente utente);
 
+    public List<String> getEmailByEsibizione(String idEsibizione);
+
     public List<Abbonamento> getAbbonamentiUtente(Utente utente);
 }
 

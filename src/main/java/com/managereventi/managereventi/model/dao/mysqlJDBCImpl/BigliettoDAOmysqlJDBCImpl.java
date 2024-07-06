@@ -167,7 +167,7 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
                     + " JOIN Evento e ON b.IdEvento = e.IdEvento "
                     + " JOIN Utente u ON b.IdUtente = u.IdUtente "
                     + " JOIN Esibizione es ON b.IdEsibizione = es.IdEsibizione "
-                    + " WHERE b.IdUtente = ?";
+                    + " WHERE b.IdUtente = ? AND b.Stato = 1";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, utente.getIdUtente());
@@ -197,7 +197,7 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
             String sql
                     = " SELECT IdEvento "
                     + " FROM Biglietto "
-                    + " WHERE IdUtente = ?";
+                    + " WHERE IdUtente = ? AND Stato = 1";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, utente.getIdUtente());
@@ -223,8 +223,7 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
 
         try {
             String sql
-                    = " DELETE FROM biglietto "
-                    + " WHERE IdBiglietto = ?";
+                    = " UPDATE biglietto set stato = 0 where IdBiglietto = ?";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, idBiglietto);
