@@ -2,13 +2,14 @@
 <%@page session="false"%>
 <%@page import="com.managereventi.managereventi.model.mo.Utente"%>
 <%@page import="com.managereventi.managereventi.model.mo.Organizzatore"%>
-<%@page import="com.managereventi.managereventi.model.mo.Organizzatore"%>
+<%@page import="com.managereventi.managereventi.model.mo.Azienda"%>
 
 <%
   boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
   boolean registration = (Boolean) request.getAttribute("registration");
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
   Organizzatore loggedOrganizzatore = (Organizzatore) request.getAttribute("loggedOrganizzatore");
+  Azienda loggedAzienda = (Azienda) request.getAttribute("loggedAzienda");
   String applicationMessage = (String) request.getAttribute("applicationMessage");
   String menuActiveLink = "Home";
 %>

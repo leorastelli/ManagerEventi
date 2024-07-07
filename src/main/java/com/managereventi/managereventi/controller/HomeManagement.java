@@ -234,7 +234,7 @@ public class HomeManagement {
             if (!registration) {
                 switch (userType) {
                     case "azienda":
-                        request.setAttribute("viewUrl", "homeManagement/login");
+                        request.setAttribute("viewUrl", "aziendaManagement/loginAzienda");
                         break;
                     case "utente":
                         request.setAttribute("viewUrl", "homeManagement/LoginAnna");
@@ -249,7 +249,7 @@ public class HomeManagement {
             } else {
                 switch (userType) {
                     case "azienda":
-                        request.setAttribute("viewUrl", "homeManagement/RegistrazioneAzienda");
+                        request.setAttribute("viewUrl", "aziendaManagement/RegistrazioneAzienda");
                         break;
                     case "utente":
                         request.setAttribute("viewUrl", "homeManagement/RegistrazioneUtente");

@@ -1,4 +1,5 @@
 <%@page session="false"%>
+<%@page import="com.managereventi.managereventi.model.mo.Azienda"%>
 
 <%
     String menuActiveLink = "Home";
@@ -62,14 +63,17 @@
 <!--//@include file="/include/footer.inc"-->
 
 <form action="Dispatcher" method="post">
-    <h2>Dati personali</h2>
+    <h2>Dati Aziendali</h2>
+    <input type="text" name="partitaIVA" id="partitaIVA" placeholder="PartitaIVA" required>
     <input type="text" name="nome" placeholder="Nome" required>
-    <input type="text" name="cognome" placeholder="Cognome" required>
-    <input type="email" name="email" placeholder="E-mail" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <input type="text" name="username" id="username" placeholder="Username" required>
-    <input type="text" name="codiceaut" id="codiceaut" placeholder="CodiceAutorizzazione" required>
-
+    <input type="email" name="indirizzo" placeholder="Indirizzo" required>
+    <input type="password" name="citta" placeholder="Città" required>
+    <input type="text" name="provincia" placeholder="Provincia" required>
+    <input type="text" name="cap" placeholder="CAP" required>
+    <input type="text" name="stato" placeholder="Stato" required>
+    <input type="text" name="telefono" placeholder="Telefono" required>
+    <input type="text" name="email" placeholder="Email" required>
+    <input type="text" name="password" id="password" placeholder="Password" required>
     <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.registration"/>
     <input type="submit" class="bottone-personalizzato" value="Registrati">
 </form>
@@ -82,8 +86,10 @@
         var passwordTextFieldMsg = "La password è obbligatoria.";
         var codiceautTextField = document.querySelector("#codiceaut");
         var codiceautTextFieldMsg = "Il codice autorizzazione è obbligatorio.";
+        var partitaIVATextField = document.querySelector("#partitaIVA");
+        var partitaIVATextFieldMsg = "La partita IVA è obbligatoria.";
 
-        if (usernameTextField != undefined && passwordTextField != undefined ) {
+        if (usernameTextField !== undefined && passwordTextField !== undefined ) {
             usernameTextField.setCustomValidity(usernameTextFieldMsg);
             usernameTextField.addEventListener("change", function () {
                 this.setCustomValidity(this.validity.valueMissing ? usernameTextFieldMsg : "");
@@ -95,6 +101,10 @@
             codiceautTextField.setCustomValidity(codiceautTextFieldMsg);
             codiceautTextField.addEventListener("change", function () {
                 this.setCustomValidity(this.validity.valueMissing ? codiceautTextFieldMsg : "");
+            });
+            partitaIVATextField.setCustomValidity(partitaIVATextFieldMsg);
+            partitaIVATextField.addEventListener("change", function () {
+                this.setCustomValidity(this.validity.valueMissing ? partitaIVATextFieldMsg : "");
             });
         }
     }
