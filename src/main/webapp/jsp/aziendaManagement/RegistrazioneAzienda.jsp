@@ -66,14 +66,14 @@
     <h2>Dati Aziendali</h2>
     <input type="text" name="partitaIVA" id="partitaIVA" placeholder="PartitaIVA" required>
     <input type="text" name="nome" placeholder="Nome" required>
-    <input type="email" name="indirizzo" placeholder="Indirizzo" required>
-    <input type="password" name="citta" placeholder="Citt&agrave;" required>
+    <input type="text" name="indirizzo" placeholder="Indirizzo" required>
+    <input type="text" name="citta" placeholder="Citt&agrave;" required>
     <input type="text" name="provincia" placeholder="Provincia" required>
     <input type="text" name="cap" placeholder="CAP" required>
     <input type="text" name="stato" placeholder="Stato" required>
     <input type="text" name="telefono" placeholder="Telefono" required>
-    <input type="text" name="email" placeholder="E-mail" required>
-    <input type="text" name="password" id="password" placeholder="Password" required>
+    <input type="email" name="email" placeholder="E-mail" required>
+    <input type="password" name="password" id="password" placeholder="Password" required>
     <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.registration"/>
     <input type="submit" class="bottone-personalizzato" value="Registrati">
 </form>
