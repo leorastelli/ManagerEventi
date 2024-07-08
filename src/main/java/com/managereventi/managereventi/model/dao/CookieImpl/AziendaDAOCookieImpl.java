@@ -26,7 +26,7 @@ public class AziendaDAOCookieImpl implements AziendaDAO {
         loggedUser.setNome(azienda.getNome());
 
         Cookie cookie;
-        cookie = new Cookie("loggedUser", encode(loggedUser));
+        cookie = new Cookie("loggedAzienda", encode(loggedUser));
         cookie.setPath("/");
         response.addCookie(cookie);
 
@@ -47,7 +47,7 @@ public class AziendaDAOCookieImpl implements AziendaDAO {
     public void updateAzienda(Azienda azienda) {
 
         Cookie cookie;
-        cookie = new Cookie("loggedUser", encode(azienda));
+        cookie = new Cookie("loggedAzienda", encode(azienda));
         cookie.setPath("/");
         response.addCookie(cookie);
 
@@ -57,7 +57,7 @@ public class AziendaDAOCookieImpl implements AziendaDAO {
     public void deleteAzienda(String partitaIVA) {
 
         Cookie cookie;
-        cookie = new Cookie("loggedUser", "");
+        cookie = new Cookie("loggedAzienda", "");
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
@@ -75,6 +75,7 @@ public class AziendaDAOCookieImpl implements AziendaDAO {
 
         String encodedLoggedUser;
         encodedLoggedUser = loggedUser.getPartitaIVA() + "#" + loggedUser.getNome();
+        encodedLoggedUser = encodedLoggedUser.replaceAll("\\s", "");
         return encodedLoggedUser;
 
     }

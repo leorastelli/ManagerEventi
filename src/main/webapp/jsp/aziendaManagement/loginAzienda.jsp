@@ -115,7 +115,7 @@
         <input type="password" id="password" name="password" required>
 
         <br>
-        <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.logon"/>
+        <input type="hidden" name="controllerAction" value="AziendaManagement.logon"/>
         <input type="submit"  class="bottone-personalizzato" value="Accedi">
     </form>
 </section>

@@ -1,10 +1,7 @@
 package com.managereventi.managereventi.controller;
 
 import com.managereventi.managereventi.model.dao.*;
-import com.managereventi.managereventi.model.mo.Evento;
-import com.managereventi.managereventi.model.mo.Organizzatore;
-import com.managereventi.managereventi.model.mo.Recensione;
-import com.managereventi.managereventi.model.mo.Utente;
+import com.managereventi.managereventi.model.mo.*;
 import com.managereventi.managereventi.services.Config.Configuration;
 import com.managereventi.managereventi.services.Logservice.LogService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +23,7 @@ public class HomeManagement {
         DAOFactory sessionDAOFactory= null;
         Utente loggedUser;
         Organizzatore loggedOrganizzatore;
+        Azienda loggedAzienda;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -39,15 +37,19 @@ public class HomeManagement {
 
             UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
             OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
+            AziendaDAO sessionAziendaDAO = sessionDAOFactory.getAziendDAO();
 
             loggedUser = sessionUserDAO.findLoggedUser();
             loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
+            loggedAzienda = sessionAziendaDAO.findLoggedUser();
+
 
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn",loggedUser!=null || loggedOrganizzatore!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("loggedOrganizzatore", loggedOrganizzatore);
+            request.setAttribute("loggedAzienda", loggedAzienda);
             request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
@@ -111,6 +113,7 @@ public class HomeManagement {
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("loggedOrganizzatore", null);
+            request.setAttribute("loggedAzienda", null);
             request.setAttribute("applicationMessage", applicationMessage);
             request.setAttribute("viewUrl", "homeManagement/view");
 
@@ -148,15 +151,18 @@ public class HomeManagement {
 
             UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
             OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
+            AziendaDAO sessionAziendaDAO = sessionDAOFactory.getAziendDAO();
 
             sessionUserDAO.deleteUtente(null);
             sessionOrganizzatoreDAO.deleteOrganizzatore(null);
+            sessionAziendaDAO.deleteAzienda(null);
 
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn",false);
             request.setAttribute("loggedUser", null);
             request.setAttribute("loggedOrganizzatore", null);
+            request.setAttribute("loggedAzienda", null);
             request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
@@ -243,7 +249,7 @@ public class HomeManagement {
                         request.setAttribute("viewUrl", "adminManagement/loginAdmin");
                         break;
                     default:
-                        request.setAttribute("viewUrl", "homeManagement/login");
+                        request.setAttribute("viewUrl", "homeManagement/view");
                         break;
                 }
             } else {

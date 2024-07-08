@@ -4,11 +4,13 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
 <%@page session="false"%>
 <%@page import="com.managereventi.managereventi.model.mo.Utente"%>
 <%@ page import="com.managereventi.managereventi.model.mo.Organizzatore" %>
+<%@ page import="com.managereventi.managereventi.model.mo.Azienda" %>
 
 <%
   boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
   Organizzatore loggedOrganizzatore = (Organizzatore) request.getAttribute("loggedOrganizzatore");
+  Azienda loggedAzienda = (Azienda) request.getAttribute("loggedAzienda");
   String applicationMessage = (String) request.getAttribute("applicationMessage");
   String menuActiveLink = "Home";
 %>
@@ -122,8 +124,12 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
           <a href="Dispatcher?controllerAction=OrganizzatoreManagement.view">Home Organizzatore</a>
         </li>
         <li><a href="javascript:logoutForm.submit()">Logout</a></li>
-        <% } %>
-        <% } else { %>
+        <% } else if(loggedAzienda != null){ %>
+        <li <%=menuActiveLink.equals("Home Azienda") ? "class=\"active\"" : ""%>>
+          <a href="Dispatcher?controllerAction=AziendaManagement.view">Home Azienda</a>
+        </li>
+        <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+        <% }} else { %>
         <li <%=menuActiveLink.equals("Accedi") ? "class=\"active\"" : ""%>>
           <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a>
         </li>

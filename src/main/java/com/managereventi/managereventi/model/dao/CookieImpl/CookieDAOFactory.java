@@ -45,7 +45,7 @@ public class CookieDAOFactory extends DAOFactory{
 
     @Override
     public AziendaDAO getAziendDAO() {
-        return null;
+        return new AziendaDAOCookieImpl(request,response);
     }
 
     @Override

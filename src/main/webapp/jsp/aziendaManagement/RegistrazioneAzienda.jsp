@@ -74,7 +74,7 @@
     <input type="text" name="telefono" placeholder="Telefono" required>
     <input type="email" name="email" placeholder="E-mail" required>
     <input type="password" name="password" id="password" placeholder="Password" required>
-    <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.registration"/>
+    <input type="hidden" name="controllerAction" value="AziendaManagement.registration"/>
     <input type="submit" class="bottone-personalizzato" value="Registrati">
 </form>
 

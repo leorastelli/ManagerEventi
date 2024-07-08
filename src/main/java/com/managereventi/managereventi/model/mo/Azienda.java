@@ -3,6 +3,7 @@ package com.managereventi.managereventi.model.mo;
 public class Azienda {
     private String partitaIVA;
     private String nome;
+    private String password;
     private String indirizzo;
     private String citta;
     private String provincia;
@@ -82,5 +83,13 @@ public class Azienda {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

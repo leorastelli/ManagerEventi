@@ -200,6 +200,7 @@ public class OrganizzatoreManagement {
             request.setAttribute("loggedOn",loggedOrganizzatore!=null);
             request.setAttribute("loggedUser", null);
             request.setAttribute("loggedOrganizzatore", loggedOrganizzatore);
+            request.setAttribute("loggedAzienda", null);
             request.setAttribute("applicationMessage", applicationMessage);
             request.setAttribute("viewUrl", "homeManagement/view");
 

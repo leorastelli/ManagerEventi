@@ -35,6 +35,7 @@ public class AziendaDAOmysqlJDBCImpl implements AziendaDAO {
             azienda.setStato(rs.getString("Stato"));
             azienda.setTelefono(rs.getString("Telefono"));
             azienda.setEmail(rs.getString("Email"));
+            azienda.setPassword(rs.getString("password"));
 
 
         } catch (Exception e) {
@@ -52,8 +53,8 @@ public class AziendaDAOmysqlJDBCImpl implements AziendaDAO {
 
                 String sql
                         = " INSERT INTO azienda "
-                        + "   (PartitaIVA, Nome, Indirizzo, Citta, Provincia, Cap, Stato, Telefono, Email) "
-                        + " VALUES (?,?,?,?,?,?,?,?,?)";
+                        + "   (PartitaIVA, Nome, Indirizzo, Citta, Provincia, Cap, Stato, Telefono, Email, password) "
+                        + " VALUES (?,?,?,?,?,?,?,?,?,?)";
 
                 ps = conn.prepareStatement(sql);
                 ps.setString(1, azienda.getPartitaIVA());
@@ -65,6 +66,7 @@ public class AziendaDAOmysqlJDBCImpl implements AziendaDAO {
                 ps.setString(7, azienda.getStato());
                 ps.setString(8, azienda.getTelefono());
                 ps.setString(9, azienda.getEmail());
+                ps.setString(10, azienda.getPassword());
 
                 ps.executeUpdate();
         }
@@ -77,7 +79,29 @@ public class AziendaDAOmysqlJDBCImpl implements AziendaDAO {
 
     @Override
     public Azienda getAziendaByPartitaIVA(String partitaIVA) {
-        return null;
+        PreparedStatement ps;
+        ResultSet rs;
+        Azienda azienda = null;
+
+        try {
+            String sql
+                    = " SELECT * "
+                    + " FROM azienda "
+                    + " WHERE PartitaIVA = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, partitaIVA);
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                azienda = read(rs);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return azienda;
     }
 
     @Override
