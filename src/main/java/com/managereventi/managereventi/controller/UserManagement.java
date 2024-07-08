@@ -179,18 +179,22 @@ public class UserManagement {
             utente.setPassword(request.getParameter("password"));
             utente.setIdUtente(request.getParameter("username"));
 
-            if (!request.getParameter("newsletter").isBlank()){
-                Newsletter newsletter = new Newsletter();
-                NewsletterDAO newsletterDAO = daoFactory.getNewsletterDAO();
-                newsletterDAO.subscribeToNewsletter(utente.getIdUtente(), utente.getEmail());
-            }
 
             try{
                 utenteDAO.createUtente(utente);
+                request.setAttribute("viewUrl", "homeManagement/view");
             }
             catch (Exception e) {
                 //throw new RuntimeException(e);
                 request.setAttribute("viewUrl", "homeManagement/ErrorPage");
+            }
+
+            String newsletterParam = request.getParameter("newsletter");
+
+            if (newsletterParam != null ) {
+                Newsletter newsletter = new Newsletter();
+                NewsletterDAO newsletterDAO = daoFactory.getNewsletterDAO();
+                newsletterDAO.subscribeToNewsletter(utente.getIdUtente(), utente.getEmail());
             }
 
             Properties properties = new Properties();
@@ -204,7 +208,7 @@ public class UserManagement {
 
             String htmlContent = "<h1>Grazie per la registrazione " + utente.getIdUtente() + "</h1>";
 
-            if (!request.getParameter("newsletter").isBlank()){
+            if (newsletterParam != null){
                 htmlContent += "<p>Ti sei iscritto alla nostra newsletter</p>";
             }
 
@@ -235,7 +239,6 @@ public class UserManagement {
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
-            request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
