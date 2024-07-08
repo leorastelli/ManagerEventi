@@ -68,10 +68,11 @@ public class AziendaManagement {
                 sessionAziendaDAO.deleteAzienda(null);
                 applicationMessage = "Partita IVA e password errati!";
                 loggedAzienda=null;
+                request.setAttribute("viewUrl", "homeManagement/ErrorPage");
             }
             else {
                 loggedAzienda = sessionAziendaDAO.createAzienda(azienda);
-
+                request.setAttribute("viewUrl", "homeManagement/view");
             }
 
 
@@ -83,7 +84,7 @@ public class AziendaManagement {
             request.setAttribute("loggedOrganizzatore", null);
             request.setAttribute("loggedAzienda", loggedAzienda);
             request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "homeManagement/view");
+
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -152,7 +153,8 @@ public class AziendaManagement {
                 aziendaDAO.createAzienda(azienda);
             }
             catch (Exception e) {
-                throw new RuntimeException(e);
+                //throw new RuntimeException(e);
+                request.setAttribute("viewUrl", "homeManagement/ErrorPage");
             }
 
             Properties properties = new Properties();

@@ -103,8 +103,10 @@ public class HomeManagement {
                 sessionUserDAO.deleteUtente(null);
                 applicationMessage = "Username e password errati!";
                 loggedUser=null;
+                request.setAttribute("viewUrl", "homeManagement/ErrorPage");
             } else {
                 loggedUser = sessionUserDAO.createUtente(user);
+                request.setAttribute("viewUrl", "homeManagement/view");
             }
 
             daoFactory.commitTransaction();
@@ -115,7 +117,7 @@ public class HomeManagement {
             request.setAttribute("loggedOrganizzatore", null);
             request.setAttribute("loggedAzienda", null);
             request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "homeManagement/view");
+
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);

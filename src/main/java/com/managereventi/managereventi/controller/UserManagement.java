@@ -189,7 +189,8 @@ public class UserManagement {
                 utenteDAO.createUtente(utente);
             }
             catch (Exception e) {
-                throw new RuntimeException(e);
+                //throw new RuntimeException(e);
+                request.setAttribute("viewUrl", "homeManagement/ErrorPage");
             }
 
             Properties properties = new Properties();

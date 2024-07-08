@@ -188,9 +188,13 @@ public class OrganizzatoreManagement {
                     sessionOrganizzatoreDAO.deleteOrganizzatore(null);
                     applicationMessage = "Username e password errati!";
                     loggedOrganizzatore=null;
+                request.setAttribute("viewUrl", "homeManagement/ErrorPage");
+
             }
             else {
                 loggedOrganizzatore = sessionOrganizzatoreDAO.createOrganizzatore(organizzatore);
+                request.setAttribute("viewUrl", "homeManagement/view");
+
             }
 
 
@@ -202,7 +206,6 @@ public class OrganizzatoreManagement {
             request.setAttribute("loggedOrganizzatore", loggedOrganizzatore);
             request.setAttribute("loggedAzienda", null);
             request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -265,7 +268,8 @@ public class OrganizzatoreManagement {
                 organizzatoreDAO.createOrganizzatore(organizzatore);
             }
             catch (Exception e) {
-                throw new RuntimeException(e);
+                //throw new RuntimeException(e);
+                request.setAttribute("viewUrl", "homeManagement/ErrorPage");
             }
 
             Properties properties = new Properties();

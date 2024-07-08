@@ -30,7 +30,7 @@ public class SponsorizzazioneDAOmysqlJDBCImpl implements SponsorizzazioneDAO {
         try {
             sponsorizzazione.getPartitaIVA().setPartitaIVA(rs.getString("PartitaIVA"));
             sponsorizzazione.getIdEvento().setIdEvento(rs.getString("IdEvento"));
-            sponsorizzazione.setLogo(rs.getString("Logo"));
+            sponsorizzazione.setLogo(rs.getBlob("Logo"));
             sponsorizzazione.setCosto(rs.getLong("Costo"));
 
         } catch (Exception e) {
@@ -49,7 +49,7 @@ public class SponsorizzazioneDAOmysqlJDBCImpl implements SponsorizzazioneDAO {
             ps = conn.prepareStatement(sql);
             ps.setString(1, sponsorizzazione.getPartitaIVA().getPartitaIVA());
             ps.setString(2, sponsorizzazione.getIdEvento().getIdEvento());
-            ps.setString(3, sponsorizzazione.getLogo());
+            ps.setBlob(3, sponsorizzazione.getLogo());
             ps.setLong(4, sponsorizzazione.getCosto());
 
             ps.executeUpdate();
@@ -128,7 +128,7 @@ public class SponsorizzazioneDAOmysqlJDBCImpl implements SponsorizzazioneDAO {
         try{
             String sql = "UPDATE Sponsorizzazione SET Logo = ?, Costo = ? WHERE PartitaIVA = ? AND IdEvento = ?";
             ps = conn.prepareStatement(sql);
-            ps.setString(1, sponsorizzazione.getLogo());
+            ps.setBlob(1, sponsorizzazione.getLogo());
             ps.setLong(2, sponsorizzazione.getCosto());
             ps.setString(3, sponsorizzazione.getPartitaIVA().getPartitaIVA());
             ps.setString(4, sponsorizzazione.getIdEvento().getIdEvento());

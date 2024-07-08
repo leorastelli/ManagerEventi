@@ -1,9 +1,11 @@
 package com.managereventi.managereventi.model.mo;
 
+import java.sql.Blob;
+
 public class Sponsorizzazione {
     private Azienda azienda;
     private Evento evento;
-    private String logo;
+    private Blob logo;
     private Long costo;
 
     // Metodi getter e setter per ogni campo
@@ -23,14 +25,14 @@ public class Sponsorizzazione {
         this.evento = evento;
     }
 
-    public String getLogo() {
+
+    public Blob getLogo() {
         return logo;
     }
 
-    public void setLogo(String logo) {
+    public void setLogo(Blob logo) {
         this.logo = logo;
     }
-
     public Long getCosto() {
         return costo;
     }
