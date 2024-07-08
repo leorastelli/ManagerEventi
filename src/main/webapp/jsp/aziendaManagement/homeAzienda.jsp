@@ -88,12 +88,6 @@
             margin-bottom: 30px;
         }
 
-        .section h2 {
-            background-color: #007FFF;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
         form {
             display: grid;
             gap: 10px;
@@ -103,7 +97,8 @@
             font-weight: bold;
             text-align: left;
         }
-        form input[type="text"], form textarea {
+
+        section#dati-aziendali form input[type="text"]{
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -123,24 +118,29 @@
         .bottone-personalizzato:hover {
             background-color: #007FFF; /* Colore di sfondo al passaggio del mouse */
         }
-        section#dati-aziendali, section#acquista, section#spazipubblicitari{
+
+        .input {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        section#dati-aziendali, section#spazipubblicitari, section#acquista{
             margin-bottom: 30px;
-            max-width: 1000px;
+            max-width: 600px;
             margin: 0 auto;
 
         }
 
-        section#dati-aziendali h2, section#acquista h2, section#spazipubblicitari {
+        section#dati-aziendali h2, section#spazipubblicitari h2, section#acquista h2 {
             background-color: #A6FBFF;
             padding: 10px;
             border-radius: 5px;
+            text-align: center;
+            width: 825px;
         }
 
-        section#dati-aziendali form, section#acquista form, section#spazipubblicitari form{
-            font-weight: bold;
-        }
-
-        section#dati-aziendali form label, section#acquista form label, section#spazipubblicitari form label{
+        section#dati-aziendali form, section#spazipubblicitari form, section#acquista form {
             display: grid;
             grid-template-columns: 1fr;
             gap: 2px;
@@ -152,24 +152,24 @@
             margin: auto;
         }
 
-        section#dati-aziendali form label, section#acquista form label{
-            margin-right: 50px;
-            font-weight: bold;
-            text-align: left;
-            gap: 10px;
-        }
-
-        section#dati-aziendali form input[type="text"]{
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+        #spazipubblicitari input[type="text"] {
+            border: none;
+            background-color: transparent;
+            color: #000;
+            pointer-events: none;
         }
 
         .centrato {
-            text-align: center; /* Centra il testo orizzontalmente */
-            margin: auto; /* Utile se vuoi centrare un blocco (es. div) orizzontalmente */
-            width: 100%; /* Assicura che l'elemento occupi tutta la larghezza */
-            /* Per centrare verticalmente potresti dover lavorare con altezza e display flex sul contenitore genitore */
+            text-align: center;
+            margin: auto;
+            width: 100%;
+            font-weight: normal;
+        }
+
+        .tendina {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
         footer {
@@ -237,7 +237,7 @@
                 <input type="text" id="nome" name="nome" value="<%= loggedAzienda.getNome() %>"> <br>
                 <label for="indirizzo">Indirizzo: </label>
                 <input type="text" id="indirizzo" name="indirizzo" value="<%= loggedAzienda.getIndirizzo()%>" > <br>
-                <label for="citta">Città: </label>
+                <label for="citta">Citt&agrave;: </label>
                 <input type="text" id="citta" name="citta" value="<%= loggedAzienda.getCitta()%>" > <br>
                 <label for="provincia">Provincia: </label>
                 <input type="text" id="provincia" name="provincia" value="<%= loggedAzienda.getProvincia()%>" > <br>
@@ -264,11 +264,11 @@
             <h3>Spazio n&deg; <%= i + 1 %></h3>
             <form method="post" action="Dispatcher" name="modifyForm">
                 <label for="nome-evento">Evento contenente spazio: </label>
-                <input type="text" id="nome-evento" name="nome-evento" value="<%= sponsorizzazioni.get(i).getIdEvento().getNome() %>" disabled> <br>
+                <input type="text" id="nome-evento" name="nome-evento" value="<%= sponsorizzazioni.get(i).getIdEvento().getNome() %>" disabled>
                 <label for="logo">Logo: </label>
-                <input type="text" id="logo" name="logo" value="<%= sponsorizzazioni.get(i).getLogo() %>" disabled> <br>
+                <input type="text" id="logo" name="logo" value="<%= sponsorizzazioni.get(i).getLogo() %>" disabled>
                 <label for="costo">Costo: </label>
-                <input type="text" id="costo" name="costo" value="<%= sponsorizzazioni.get(i).getCosto() %>" disabled > <br>
+                <input type="text" id="costo" name="costo" value="<%= sponsorizzazioni.get(i).getCosto() %> &euro;" disabled >
 
                 <form name="deleteSpazio" action="Dispatcher" method="post">
                     <input type="hidden" name="controllerAction" value="AziendaManagement.deleteSpazio"/>
@@ -282,22 +282,25 @@
 
         <section id="acquista" class="section">
             <h2>Acquista spazi pubblicitari</h2>
-            <p class="centrato">Scegli se decidere tu quale evento esibir&agrave; la tua azienda oppure affidati alla scelta casuale!</p>
-            <label for="imglogo">Carica il logo che desideri esibire</label>
-            <input type="file" id="imglogo">
+            <h3 class="centrato" style="font-weight: normal; text-align: center; width: 825px;" >Scegli se decidere tu quale evento esibir&agrave; la tua azienda oppure affidati alla scelta casuale!</h3>
+            <br>
+            <label style="font-weight: bold" for="imglogo">Carica il logo che desideri esibire</label>
+            <input class="input" type="file" id="imglogo"> <br>
+            <img id="logoPreview" style="max-width: 200px; max-height: 200px">
+            <br>
             <label>
-                <input type="checkbox"> Scelta casuale
-            </label>
+                <input type="checkbox"> Scelta casuale dell'evento
+            </label> <br>
             <label>
-                <input type="checkbox"> Con scelta dell evento a prezzo doppio
+                <input type="checkbox" id="checkboxEvento"> Con scelta dell'evento a prezzo doppio
             </label>
-            <label >Nome dell Evento</label>
-            <select name="evento">
-                <option value=""></option>
+            <select class="tendina" id="evento" name="evento" style="display: none">
+                <option value="">Eventi</option>
                 <% for (i=0; i< eventi.size(); i++) { %>
                 <option value="<%= eventi.get(i) %>"><%= eventi.get(i) %></option>
                 <% } %>
             </select>
+            <br> <br>
             <button class="bottone-personalizzato">Procedi con l'acquisto</button>
         </section>
     </div>
@@ -305,6 +308,32 @@
     <p>Effettua il login per vedere i tuoi dati.</p>
     <% } %>
 </main>
+<script>
+    window.onload = function() {
+        document.getElementById('imglogo').addEventListener('change', function(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onloadend = function() {
+                document.getElementById('logoPreview').src = reader.result;
+            }
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('logoPreview').src = "";
+            }
+        });
+
+        document.getElementById('checkboxEvento').addEventListener('change', function() {
+            var selectEvento = document.getElementById('evento');
+            if (this.checked) {
+                selectEvento.style.display = 'block';
+            } else {
+                selectEvento.style.display = 'none';
+            }
+        });
+    };
+
+</script>
 <footer>
     &copy; 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>
     Credits: Leonardo Rastelli e Anna Ferri

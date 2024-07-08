@@ -73,8 +73,8 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
       margin: 20px auto;
       width: 90%;
       height: 90%;
-      max-width: 700px;
-      max-height: 700px;
+      max-width: 600px;
+      max-height: 600px;
       position: relative;
       cursor: pointer;
     }

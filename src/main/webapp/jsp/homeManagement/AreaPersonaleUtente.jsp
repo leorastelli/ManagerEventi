@@ -88,22 +88,13 @@
             width: 75%;
             margin-left: 5%;
         }
-        .section {
-            margin-bottom: 30px;
-        }
+
         .section h2 {
             background-color: #007FFF;
             padding: 10px;
             border-radius: 5px;
         }
-        .ticket, .subscription {
-            display: flex;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin: 10px 0;
-            background-color: white;
-        }
+
         .ticket img, .subscription img {
             max-width: 100px;
             margin-right: 20px;
