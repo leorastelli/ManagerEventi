@@ -31,6 +31,107 @@ public class AziendaManagement {
 
     public static void view(HttpServletRequest request, HttpServletResponse response){
 
+        DAOFactory sessionDAOFactory= null;
+        Azienda loggedAzienda;
+        String applicationMessage = null;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            AziendaDAO sessionAziendaDAO = sessionDAOFactory.getAziendDAO();
+            loggedAzienda = sessionAziendaDAO.findLoggedUser();
+
+            sessionDAOFactory.commitTransaction();
+
+            request.setAttribute("loggedAzienda",loggedAzienda);
+            request.setAttribute("viewUrl", "aziendaManagement/homeAzienda");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
+    public static void modifyAzienda(HttpServletRequest request, HttpServletResponse response) {
+        DAOFactory sessionDAOFactory= null;
+        Azienda loggedAzienda;
+        DAOFactory daoFactory = null;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            AziendaDAO sessionAziendaDAO = sessionDAOFactory.getAziendDAO();
+            loggedAzienda = sessionAziendaDAO.findLoggedUser();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+            daoFactory.beginTransaction();
+
+            AziendaDAO aziendaDAO = daoFactory.getAziendDAO();
+            Azienda azienda = aziendaDAO.getAziendaByPartitaIVA(request.getParameter("partitaIVA"));
+
+            loggedAzienda.setPartitaIVA(request.getParameter("partitaIVA"));
+            loggedAzienda.setNome(request.getParameter("nome"));
+            loggedAzienda.setIndirizzo(request.getParameter("indirizzo"));
+            loggedAzienda.setCitta(request.getParameter("citta"));
+            loggedAzienda.setProvincia(request.getParameter("provincia"));
+            loggedAzienda.setCap(request.getParameter("cap"));
+            loggedAzienda.setStato(request.getParameter("stato"));
+            loggedAzienda.setTelefono(request.getParameter("telefono"));
+            loggedAzienda.setEmail(request.getParameter("email"));
+            loggedAzienda.setPassword(request.getParameter("password"));
+
+            try {
+                aziendaDAO.updateAzienda(loggedAzienda);
+                sessionAziendaDAO.updateAzienda(loggedAzienda);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            view(request,response);
+
+            request.setAttribute("loggedAzienda",loggedAzienda);
+            request.setAttribute("viewUrl", "aziendaManagement/homeAzienda");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        }
+
 
     }
 
