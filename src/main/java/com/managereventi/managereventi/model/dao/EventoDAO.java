@@ -19,4 +19,6 @@ public interface EventoDAO {
     public String getEventoByNome(String nome);
 
     public List<Evento> getEventiByOrganizzatore(String idOrganizzatore);
+
+    public List<String> getEventiPerSponsorizzazione();
 }

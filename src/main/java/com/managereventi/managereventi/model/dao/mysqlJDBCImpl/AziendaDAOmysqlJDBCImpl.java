@@ -125,8 +125,10 @@ public class AziendaDAOmysqlJDBCImpl implements AziendaDAO {
                     + "   Cap = ?, "
                     + "   Stato = ?, "
                     + "   Telefono = ?, "
-                    + "   Email = ? "
+                    + "   Email = ?, "
+                    + "   password = ?"
                     + " WHERE PartitaIVA = ?";
+
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, azienda.getNome());
@@ -137,7 +139,9 @@ public class AziendaDAOmysqlJDBCImpl implements AziendaDAO {
             ps.setString(6, azienda.getStato());
             ps.setString(7, azienda.getTelefono());
             ps.setString(8, azienda.getEmail());
-            ps.setString(9, azienda.getPartitaIVA());
+            ps.setString(9, azienda.getPassword());
+            ps.setString(10, azienda.getPartitaIVA());
+
 
             ps.executeUpdate();
         }

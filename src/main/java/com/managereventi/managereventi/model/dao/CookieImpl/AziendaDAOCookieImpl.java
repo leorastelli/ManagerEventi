@@ -24,6 +24,14 @@ public class AziendaDAOCookieImpl implements AziendaDAO {
         Azienda loggedUser = new Azienda();
         loggedUser.setPartitaIVA(azienda.getPartitaIVA());
         loggedUser.setNome(azienda.getNome());
+        loggedUser.setIndirizzo(azienda.getIndirizzo());
+        loggedUser.setTelefono(azienda.getTelefono());
+        loggedUser.setEmail(azienda.getEmail());
+        loggedUser.setPassword(azienda.getPassword());
+        loggedUser.setCap(azienda.getCap());
+        loggedUser.setCitta(azienda.getCitta());
+        loggedUser.setProvincia(azienda.getProvincia());
+        loggedUser.setStato(azienda.getStato());
 
         Cookie cookie;
         cookie = new Cookie("loggedAzienda", encode(loggedUser));
@@ -67,14 +75,27 @@ public class AziendaDAOCookieImpl implements AziendaDAO {
 
     @Override
     public Azienda findLoggedUser() {
-        return null;
+
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("loggedAzienda")) {
+                        return decode(cookie.getValue());
+                    }
+                }
+            }
+
+            return null;
     }
 
 
     private String encode(Azienda loggedUser) {
 
         String encodedLoggedUser;
-        encodedLoggedUser = loggedUser.getPartitaIVA() + "#" + loggedUser.getNome();
+        encodedLoggedUser = loggedUser.getPartitaIVA() + "#" + loggedUser.getNome() + "#" +
+                loggedUser.getIndirizzo() + "#" + loggedUser.getTelefono() + "#" + loggedUser.getEmail() + "#" +
+                loggedUser.getPassword() + "#" + loggedUser.getCap() + "#" + loggedUser.getCitta() + "#" +
+                loggedUser.getProvincia() + "#" + loggedUser.getStato();
         encodedLoggedUser = encodedLoggedUser.replaceAll("\\s", "");
         return encodedLoggedUser;
 
@@ -88,6 +109,15 @@ public class AziendaDAOCookieImpl implements AziendaDAO {
 
         loggedUser.setPartitaIVA(values[0]);
         loggedUser.setNome(values[1]);
+        loggedUser.setIndirizzo(values[2]);
+        loggedUser.setTelefono(values[3]);
+        loggedUser.setEmail(values[4]);
+        loggedUser.setPassword(values[5]);
+        loggedUser.setCap(values[6]);
+        loggedUser.setCitta(values[7]);
+        loggedUser.setProvincia(values[8]);
+        loggedUser.setStato(values[9]);
+
 
         return loggedUser;
 

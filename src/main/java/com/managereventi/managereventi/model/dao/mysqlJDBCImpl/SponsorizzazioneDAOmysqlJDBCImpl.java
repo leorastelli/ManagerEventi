@@ -40,6 +40,30 @@ public class SponsorizzazioneDAOmysqlJDBCImpl implements SponsorizzazioneDAO {
         return sponsorizzazione;
     }
 
+    Sponsorizzazione read1(ResultSet rs) {
+        Sponsorizzazione sponsorizzazione = new Sponsorizzazione();
+        Azienda azienda = new Azienda();
+        Evento evento = new Evento();
+
+        sponsorizzazione.setPartitaIVA(azienda);
+        sponsorizzazione.setIdEvento(evento);
+
+
+        try {
+            sponsorizzazione.getPartitaIVA().setPartitaIVA(rs.getString("PartitaIVA"));
+            sponsorizzazione.getIdEvento().setIdEvento(rs.getString("IdEvento"));
+            sponsorizzazione.setLogo(rs.getBlob("Logo"));
+            sponsorizzazione.setCosto(rs.getLong("Costo"));
+            sponsorizzazione.getIdEvento().setNome(rs.getString("Nome"));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return sponsorizzazione;
+    }
+
+
     @Override
     public Sponsorizzazione createSponsorizzazione(Sponsorizzazione sponsorizzazione) {
         PreparedStatement ps;
@@ -74,14 +98,16 @@ public class SponsorizzazioneDAOmysqlJDBCImpl implements SponsorizzazioneDAO {
         List<Sponsorizzazione> sponsorizzazioni = new ArrayList<>();
 
         try{
-            String sql = "SELECT * FROM Sponsorizzazione WHERE PartitaIVA = ?";
+            String sql = "SELECT * FROM Sponsorizzazione s " +
+                    "JOIN Evento e ON s.IdEvento = e.IdEvento " +
+                    "WHERE s.PartitaIVA = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, partitaIVA);
 
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                sponsorizzazioni.add(read(rs));
+                sponsorizzazioni.add(read1(rs));
             }
 
             rs.close();

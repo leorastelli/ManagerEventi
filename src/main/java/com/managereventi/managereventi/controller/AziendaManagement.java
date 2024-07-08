@@ -1,11 +1,9 @@
 package com.managereventi.managereventi.controller;
 
-import com.managereventi.managereventi.model.dao.AziendaDAO;
-import com.managereventi.managereventi.model.dao.DAOFactory;
-import com.managereventi.managereventi.model.dao.OrganizzatoreDAO;
-import com.managereventi.managereventi.model.dao.UtenteDAO;
+import com.managereventi.managereventi.model.dao.*;
 import com.managereventi.managereventi.model.mo.Azienda;
 import com.managereventi.managereventi.model.mo.Organizzatore;
+import com.managereventi.managereventi.model.mo.Sponsorizzazione;
 import com.managereventi.managereventi.model.mo.Utente;
 import com.managereventi.managereventi.services.Config.Configuration;
 import com.managereventi.managereventi.services.Logservice.LogService;
@@ -18,6 +16,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -34,6 +33,9 @@ public class AziendaManagement {
         DAOFactory sessionDAOFactory= null;
         Azienda loggedAzienda;
         String applicationMessage = null;
+        DAOFactory daoFactory = null;
+        List<Sponsorizzazione> sponsorizzazioni;
+        List<String> eventi;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -45,12 +47,24 @@ public class AziendaManagement {
             sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
             sessionDAOFactory.beginTransaction();
 
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
             AziendaDAO sessionAziendaDAO = sessionDAOFactory.getAziendDAO();
             loggedAzienda = sessionAziendaDAO.findLoggedUser();
 
+            SponsorizzazioneDAO sponsorizzazioneDAO = daoFactory.getSponsorizzazioneDAO();
+            EventoDAO eventoDAO = daoFactory.getEventoDAO();
+            sponsorizzazioni = sponsorizzazioneDAO.getSponsorizzazioniByPartitaIVA(loggedAzienda.getPartitaIVA());
+            eventi = eventoDAO.getEventiPerSponsorizzazione();
+
+
             sessionDAOFactory.commitTransaction();
 
+            request.setAttribute("loggedOn",loggedAzienda!=null);
             request.setAttribute("loggedAzienda",loggedAzienda);
+            request.setAttribute("sponsorizzazioni",sponsorizzazioni);
+            request.setAttribute("eventi",eventi);
             request.setAttribute("viewUrl", "aziendaManagement/homeAzienda");
 
         } catch (Exception e) {
@@ -94,7 +108,6 @@ public class AziendaManagement {
             AziendaDAO aziendaDAO = daoFactory.getAziendDAO();
             Azienda azienda = aziendaDAO.getAziendaByPartitaIVA(request.getParameter("partitaIVA"));
 
-            loggedAzienda.setPartitaIVA(request.getParameter("partitaIVA"));
             loggedAzienda.setNome(request.getParameter("nome"));
             loggedAzienda.setIndirizzo(request.getParameter("indirizzo"));
             loggedAzienda.setCitta(request.getParameter("citta"));
@@ -104,6 +117,7 @@ public class AziendaManagement {
             loggedAzienda.setTelefono(request.getParameter("telefono"));
             loggedAzienda.setEmail(request.getParameter("email"));
             loggedAzienda.setPassword(request.getParameter("password"));
+
 
             try {
                 aziendaDAO.updateAzienda(loggedAzienda);
@@ -118,6 +132,7 @@ public class AziendaManagement {
 
             view(request,response);
 
+            request.setAttribute("loggedOn",loggedAzienda!=null);
             request.setAttribute("loggedAzienda",loggedAzienda);
             request.setAttribute("viewUrl", "aziendaManagement/homeAzienda");
 

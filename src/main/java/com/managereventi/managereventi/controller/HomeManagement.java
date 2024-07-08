@@ -46,7 +46,7 @@ public class HomeManagement {
 
             sessionDAOFactory.commitTransaction();
 
-            request.setAttribute("loggedOn",loggedUser!=null || loggedOrganizzatore!=null);
+            request.setAttribute("loggedOn",loggedUser!=null || loggedOrganizzatore!=null || loggedAzienda!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("loggedOrganizzatore", loggedOrganizzatore);
             request.setAttribute("loggedAzienda", loggedAzienda);

@@ -232,7 +232,7 @@
             <h2>I miei dati personali</h2>
             <form method="post" action="Dispatcher" name="modifyForm">
                 <label for="partitaIVA">Partita IVA: </label>
-                <input type="text" id="partitaIVA" name="partitaIVA" value="<%= loggedAzienda.getPartitaIVA() %>"> <br>
+                <input type="text" id="partitaIVA" name="partitaIVA" value="<%= loggedAzienda.getPartitaIVA() %>" disabled> <br>
                 <label for="nome">Nome Azienda: </label>
                 <input type="text" id="nome" name="nome" value="<%= loggedAzienda.getNome() %>"> <br>
                 <label for="indirizzo">Indirizzo: </label>
@@ -264,11 +264,11 @@
             <h3>Spazio n&deg; <%= i + 1 %></h3>
             <form method="post" action="Dispatcher" name="modifyForm">
                 <label for="nome-evento">Evento contenente spazio: </label>
-                <input type="text" id="nome-evento" name="nome-evento" value="<%= sponsorizzazioni.get(i).getIdEvento().getNome() %>"> <br>
+                <input type="text" id="nome-evento" name="nome-evento" value="<%= sponsorizzazioni.get(i).getIdEvento().getNome() %>" disabled> <br>
                 <label for="logo">Logo: </label>
-                <input type="text" id="logo" name="logo" value="<%= sponsorizzazioni.get(i).getLogo() %>" > <br>
+                <input type="text" id="logo" name="logo" value="<%= sponsorizzazioni.get(i).getLogo() %>" disabled> <br>
                 <label for="costo">Costo: </label>
-                <input type="text" id="costo" name="costo" value="<%= sponsorizzazioni.get(i).getCosto() %>" > <br>
+                <input type="text" id="costo" name="costo" value="<%= sponsorizzazioni.get(i).getCosto() %>" disabled > <br>
 
                 <form name="deleteSpazio" action="Dispatcher" method="post">
                     <input type="hidden" name="controllerAction" value="AziendaManagement.deleteSpazio"/>
@@ -291,9 +291,12 @@
             <label>
                 <input type="checkbox"> Con scelta dell evento a prezzo doppio
             </label>
-            <label for="evento">Nome dell Evento</label>
-            <select id="evento">
-                <option value="">Seleziona evento</option>
+            <label >Nome dell Evento</label>
+            <select name="evento">
+                <option value=""></option>
+                <% for (i=0; i< eventi.size(); i++) { %>
+                <option value="<%= eventi.get(i) %>"><%= eventi.get(i) %></option>
+                <% } %>
             </select>
             <button class="bottone-personalizzato">Procedi con l'acquisto</button>
         </section>
