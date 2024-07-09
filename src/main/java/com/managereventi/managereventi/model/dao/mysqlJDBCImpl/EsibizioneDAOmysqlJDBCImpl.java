@@ -83,7 +83,31 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
 
     @Override
     public Esibizione getEsibizioneById(String idEsibizione) {
-        return null;
+        PreparedStatement ps;
+        Esibizione esibizione = null;
+
+        try{
+            String sql
+                    = " SELECT * "
+                    + " FROM esibizione "
+                    + " WHERE "
+                    + "   IdEsibizione = ? AND deleted = 'N'";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, idEsibizione);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                esibizione = read(rs);
+            }
+
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return esibizione;
     }
 
     @Override

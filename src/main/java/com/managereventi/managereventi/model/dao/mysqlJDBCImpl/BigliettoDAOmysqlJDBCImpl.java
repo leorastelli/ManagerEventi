@@ -197,10 +197,16 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
             String sql
                     = " SELECT IdEvento "
                     + " FROM Biglietto "
-                    + " WHERE IdUtente = ? AND Stato = 1";
+                    + " WHERE IdUtente = ? AND Stato = 1" +
+                    "  UNION" +
+                    " SELECT IdEvento" +
+                    " FROM Abbonamento" +
+                    " WHERE IdUtente = ? AND deleted = 'N'";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, utente.getIdUtente());
+            ps.setString(2, utente.getIdUtente());
+
 
             ResultSet rs = ps.executeQuery();
 

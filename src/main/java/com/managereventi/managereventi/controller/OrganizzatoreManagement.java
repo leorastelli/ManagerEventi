@@ -12,6 +12,10 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,8 +54,7 @@ public class OrganizzatoreManagement {
             loggedOrganizzatore.setCognome(request.getParameter("cognome"));
             loggedOrganizzatore.setEmail(request.getParameter("email"));
             loggedOrganizzatore.setPassword(request.getParameter("password"));
-            loggedOrganizzatore.setIdOrganizzatore(loggedOrganizzatore.getIdOrganizzatore());
-            loggedOrganizzatore.setCodiceAutorizzazione(request.getParameter("codiceaut"));
+            //loggedOrganizzatore.setIdOrganizzatore(loggedOrganizzatore.getIdOrganizzatore());
 
             try {
                 organizzatoreDAO.updateOrganizzatore(loggedOrganizzatore);
@@ -149,6 +152,144 @@ public class OrganizzatoreManagement {
                 if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
             } catch (Throwable t) {
             }
+        }
+
+    }
+
+    public static void modifyEsibizione(HttpServletRequest request, HttpServletResponse response){
+        DAOFactory sessionDAOFactory= null;
+        Organizzatore loggedOrganizzatore;
+        DAOFactory daoFactory = null;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
+            loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+            daoFactory.beginTransaction();
+
+
+            EsibizioneDAO esibizioneDAO = daoFactory.getEsibizioneDAO();
+            Esibizione esibizione = esibizioneDAO.getEsibizioneById(request.getParameter("IdEsibizione"));
+
+            esibizione.setNome(request.getParameter("nome-esibizione"));
+            esibizione.setDescrizione(request.getParameter("descrizione"));
+            esibizione.setGenere(request.getParameter("genere"));
+            Time durata = Time.valueOf(LocalTime.parse(request.getParameter("durata"), DateTimeFormatter.ofPattern("HH:mm:ss")));
+            esibizione.setDurata(durata);
+            Time oraInizio = Time.valueOf(LocalTime.parse(request.getParameter("ora-inizio"), DateTimeFormatter.ofPattern("HH:mm:ss")));
+            esibizione.setOraInizio(oraInizio);
+            esibizione.setNumeroArtisti(Integer.parseInt(request.getParameter("numero-artisti")));
+
+            try {
+                esibizioneDAO.updateEsibizione(esibizione);
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            commonView(daoFactory, sessionDAOFactory, request);
+
+            request.setAttribute("loggedOrganizzatore",loggedOrganizzatore);
+            request.setAttribute("viewUrl", "adminManagement/homeAdmin");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        }
+
+
+
+
+    }
+
+    public static void modifyEvento(HttpServletRequest request, HttpServletResponse response){
+        DAOFactory sessionDAOFactory= null;
+        Organizzatore loggedOrganizzatore;
+        DAOFactory daoFactory = null;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
+            loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+            daoFactory.beginTransaction();
+
+
+            EventoDAO eventoDAO = daoFactory.getEventoDAO();
+            Evento evento = eventoDAO.getEventoById(request.getParameter("idEvento"));
+
+            evento.setNome(request.getParameter("nome-evento"));
+            evento.setNumEsibizioni(Integer.parseInt(request.getParameter("num-esibizione")));
+            evento.setDescrizione(request.getParameter("descrizione-evento"));
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            // Parsing delle date da stringa a java.util.Date
+            Date parsedDataInizio = dateFormat.parse(request.getParameter("data-inizio"));
+            Date parsedDataFine = dateFormat.parse(request.getParameter("data-fine"));
+
+            // Conversione da java.util.Date a java.sql.Date
+            java.sql.Date sqlDataInizio = new java.sql.Date(parsedDataInizio.getTime());
+            java.sql.Date sqlDataFine = new java.sql.Date(parsedDataFine.getTime());
+
+            // Imposta le date nell'oggetto evento
+            evento.setDataInizio(sqlDataInizio);
+            evento.setDataFine(sqlDataFine);
+
+            try {
+                eventoDAO.updateEvento(evento);
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            commonView(daoFactory, sessionDAOFactory, request);
+
+            request.setAttribute("loggedOrganizzatore",loggedOrganizzatore);
+            request.setAttribute("viewUrl", "adminManagement/homeAdmin");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
         }
 
     }

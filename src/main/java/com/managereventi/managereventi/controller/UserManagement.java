@@ -116,7 +116,6 @@ public class UserManagement {
             loggedUser.setCognome(request.getParameter("cognome"));
             loggedUser.setEmail(request.getParameter("email"));
             loggedUser.setPassword(request.getParameter("password"));
-            loggedUser.setIdUtente(request.getParameter("idutente"));
 
             try {
                 utenteDAO.updateUtente(loggedUser);

@@ -261,7 +261,7 @@
             <h3>Esibizione n&deg; <%= i + 1 %></h3>
             <form method="post" action="Dispatcher" name="modifyForm">
                 <label for="codice-esibizione">Codice esibizione: </label>
-                <input type="text" id="codice-esibizione" name="codice-esibizione" value="<%= esibizioni.get(i).getIdEsibizione() %>"> <br>
+                <input type="text" id="codice-esibizione" name="codice-esibizione" value="<%= esibizioni.get(i).getIdEsibizione() %>" disabled> <br>
                 <label for="nome-esibizione">Nome esibizione: </label>
                 <input type="text" id="nome-esibizione" name="nome-esibizione" value="<%= esibizioni.get(i).getNome() %>"> <br>
                 <label for="durata">Durata: </label>
@@ -273,17 +273,25 @@
                 <label for="numero-artisti">Codice di Autorizzazione: </label>
                 <input type="text" id="numero-artisti" name="numero-artisti" value="<%= esibizioni.get(i).getNumeroArtisti() %>" > <br>
                 <label for="codiceevento">Codice evento al quale appartiene: </label>
-                <input type="text" id="codiceevento" name="codiceevento" value="<%= esibizioni.get(i).getIdEvento().getIdEvento()%>" > <br>
+                <input type="text" id="codiceevento" name="codiceevento" value="<%= esibizioni.get(i).getIdEvento().getIdEvento()%>" disabled > <br>
                 <label for="codice-luogo">Codice luogo nel quale si svolge: </label>
-                <input type="text" id="codice-luogo" name="codice-luogo" value="<%= esibizioni.get(i).getIdLuogo().getIdLuogo() %>" > <br>
+                <input type="text" id="codice-luogo" name="codice-luogo" value="<%= esibizioni.get(i).getIdLuogo().getIdLuogo() %>" disabled> <br>
                 <label for="descrizione">Descrizione: </label>
                 <input type="text" id="descrizione" name="descrizione" value="<%= esibizioni.get(i).getDescrizione() %>" > <br>
 
-                <form name="deleteEsibizione" action="Dispatcher" method="post">
-                    <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.deleteEsibizione"/>
-                    <input type="hidden" name="IdEsibizione" value="<%=esibizioni.get(i).getIdEsibizione()%>"/>
-                    <input type="submit" class="bottone-personalizzato" value="Elimina esibizione">
-                </form>
+                <input type="hidden" name="IdEsibizione" value="<%=esibizioni.get(i).getIdEsibizione()%>"/>
+
+
+                <!-- Bottone per eliminare l'esibizione -->
+                <button type="submit" class="bottone-personalizzato" name="controllerAction" value="OrganizzatoreManagement.deleteEsibizione">
+                    Elimina esibizione
+                </button>
+
+                <!-- Bottone per modificare l'esibizione -->
+                <button type="submit" class="bottone-personalizzato" name="controllerAction" value="OrganizzatoreManagement.modifyEsibizione">
+                    Modifica esibizione
+                </button>
+
             </form>
             <% } %>
             <% } %>
@@ -296,24 +304,30 @@
             <h3>Evento n&deg; <%= i + 1 %></h3>
             <form method="post" action="Dispatcher" name="modifyForm">
                 <label for="codice-evento">Codice evento: </label>
-                <input type="text" id="codice-evento" name="codice-evento" value="<%= eventi.get(i).getIdEvento() %>"> <br>
+                <input type="text" id="codice-evento" name="codice-evento" value="<%= eventi.get(i).getIdEvento() %>" disabled> <br>
                 <label for="nome-evento">Nome evento: </label>
                 <input type="text" id="nome-evento" name="nome-evento" value="<%= eventi.get(i).getNome() %>"> <br>
                 <label for="data-inizio">Data di inizio: </label>
-                <input type="text" id="data-inizio" name="data-inizio" value="<%= eventi.get(i).getDataInizio() %>" > <br>
+                <input type="date" id="data-inizio" name="data-inizio" value="<%= eventi.get(i).getDataInizio() %>" > <br>
                 <label for="data-fine">Data di fine: </label>
-                <input type="text" id="data-fine" name="data-fine" value="<%= eventi.get(i).getDataFine() %>" > <br>
+                <input type="date" id="data-fine" name="data-fine" value="<%= eventi.get(i).getDataFine() %>" > <br>
                 <label for="num-esibizioni">Numero di esibizioni: </label>
                 <input type="text" id="num-esibizioni" name="num-esibizione" value="<%= eventi.get(i).getNumEsibizioni() %>" > <br>
-
                 <label for="descrizione-evento">Descrizione: </label>
                 <input type="text" id="descrizione-evento" name="descrizione-evento" value="<%= eventi.get(i).getDescrizione() %>" > <br>
 
-                <form name="deleteEvento" action="Dispatcher" method="post">
-                    <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.deleteEvento"/>
-                    <input type="hidden" name="idEvento" value="<%=eventi.get(i).getIdEvento()%>"/>
-                    <input type="submit" class="bottone-personalizzato" value="Elimina evento">
-                </form>
+                <input type="hidden" name="idEvento" value="<%=eventi.get(i).getIdEvento()%>"/>
+
+                <!-- Bottone per eliminare l'esibizione -->
+                <button type="submit" class="bottone-personalizzato" name="controllerAction" value="OrganizzatoreManagement.deleteEvento">
+                    Elimina evento
+                </button>
+
+                <!-- Bottone per modificare l'esibizione -->
+                <button type="submit" class="bottone-personalizzato" name="controllerAction" value="OrganizzatoreManagement.modifyEvento">
+                    Modifica evento
+                </button>
+
             </form>
             <% } %>
             <% } %>
