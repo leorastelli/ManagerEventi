@@ -285,7 +285,8 @@
             <h3 class="centrato" style="font-weight: normal; text-align: center; width: 825px;" >Scegli se decidere tu quale evento esibir&agrave; la tua azienda oppure affidati alla scelta casuale!</h3>
             <br>
             <label style="font-weight: bold" for="imglogo">Carica il logo che desideri esibire</label>
-            <input class="input" type="file" id="imglogo"> <br>
+            <input class="input" type="file" id="imglogo" accept="image/png, image/jpeg, image/gif">
+            <br>
             <img id="logoPreview" style="max-width: 200px; max-height: 200px">
             <br>
             <label>
