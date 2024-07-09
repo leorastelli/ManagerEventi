@@ -358,15 +358,20 @@
             <%if (candidature != null && !candidature.isEmpty()) { %>
             <% for (i=0; i<candidature.size();i++) {%>
             <h3>Candidato n&deg; <%= i + 1 %></h3>
-            <form>
+            <form method="post" action="Dispatcher" name="Candidature">
                 <%--@declare id="posizione"--%>
                 <%--@declare id="telefono"--%><%--@declare id="descrizione-candidatura"--%>
                 <label for="posizione">Posizione lavorativa: </label> <span class="posizione"><%= candidature.get(i).getPosizione() %></span> <br>
                 <label for="nome">Nome candidato/a: </label> <span class="nome"><%= candidature.get(i).getNome() %></span> <br>
                 <label for="cognome">Cognome candidato/a: </label> <span class="cognome"><%= candidature.get(i).getCognome() %></span> <br>
                 <label for="email">Email candidato/a: </label> <span class="email"><%= candidature.get(i).getEmail() %></span> <br>
+                    <input type="hidden" name="email" value="<%= candidature.get(i).getEmail() %>">
                 <label for="telefono">Telefono candidato/a: </label> <span class="telefono"><%= candidature.get(i).getTelefono() %></span> <br>
                 <label for="descrizione-candidatura">Descrizione: </label> <span class="descrizione-candidatura"><%= candidature.get(i).getDescrizione() %></span>
+                <textarea name="mailtext" placeholder="Scrivi un messaggio per il candidato"></textarea>
+
+                    <input type="submit" class="bottone-personalizzato" value="Invia la mail">
+                    <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.sendEmailCandidato"/>
             </form>
             <% } %>
             <% } %>

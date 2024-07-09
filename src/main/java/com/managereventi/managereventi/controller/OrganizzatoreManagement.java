@@ -758,6 +758,84 @@ public class OrganizzatoreManagement {
 
     }
 
+    public static void sendEmailCandidato(HttpServletRequest request, HttpServletResponse response){
+
+        DAOFactory sessionDAOFactory= null;
+        Organizzatore loggedOrganizzatore;
+        DAOFactory daoFactory = null;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
+            loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+            daoFactory.beginTransaction();
+
+            Properties properties = new Properties();
+            properties.put("mail.smtp.host", "out.virgilio.it");
+            properties.put("mail.smtp.port", "587");
+            properties.put("mail.smtp.auth", "true");
+            properties.put("mail.smtp.starttls.enable", "true");
+
+            String username = "primeevent@virgilio.it";
+            String password = "Eventiprimi1!";
+
+            String htmlContent = "<h1>" + "L'organizzatore: " + loggedOrganizzatore.getNome() + loggedOrganizzatore.getCognome() + " ti sta contattando. "
+                    + "</h1>"+"<p>" +  request.getParameter("mailtext") + "</p>";
+
+
+            Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(request.getParameter("email")));
+            message.setSubject("Candidatura");
+
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            mimeBodyPart.setContent(htmlContent, "text/html");
+
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mimeBodyPart);
+
+            message.setContent(multipart);
+
+            Transport.send(message);
+
+
+            sessionDAOFactory.commitTransaction();
+            daoFactory.commitTransaction();
+
+
+            commonView(daoFactory, sessionDAOFactory, request);
+            request.setAttribute("viewUrl", "adminManagement/homeAdmin");
+
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+        }
+
+    }
+
     private static void commonView(DAOFactory daoFactory, DAOFactory sessionDAOFactory, HttpServletRequest request){
         List<Evento> eventi;
         List<Esibizione> esibizioni;
