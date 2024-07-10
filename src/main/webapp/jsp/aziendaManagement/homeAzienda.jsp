@@ -121,12 +121,6 @@
             background-color: #007FFF; /* Colore di sfondo al passaggio del mouse */
         }
 
-        .input {
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
         section#dati-aziendali, section#spazipubblicitari, section#acquista{
             margin-bottom: 30px;
             max-width: 600px;
@@ -175,12 +169,14 @@
         }
 
         footer {
-
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            clear: both;
             text-align: center;
             padding: 10px;
             background-color: #6fa3ef;
             color: #fff;
-            clear: both;
             margin-top: 20px;
         }
 

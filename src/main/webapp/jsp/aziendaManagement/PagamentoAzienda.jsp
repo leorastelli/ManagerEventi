@@ -6,23 +6,18 @@
 <%
     Boolean loggedOnObj = (Boolean) request.getAttribute("loggedOn");
     boolean loggedOn = (loggedOnObj != null) ? loggedOnObj : false;
-
     int i;
     Azienda loggedAzienda = (Azienda) request.getAttribute("loggedAzienda");
-
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "Home";
-    //List<Evento> eventi = (List<Evento>) request.getAttribute("eventi");
-    //List<Sponsorizzazione> sponsorizzazioni = (List<Sponsorizzazione>) request.getAttribute("sponsorizzazioni");
     Sponsorizzazione spazio = (Sponsorizzazione) request.getAttribute("spazio");
-    //List<Sponsorizzazione> spaziAcquistati = getSpaziAziendaLoggata(loggedAzienda.getPartitaIVA());
 %>
 <html>
 <style>
     body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
     }
 
     header {
@@ -59,10 +54,10 @@
     }
 
     main {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px;
-    background-color: white;
+        display: flex;
+        justify-content: space-around;
+        padding: 20px;
+        background-color: white;
     }
 
     form {
@@ -77,26 +72,25 @@
     }
 
     section {
-    width: 100%;
+        width: 100%;
     }
 
     section h2 {
-    margin-top: 0;
+        margin-top: 0;
     }
 
     label {
-    display: block;
-    margin: 10px 0 5px;
+        display: block;
+        margin: 10px 0 5px;
     }
 
     input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-    border: #dddddd 1px solid;
-    background-color: transparent;
-    border-radius: 5px;
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        border: #dddddd 1px solid;
+        background-color: transparent;
+        border-radius: 5px;
         margin-bottom: 2px;
     }
 
@@ -131,15 +125,18 @@
     }
 
     .bottone-personalizzato:hover {
-        background-color: #007FFF; /* Colore di sfondo al passaggio del mouse */
+        background-color: #007FFF;
     }
 
     footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        clear: both;
         text-align: center;
         padding: 10px;
         background-color: #6fa3ef;
         color: #fff;
-        clear: both;
         margin-top: 20px;
     }
 

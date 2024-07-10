@@ -101,14 +101,13 @@
             margin: auto;
         }
         .bottone-personalizzato:hover {
-            background-color: #007FFF; /* Colore di sfondo al passaggio del mouse */
+            background-color: #007FFF;
         }
 
         .centrato {
-            text-align: center; /* Centra il testo orizzontalmente */
-            margin: auto; /* Utile se vuoi centrare un blocco (es. div) orizzontalmente */
-            width: 100%; /* Assicura che l'elemento occupi tutta la larghezza */
-            /* Per centrare verticalmente potresti dover lavorare con altezza e display flex sul contenitore genitore */
+            text-align: center;
+            margin: auto;
+            width: 100%;
         }
 
         .testo-centrato {
@@ -120,12 +119,14 @@
             position: fixed;
             bottom: 0;
             width: 100%;
+            clear: both;
             text-align: center;
             padding: 10px;
             background-color: #6fa3ef;
             color: #fff;
             margin-top: 20px;
         }
+
 
     </style>
     <script>

@@ -94,6 +94,10 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
       font-size: 40px;
     }
     footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      clear: both;
       text-align: center;
       padding: 10px;
       background-color: #6fa3ef;

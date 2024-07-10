@@ -243,12 +243,14 @@
         }
 
         footer {
-
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            clear: both;
             text-align: center;
             padding: 10px;
             background-color: #6fa3ef;
             color: #fff;
-            clear: both;
             margin-top: 20px;
         }
 
