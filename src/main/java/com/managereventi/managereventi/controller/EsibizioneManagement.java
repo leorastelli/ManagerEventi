@@ -12,7 +12,5 @@ public class EsibizioneManagement {
     public static void view(HttpServletRequest request, HttpServletResponse response){
 
 
-
-
     }
 }
