@@ -1,24 +1,23 @@
 package com.managereventi.managereventi.controller;
 
 import com.managereventi.managereventi.model.dao.*;
-import com.managereventi.managereventi.model.mo.Azienda;
-import com.managereventi.managereventi.model.mo.Organizzatore;
-import com.managereventi.managereventi.model.mo.Sponsorizzazione;
-import com.managereventi.managereventi.model.mo.Utente;
+import com.managereventi.managereventi.model.mo.*;
 import com.managereventi.managereventi.services.Config.Configuration;
 import com.managereventi.managereventi.services.Logservice.LogService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -332,4 +331,188 @@ public class AziendaManagement {
         }
 
     }
+
+    public static void pagamento(HttpServletRequest request, HttpServletResponse response){
+
+        DAOFactory sessionDAOFactory= null;
+        Azienda loggedAzienda;
+        String applicationMessage = null;
+        DAOFactory daoFactory = null;
+        List<Sponsorizzazione> sponsorizzazioni;
+        List<String> eventi;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            AziendaDAO sessionAziendaDAO = sessionDAOFactory.getAziendDAO();
+            loggedAzienda = sessionAziendaDAO.findLoggedUser();
+
+            SponsorizzazioneDAO sponsorizzazioneDAO = daoFactory.getSponsorizzazioneDAO();
+            EventoDAO eventoDAO = daoFactory.getEventoDAO();
+            Sponsorizzazione sponsorizzazione = new Sponsorizzazione();
+
+            sponsorizzazione.setPartitaIVA(loggedAzienda);
+            sponsorizzazione.setCosto(Long.parseLong(request.getParameter("costo")));
+            sponsorizzazione.setIdEvento(daoFactory.getEventoDAO().getEventoById(request.getParameter("idEvento")));
+            //sponsorizzazione.getIdEvento().setIdEvento(request.getParameter("idEvento"));
+
+            Part filePart = request.getPart("logo");
+            InputStream fileContent = filePart.getInputStream();
+
+            // Converti l'InputStream in un Blob
+            Blob logoBlob = inputStreamToBlob(fileContent);
+            sponsorizzazione.setLogo(logoBlob);
+
+            try{
+                sponsorizzazioneDAO.createSponsorizzazione(sponsorizzazione);
+                request.setAttribute("viewUrl", "aziendaManagement/homeAzienda");
+            }
+            catch (Exception e) {
+                //throw new RuntimeException(e);
+                request.setAttribute("viewUrl", "homeManagement/ErrorPage");
+            }
+
+            sponsorizzazioni = sponsorizzazioneDAO.getSponsorizzazioniByPartitaIVA(loggedAzienda.getPartitaIVA());
+            eventi = eventoDAO.getEventiPerSponsorizzazione();
+
+            sessionDAOFactory.commitTransaction();
+            daoFactory.commitTransaction();
+
+
+            request.setAttribute("loggedOn",loggedAzienda!=null);
+            request.setAttribute("loggedAzienda",loggedAzienda);
+            request.setAttribute("sponsorizzazioni",sponsorizzazioni);
+            request.setAttribute("eventi",eventi);
+
+
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
+    public static void gotoPagamento(HttpServletRequest request, HttpServletResponse response){
+
+        DAOFactory sessionDAOFactory= null;
+        Azienda loggedAzienda;
+        DAOFactory daoFactory = null;
+        Sponsorizzazione sponsorizzazione = null;
+        String applicationMessage = null;
+        List<String> eventi;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+            daoFactory.beginTransaction();
+
+            AziendaDAO sessionAziendaDAO = sessionDAOFactory.getAziendDAO();
+            loggedAzienda = sessionAziendaDAO.findLoggedUser();
+
+            SponsorizzazioneDAO sponsorizzazioneDAO = daoFactory.getSponsorizzazioneDAO();
+            EventoDAO eventoDAO = daoFactory.getEventoDAO();
+
+            eventi = eventoDAO.getEventiPerSponsorizzazione();
+
+            Sponsorizzazione spazio = new Sponsorizzazione();
+
+            spazio.setPartitaIVA(loggedAzienda);
+            String scelta = request.getParameter("scelta");
+
+            if ("casuale".equals(scelta)) {
+                spazio.setCosto(Long.parseLong("100"));
+                Random random = new Random();
+                int indiceCasuale = random.nextInt(eventi.size());
+                String eventoCasuale = eventi.get(indiceCasuale);
+                Evento evento = eventoDAO.getEventiByNome(eventoCasuale);
+                spazio.setIdEvento(evento);
+
+            } else if ("scelta".equals(scelta)) {
+                spazio.setCosto(Long.parseLong("200"));
+                Evento evento = eventoDAO.getEventiByNome(request.getParameter("evento"));
+                spazio.setIdEvento(evento);
+            }
+
+            Part filePart = request.getPart("logo");
+            InputStream fileContent = filePart.getInputStream();
+
+            // Converti l'InputStream in un Blob
+            Blob logoBlob = inputStreamToBlob(fileContent);
+            spazio.setLogo(logoBlob);
+
+
+            sessionDAOFactory.commitTransaction();
+            daoFactory.commitTransaction();
+
+            request.setAttribute("loggedOn",loggedAzienda!=null);
+            request.setAttribute("loggedAzienda",loggedAzienda);
+            request.setAttribute("sponsorizzazione",sponsorizzazione);
+            request.setAttribute("eventi",eventi);
+            request.setAttribute("spazio",spazio);
+            request.setAttribute("viewUrl", "aziendaManagement/PagamentoAzienda");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+                if (daoFactory != null) daoFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
+    private static Blob inputStreamToBlob(InputStream inputStream) {
+        try {
+            byte[] bytes = inputStream.readAllBytes();  // Leggi tutto il contenuto dell'input stream in un array di byte
+            return new javax.sql.rowset.serial.SerialBlob(bytes);  // Crea un Blob utilizzando SerialBlob
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();  // Gestisci l'eccezione appropriatamente
+            return null;
+        } finally {
+            try {
+                inputStream.close();  // Chiudi l'InputStream
+            } catch (IOException e) {
+                e.printStackTrace();  // Gestisci l'eccezione nel caso di errore di chiusura
+            }
+        }
+    }
+
 }

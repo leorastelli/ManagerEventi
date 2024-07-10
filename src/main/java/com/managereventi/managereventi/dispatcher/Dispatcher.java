@@ -8,12 +8,14 @@ import java.util.logging.Level;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import com.managereventi.managereventi.services.Logservice.LogService;
 
 @WebServlet(name = "Dispatcher", urlPatterns = {"/Dispatcher"})
+@MultipartConfig
 public class Dispatcher extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

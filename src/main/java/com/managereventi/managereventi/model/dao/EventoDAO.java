@@ -14,7 +14,7 @@ public interface EventoDAO {
 
     public List<String> getNomiEventi();
 
-    public List<Evento> getEventiByNome(String nome);
+    public Evento getEventiByNome(String nome);
 
     public String getEventoByNome(String nome);
 

@@ -1,6 +1,8 @@
 <%@page session="false"%>
 <%@page import="java.util.List"%>
 <%@ page import="com.managereventi.managereventi.model.mo.*" %>
+<%@ page import="java.util.Base64" %>
+<%@ page import="java.sql.Blob" %>
 
 <%
     Boolean loggedOnObj = (Boolean) request.getAttribute("loggedOn");
@@ -260,13 +262,24 @@
         <section id="spazipubblicitari" class="section">
             <h2>Spazi pubblicitari acquistati</h2>
             <% if (sponsorizzazioni != null && !sponsorizzazioni.isEmpty()) {%>
-            <% for (i=0; i<sponsorizzazioni.size();i++) {%>
+            <% for (i=0; i<sponsorizzazioni.size();i++) {
+
+                Blob logoBlob = sponsorizzazioni.get(i).getLogo();
+
+                // Ottieni la lunghezza del Blob (dimensione dell'array di byte)
+                int blobLength = (int) logoBlob.length();
+
+                // Leggi i dati del Blob in un array di byte
+                byte[] logoBytes = logoBlob.getBytes(1, blobLength);
+                // Assume che getLogo() restituisca un byte array del BLOB
+                String base64Image = Base64.getEncoder().encodeToString(logoBytes);%>
             <h3>Spazio n&deg; <%= i + 1 %></h3>
             <form method="post" action="Dispatcher" name="modifyForm">
                 <label for="nome-evento">Evento contenente spazio: </label>
                 <input type="text" id="nome-evento" name="nome-evento" value="<%= sponsorizzazioni.get(i).getIdEvento().getNome() %>" disabled>
                 <label for="logo">Logo: </label>
                 <input type="text" id="logo" name="logo" value="<%= sponsorizzazioni.get(i).getLogo() %>" disabled>
+                <img src="data:image/jpeg;base64, <%= base64Image %>" alt="Logo dell'azienda">
                 <label for="costo">Costo: </label>
                 <input type="text" id="costo" name="costo" value="<%= sponsorizzazioni.get(i).getCosto() %> &euro;" disabled >
 
@@ -284,25 +297,31 @@
             <h2>Acquista spazi pubblicitari</h2>
             <h3 class="centrato" style="font-weight: normal; text-align: center; width: 825px;" >Scegli se decidere tu quale evento esibir&agrave; la tua azienda oppure affidati alla scelta casuale!</h3>
             <br>
-            <label style="font-weight: bold" for="imglogo">Carica il logo che desideri esibire</label>
-            <input class="input" type="file" id="imglogo" accept="image/png, image/jpeg, image/gif">
-            <br>
-            <img id="logoPreview" style="max-width: 200px; max-height: 200px">
-            <br>
-            <label>
-                <input type="checkbox"> Scelta casuale dell'evento
-            </label> <br>
-            <label>
-                <input type="checkbox" id="checkboxEvento"> Con scelta dell'evento a prezzo doppio
-            </label>
-            <select class="tendina" id="evento" name="evento" style="display: none">
-                <option value="">Eventi</option>
-                <% for (i=0; i< eventi.size(); i++) { %>
-                <option value="<%= eventi.get(i) %>"><%= eventi.get(i) %></option>
-                <% } %>
-            </select>
-            <br> <br>
-            <button class="bottone-personalizzato">Procedi con l'acquisto</button>
+            <form method="post" action="Dispatcher" name="acquistaForm" enctype="multipart/form-data">
+                <label style="font-weight: bold" for="imglogo">Carica il logo che desideri esibire</label>
+                <input class="input" type="file" id="imglogo" name="logo" accept="image/png, image/jpeg, image/gif">
+                <br>
+                <img id="logoPreview" style="max-width: 200px; max-height: 200px">
+                <br>
+                <label>
+                    <input type="radio" name="scelta" value="casuale"> Scelta casuale dell'evento
+                </label>
+                <br>
+                <label>
+                    <input type="radio" id="checkboxEvento" name="scelta" value="scelta"> Con scelta dell'evento a prezzo doppio
+                </label>
+                <select class="tendina" id="evento" name="evento" style="display: none">
+                    <option value="">Eventi</option>
+                    <% for (i=0; i< eventi.size(); i++) { %>
+                    <option value="<%= eventi.get(i) %>"><%= eventi.get(i) %></option>
+                    <% } %>
+                </select>
+                <br>
+                <br>
+                <input type="hidden" name="controllerAction" value="AziendaManagement.gotoPagamento" />
+                <input type="submit" class="bottone-personalizzato" value="Procedi con l'acquisto">
+            </form>
+
         </section>
     </div>
     <% } else{ %>

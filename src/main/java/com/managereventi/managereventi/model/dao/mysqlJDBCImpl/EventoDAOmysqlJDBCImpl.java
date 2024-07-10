@@ -232,8 +232,29 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
     }
 
     @Override
-    public List<Evento> getEventiByNome(String nome) {
-        return null;
+    public Evento getEventiByNome(String nome) {
+        PreparedStatement ps;
+        Evento evento = null;
+
+        try{
+            String sql = " SELECT * "
+                    + " FROM evento "
+                    + " WHERE "
+                    + "   Nome = ? AND deleted = 'N'";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, nome);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                evento = read(rs);
+            }
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return evento;
     }
 
     @Override

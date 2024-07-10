@@ -7,12 +7,13 @@
     boolean loggedOn = (loggedOnObj != null) ? loggedOnObj : false;
 
     int i;
-    Utente loggedUser = (Utente) request.getAttribute("loggedUser");
     Azienda loggedAzienda = (Azienda) request.getAttribute("loggedAzienda");
 
-    String applicationMessage = (String) request.getAttribute("applicationMessage");String menuActiveLink = "Home";
-    List<Evento> eventi = (List<Evento>) request.getAttribute("eventi");
-    List<Sponsorizzazione> sponsorizzazioni = (List<Sponsorizzazione>) request.getAttribute("sponsorizzazioni");
+    String applicationMessage = (String) request.getAttribute("applicationMessage");
+    String menuActiveLink = "Home";
+    //List<Evento> eventi = (List<Evento>) request.getAttribute("eventi");
+    //List<Sponsorizzazione> sponsorizzazioni = (List<Sponsorizzazione>) request.getAttribute("sponsorizzazioni");
+    Sponsorizzazione spazio = (Sponsorizzazione) request.getAttribute("spazio");
     //List<Sponsorizzazione> spaziAcquistati = getSpaziAziendaLoggata(loggedAzienda.getPartitaIVA());
 %>
 <html>
@@ -145,48 +146,53 @@
 </header>
 
 <main>
-    <form id="paymentForm">
+    <form id="paymentForm" name="pagamentoForm" method="post" action="Dispatcher" enctype="multipart/form-data">
         <section>
             <h2>Indirizzo di fatturazione</h2>
             <label for="nomeAzienda">Nome Azienda</label>
-            <input type="text" id="nomeAzienda" name="nomeAzienda">
+            <input type="text" id="nomeAzienda" name="nomeAzienda" required>
             <label for="indirizzo">Indirizzo</label>
-            <input type="text" id="indirizzo" name="indirizzo">
+            <input type="text" id="indirizzo" name="indirizzo" required>
             <label for="citta">Città</label>
-            <input type="text" id="citta" name="citta">
+            <input type="text" id="citta" name="citta" required>
             <label for="provincia">Provincia</label>
-            <input type="text" id="provincia" name="provincia">
+            <input type="text" id="provincia" name="provincia" required>
             <label for="cap">CAP</label>
-            <input type="text" id="cap" name="cap">
+            <input type="text" id="cap" name="cap" required>
             <label for="stato">Stato</label>
-            <input type="text" id="stato" name="stato">
+            <input type="text" id="stato" name="stato" required>
             <label for="telefono">Numero di telefono</label>
-            <input type="tel" id="telefono" name="telefono">
+            <input type="tel" id="telefono" name="telefono" required>
             <label for="email">E-mail</label>
-            <input type="email" id="email" name="email">
+            <input type="email" id="email" name="email" required>
         </section>
         <section>
             <h2>Dettagli Pagamento</h2>
             <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome">
+            <input type="text" id="nome" name="nome" required>
             <label for="cognome">Cognome</label>
-            <input type="text" id="cognome" name="cognome">
+            <input type="text" id="cognome" name="cognome" required>
             <label for="numeroCarta">Numero Carta</label>
-            <input type="text" id="numeroCarta" name="numeroCarta">
+            <input type="text" id="numeroCarta" name="numeroCarta" pattern="\d{16}" maxlength="16" required>
             <label for="scadenza">Data Scadenza</label>
-            <input type="text" id="scadenza" name="scadenza">
+            <input type="month" id="scadenza" name="scadenza" required>
             <label for="cvv">CVV</label>
-            <input type="text" id="cvv" name="cvv">
+            <input type="text" id="cvv" name="cvv" required maxlength="3" pattern="\d{3}" >
         </section>
         <section>
             <h2>Riepilogo Ordine</h2>
-            <p>Nome Evento </p>
+            <p>Nome Evento: <%= spazio.getIdEvento().getIdEvento()%> </p>
             <p>Nome Azienda: <%= loggedAzienda.getNome() %></p>
-                <% //for(Sponsorizzazione spazio : spaziAcquistati) { %>
-            <p>Spazio <%= //spazio.getIdEvento() %> <span class="prezzo"><%= //spazio.getCosto() %> €</span></p>
-                <% //} %>
+            <p>Spazio <%= spazio.getIdEvento().getNome() %> <span class="prezzo"><%= spazio.getCosto() %> €</span></p>
+
             <p><strong>TOTALE</strong> <span class="prezzo">Calcola il totale qui</span></p>
-        <button class="bottone-personalizzato" type="submit">Paga Ora</button>
+            <input type="hidden" name="controllerAction" value="AziendaManagement.pagamento" />
+            <input type="hidden" name="partitaIVA" value="<%=  spazio.getPartitaIVA().getPartitaIVA()%> ">
+            <input type="hidden" name="idEvento" value="<%= spazio.getIdEvento().getIdEvento()%>">
+            <input type="hidden" name="costo" value="<%= spazio.getCosto() %>">
+            <input type="hidden" name="logo" value="<%= spazio.getLogo()%>">
+            <input type="submit" value="Paga ora" class="bottone-personalizzato">
+        </section>
     </form>
 </main>
 <footer>
