@@ -131,4 +131,16 @@ public class mysqlJDBCDAOFactory extends DAOFactory{
     public CandidatureDAO getCandidaturaDAO() {
         return new CandidatureDAOmysqlJDBCImpl(connection);
     }
+
+    @Override
+    public DomandaDAO getDomandaDAO() {
+        return new DomandaDAOmysqlJDBCImpl(connection);
+    }
+
+    @Override
+    public RispostaDAO getRispostaDAO() {
+        return new RispostaDAOmysqlJDBCImpl(connection);
+    }
+
+
 }

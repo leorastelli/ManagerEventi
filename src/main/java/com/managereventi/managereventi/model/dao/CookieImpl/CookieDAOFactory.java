@@ -108,4 +108,14 @@ public class CookieDAOFactory extends DAOFactory{
         return null;
     }
 
+    @Override
+    public DomandaDAO getDomandaDAO() {
+        return null;
+    }
+
+    @Override
+    public RispostaDAO getRispostaDAO() {
+        return null;
+    }
+
 }

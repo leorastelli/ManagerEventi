@@ -53,5 +53,9 @@ public abstract class DAOFactory {
 
   public abstract CandidatureDAO getCandidaturaDAO();
 
+  public abstract DomandaDAO getDomandaDAO();
+
+    public abstract RispostaDAO getRispostaDAO();
+
 }
 

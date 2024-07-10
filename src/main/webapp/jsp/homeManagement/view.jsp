@@ -158,6 +158,10 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
     <img src="images/lavoraconnoi.jpg" alt="Lavora con Noi">
     <p>Lavora con Noi</p>
   </div>
+  <div class="image-box" onclick="location.href='Dispatcher?controllerAction=DomandeManagement.view'">
+    <img src="images/domande.jpg" alt="Domande degli utenti">
+    <p>Domande degli utenti</p>
+  </div>
 </main>
 <footer>
   &copy; 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>
