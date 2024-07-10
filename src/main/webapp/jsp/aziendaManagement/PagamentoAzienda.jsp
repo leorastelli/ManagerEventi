@@ -1,6 +1,7 @@
 <%@page session="false"%>
 <%@page import="java.util.List"%>
 <%@ page import="com.managereventi.managereventi.model.mo.*" %>
+<%@ page import="java.io.InputStream" %>
 
 <%
     Boolean loggedOnObj = (Boolean) request.getAttribute("loggedOn");
@@ -181,20 +182,37 @@
         </section>
         <section>
             <h2>Riepilogo Ordine</h2>
-            <p>Nome Evento: <%= spazio.getIdEvento().getIdEvento()%> </p>
+            <p>Nome Evento: <%= spazio.getIdEvento().getNome()%> </p>
             <p>Nome Azienda: <%= loggedAzienda.getNome() %></p>
             <p>Spazio <%= spazio.getIdEvento().getNome() %> <span class="prezzo"><%= spazio.getCosto() %> €</span></p>
-
+            <label style="font-weight: bold" for="imglogo">Carica il logo che desideri esibire</label>
+            <input class="input" type="file" id="imglogo" name="logo" accept="image/png, image/jpeg">
+            <img id="logoPreview" style="max-width: 200px; max-height: 200px">
             <p><strong>TOTALE</strong> <span class="prezzo">Calcola il totale qui</span></p>
             <input type="hidden" name="controllerAction" value="AziendaManagement.pagamento" />
             <input type="hidden" name="partitaIVA" value="<%=  spazio.getPartitaIVA().getPartitaIVA()%> ">
             <input type="hidden" name="idEvento" value="<%= spazio.getIdEvento().getIdEvento()%>">
             <input type="hidden" name="costo" value="<%= spazio.getCosto() %>">
-            <input type="hidden" name="logo" value="<%= spazio.getLogo()%>">
             <input type="submit" value="Paga ora" class="bottone-personalizzato">
         </section>
     </form>
 </main>
+<script>
+    window.onload = function() {
+        document.getElementById('imglogo').addEventListener('change', function (event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                document.getElementById('logoPreview').src = reader.result;
+            }
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('logoPreview').src = "";
+            }
+        });
+    }
+</script>
 <footer>
     &copy; 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>
     Credits: Leonardo Rastelli e Anna Ferri

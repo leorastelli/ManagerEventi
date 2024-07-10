@@ -298,17 +298,15 @@
             <h3 class="centrato" style="font-weight: normal; text-align: center; width: 825px;" >Scegli se decidere tu quale evento esibir&agrave; la tua azienda oppure affidati alla scelta casuale!</h3>
             <br>
             <form method="post" action="Dispatcher" name="acquistaForm" enctype="multipart/form-data">
-                <label style="font-weight: bold" for="imglogo">Carica il logo che desideri esibire</label>
-                <input class="input" type="file" id="imglogo" name="logo" accept="image/png, image/jpeg, image/gif">
                 <br>
                 <img id="logoPreview" style="max-width: 200px; max-height: 200px">
                 <br>
                 <label>
-                    <input type="radio" name="scelta" value="casuale"> Scelta casuale dell'evento
+                    <input type="radio" name="scelta" value="casuale" required> Scelta casuale dell'evento
                 </label>
                 <br>
                 <label>
-                    <input type="radio" id="checkboxEvento" name="scelta" value="scelta"> Con scelta dell'evento a prezzo doppio
+                    <input type="radio" id="checkboxEvento" name="scelta" value="scelta" required> Con scelta dell'evento a prezzo doppio
                 </label>
                 <select class="tendina" id="evento" name="evento" style="display: none">
                     <option value="">Eventi</option>
@@ -330,7 +328,7 @@
 </main>
 <script>
     window.onload = function() {
-        document.getElementById('imglogo').addEventListener('change', function(event) {
+       /* document.getElementById('imglogo').addEventListener('change', function(event) {
             var file = event.target.files[0];
             var reader = new FileReader();
             reader.onloadend = function() {
@@ -341,7 +339,7 @@
             } else {
                 document.getElementById('logoPreview').src = "";
             }
-        });
+        });*/
 
         document.getElementById('checkboxEvento').addEventListener('change', function() {
             var selectEvento = document.getElementById('evento');

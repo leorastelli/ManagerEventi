@@ -378,8 +378,8 @@ public class AziendaManagement {
                 request.setAttribute("viewUrl", "aziendaManagement/homeAzienda");
             }
             catch (Exception e) {
-                //throw new RuntimeException(e);
-                request.setAttribute("viewUrl", "homeManagement/ErrorPage");
+                throw new RuntimeException(e);
+                //request.setAttribute("viewUrl", "homeManagement/ErrorPage");
             }
 
             sponsorizzazioni = sponsorizzazioneDAO.getSponsorizzazioniByPartitaIVA(loggedAzienda.getPartitaIVA());
@@ -462,12 +462,11 @@ public class AziendaManagement {
                 spazio.setIdEvento(evento);
             }
 
-            Part filePart = request.getPart("logo");
-            InputStream fileContent = filePart.getInputStream();
+            //Part filePart = request.getPart("logo");
+            //InputStream fileContent = filePart.getInputStream();
 
             // Converti l'InputStream in un Blob
-            Blob logoBlob = inputStreamToBlob(fileContent);
-            spazio.setLogo(logoBlob);
+            //Blob logoBlob = inputStreamToBlob(fileContent);
 
 
             sessionDAOFactory.commitTransaction();

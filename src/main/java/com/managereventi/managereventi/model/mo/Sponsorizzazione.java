@@ -33,6 +33,7 @@ public class Sponsorizzazione {
     public void setLogo(Blob logo) {
         this.logo = logo;
     }
+
     public Long getCosto() {
         return costo;
     }

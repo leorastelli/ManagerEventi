@@ -95,7 +95,7 @@ public class CookieDAOFactory extends DAOFactory{
 
     @Override
     public SponsorizzazioneDAO getSponsorizzazioneDAO() {
-        throw new UnsupportedOperationException("Not supported yet.");
+       throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
