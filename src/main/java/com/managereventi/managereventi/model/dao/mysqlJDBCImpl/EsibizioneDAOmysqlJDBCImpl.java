@@ -41,6 +41,7 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
             esibizione.getIdEvento().setIdEvento(rs.getString("IdEvento"));
             esibizione.getIdLuogo().setIdLuogo(rs.getString("IdLuogo"));
             esibizione.setPostiDisponibili(rs.getInt("PostiDisponibili"));
+            esibizione.setImmagine(rs.getBlob("Immagine"));
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -56,8 +57,8 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
         try{
             String sql
                     = " INSERT INTO esibizione "
-                    + "   (IdEsibizione, Nome, Descrizione, Durata, OraInizio, Genere, NumeroArtisti, IdOrganizzatore, IdEvento, IdLuogo, PostiDisponibili) "
-                    + " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+                    + "   (IdEsibizione, Nome, Descrizione, Durata, OraInizio, Genere, NumeroArtisti, IdOrganizzatore, IdEvento, IdLuogo, PostiDisponibili, Immagine) "
+                    + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, esibizione.getIdEsibizione());
@@ -71,6 +72,7 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
             ps.setString(9, esibizione.getIdEvento().getIdEvento());
             ps.setString(10, esibizione.getIdLuogo().getIdLuogo());
             ps.setInt(11, esibizione.getPostiDisponibili());
+            ps.setBlob(12, esibizione.getImmagine());
 
             ps.executeUpdate();
 
@@ -133,7 +135,7 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
                     + "   IdOrganizzatore = ?,"
                     + "   IdEvento = ?,"
                     + "   IdLuogo = ?,"
-                    + "   PostiDisponibili = ?"
+                    + "   PostiDisponibili = ?, Immagine = ?"
                     + " WHERE "
                     + "   IdEsibizione = ?";
 
@@ -148,7 +150,8 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
             ps.setString(8, esibizione.getIdEvento().getIdEvento());
             ps.setString(9, esibizione.getIdLuogo().getIdLuogo());
             ps.setInt(10, esibizione.getPostiDisponibili());
-            ps.setString(11, esibizione.getIdEsibizione());
+            ps.setBlob(11, esibizione.getImmagine());
+            ps.setString(12, esibizione.getIdEsibizione());
 
             ps.executeUpdate();
 

@@ -1,5 +1,6 @@
 package com.managereventi.managereventi.model.mo;
 
+import java.sql.Blob;
 import java.sql.Time;
 
 public class Esibizione {
@@ -14,6 +15,7 @@ public class Esibizione {
     private Evento evento;
     private Luogo luogo;
     private Integer postiDisponibili;
+    private Blob immagine;
 
 
     // Metodi getter e setter per ogni campo
@@ -103,6 +105,14 @@ public class Esibizione {
 
     public void setPostiDisponibili(Integer postiDisponibili) {
         this.postiDisponibili = postiDisponibili;
+    }
+
+    public Blob getImmagine() {
+        return immagine;
+    }
+
+    public void setImmagine(Blob immagine) {
+        this.immagine = immagine;
     }
 
 }

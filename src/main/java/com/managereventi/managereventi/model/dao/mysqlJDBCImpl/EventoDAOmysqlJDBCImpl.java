@@ -34,6 +34,7 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
             evento.setDataFine(rs.getDate("DataFine"));
             evento.setNumEsibizioni(rs.getInt("NumEsibizioni"));
             evento.getOrganizzatore().setIdOrganizzatore(rs.getString("IdOrganizzatore"));
+            evento.setImmagine(rs.getBlob("Immagine"));
 
 
         } catch (Exception e) {
@@ -50,8 +51,8 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
         try{
             String sql
                     = " INSERT INTO evento "
-                    + "   (IdEvento, Nome, Descrizione, DataInizio, DataFine, NumEsibizioni, IdOrganizzatore) "
-                    + " VALUES (?,?,?,?,?,?,?)";
+                    + "   (IdEvento, Nome, Descrizione, DataInizio, DataFine, NumEsibizioni, IdOrganizzatore, Immagine) "
+                    + " VALUES (?,?,?,?,?,?,?,?)";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, evento.getIdEvento());
@@ -61,6 +62,7 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
             ps.setDate(5, evento.getDataFine());
             ps.setInt(6, evento.getNumEsibizioni());
             ps.setString(7, evento.getOrganizzatore().getIdOrganizzatore());
+            ps.setBlob(8, evento.getImmagine());
 
             ps.executeUpdate();
 
@@ -116,7 +118,8 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
                     + "   DataInizio = ?,"
                     + "   DataFine = ?,"
                     + "   NumEsibizioni = ?,"
-                    + "   IdOrganizzatore = ?"
+                    + "   IdOrganizzatore = ?,"
+                    + "   Immagine = ?"
                     + " WHERE "
                     + "   IdEvento = ?";
 
@@ -127,7 +130,8 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
             ps.setDate(4, evento.getDataFine());
             ps.setInt(5, evento.getNumEsibizioni());
             ps.setString(6, evento.getOrganizzatore().getIdOrganizzatore());
-            ps.setString(7, evento.getIdEvento());
+            ps.setBlob(7, evento.getImmagine());
+            ps.setString(8, evento.getIdEvento());
 
             ps.executeUpdate();
 

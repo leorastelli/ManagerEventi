@@ -1,5 +1,6 @@
 package com.managereventi.managereventi.model.mo;
 
+import java.sql.Blob;
 import java.sql.Date;
 
 public class Evento {
@@ -11,6 +12,8 @@ public class Evento {
     private Integer numEsibizioni;
     private Organizzatore organizzatore;
     private Esibizione[] esibizioni;
+    private Blob immagine;
+
 
     // Metodi getter e setter per ogni campo
     public String getIdEvento() {
@@ -75,6 +78,14 @@ public class Evento {
 
     public void setEsibizioni(Esibizione[] esibizioni) {
         this.esibizioni = esibizioni;
+    }
+
+    public Blob getImmagine() {
+        return immagine;
+    }
+
+    public void setImmagine(Blob immagine) {
+        this.immagine = immagine;
     }
 }
 
