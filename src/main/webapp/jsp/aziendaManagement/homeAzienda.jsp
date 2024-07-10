@@ -275,7 +275,7 @@
                 <input type="text" id="nome-evento" name="nome-evento" value="<%= sponsorizzazioni.get(i).getIdEvento().getNome() %>" disabled>
                 <label for="logo">Logo: </label>
                 <input type="text" id="logo" name="logo" value="<%= sponsorizzazioni.get(i).getLogo() %>" disabled>
-                <img src="data:image/jpeg;base64, <%= base64Image %>" alt="Logo dell'azienda">
+                <img src="data:image/jpeg;base64, <%= base64Image %>" style="max-width: 200px; max-height: 200px" alt="Logo dell'azienda">
                 <label for="costo">Costo: </label>
                 <input type="text" id="costo" name="costo" value="<%= sponsorizzazioni.get(i).getCosto() %> &euro;" disabled >
 
