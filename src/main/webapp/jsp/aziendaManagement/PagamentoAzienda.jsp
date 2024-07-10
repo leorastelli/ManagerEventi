@@ -66,14 +66,18 @@
     }
 
     form {
-    width: 60%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+        grid-template-areas:
+        "indirizzo pagamento"
+        "indirizzo riepilogo";
+        column-gap: 10%;
+        width: 90%;
     }
 
     section {
-    grid-column: span 1;
+    width: 100%;
     }
 
     section h2 {
@@ -90,27 +94,47 @@
     padding: 8px;
     margin-bottom: 10px;
     box-sizing: border-box;
+    border: #dddddd 1px solid;
+    background-color: transparent;
+    border-radius: 5px;
+        margin-bottom: 2px;
     }
 
     .bottone-personalizzato {
+        display: block;
+        margin: 0 auto;
+        width: fit-content;
         background-color: #6fa3ef;
         color: white;
         padding: 10px 20px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        width: 50%;
         align-items: center;
-        display: block;
-        margin: auto;
-
+        text-align: center;
     }
+
+    #indirizzo-fatturazione {
+        grid-area: indirizzo;
+    }
+
+    #dettagli-pagamento {
+        grid-area: pagamento;
+        justify-self: end;
+        margin-bottom: 20px;
+    }
+
+    #riepilogo-ordine {
+        grid-area: riepilogo;
+        justify-self: end;
+        align-self: end;
+    }
+
     .bottone-personalizzato:hover {
         background-color: #007FFF; /* Colore di sfondo al passaggio del mouse */
     }
 
     footer {
-
         text-align: center;
         padding: 10px;
         background-color: #6fa3ef;
@@ -148,13 +172,13 @@
 
 <main>
     <form id="paymentForm" name="pagamentoForm" method="post" action="Dispatcher" enctype="multipart/form-data">
-        <section>
+        <section id="indirizzo-fatturazione">
             <h2>Indirizzo di fatturazione</h2>
-            <label for="nomeAzienda">Nome Azienda</label>
+            <label for="nomeAzienda">Nome azienda</label>
             <input type="text" id="nomeAzienda" name="nomeAzienda" required>
             <label for="indirizzo">Indirizzo</label>
             <input type="text" id="indirizzo" name="indirizzo" required>
-            <label for="citta">Città</label>
+            <label for="citta">Citt&agrave;</label>
             <input type="text" id="citta" name="citta" required>
             <label for="provincia">Provincia</label>
             <input type="text" id="provincia" name="provincia" required>
@@ -167,28 +191,28 @@
             <label for="email">E-mail</label>
             <input type="email" id="email" name="email" required>
         </section>
-        <section>
+        <section id="dettagli-pagamento">
             <h2>Dettagli Pagamento</h2>
             <label for="nome">Nome</label>
             <input type="text" id="nome" name="nome" required>
             <label for="cognome">Cognome</label>
             <input type="text" id="cognome" name="cognome" required>
-            <label for="numeroCarta">Numero Carta</label>
+            <label for="numeroCarta">Numero carta</label>
             <input type="text" id="numeroCarta" name="numeroCarta" pattern="\d{16}" maxlength="16" required>
-            <label for="scadenza">Data Scadenza</label>
+            <label for="scadenza">Data di scadenza</label>
             <input type="month" id="scadenza" name="scadenza" required>
             <label for="cvv">CVV</label>
             <input type="text" id="cvv" name="cvv" required maxlength="3" pattern="\d{3}" >
         </section>
-        <section>
+        <section id="riepilogo-ordine">
             <h2>Riepilogo Ordine</h2>
-            <p>Nome Evento: <%= spazio.getIdEvento().getNome()%> </p>
-            <p>Nome Azienda: <%= loggedAzienda.getNome() %></p>
-            <p>Spazio <%= spazio.getIdEvento().getNome() %> <span class="prezzo"><%= spazio.getCosto() %> €</span></p>
+            <p><strong>Nome evento: </strong><%= spazio.getIdEvento().getNome()%> </p>
+            <p><strong>Nome azienda: </strong><%= loggedAzienda.getNome() %></p>
+            <p><strong>Spazio: </strong><%= spazio.getIdEvento().getNome() %> <span class="prezzo"><%= spazio.getCosto() %> &euro;</span></p>
             <label style="font-weight: bold" for="imglogo">Carica il logo che desideri esibire</label>
             <input class="input" type="file" id="imglogo" name="logo" accept="image/png, image/jpeg">
             <img id="logoPreview" style="max-width: 200px; max-height: 200px">
-            <p><strong>TOTALE</strong> <span class="prezzo">Calcola il totale qui</span></p>
+            <p><strong>Totale: </strong> <span class="prezzo">Calcola il totale qui</span></p>
             <input type="hidden" name="controllerAction" value="AziendaManagement.pagamento" />
             <input type="hidden" name="partitaIVA" value="<%=  spazio.getPartitaIVA().getPartitaIVA()%> ">
             <input type="hidden" name="idEvento" value="<%= spazio.getIdEvento().getIdEvento()%>">

@@ -165,7 +165,7 @@
             text-align: center;
             margin: auto;
             width: 100%;
-            font-weight: normal;
+            font-weight: bolder;
         }
 
         .tendina {
