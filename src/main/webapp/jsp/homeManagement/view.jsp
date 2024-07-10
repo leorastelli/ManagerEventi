@@ -146,7 +146,7 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
 </header>
 <main>
   <h1 class="title"> Scopri Eventi Unici!</h1>
-  <div class="image-box" onclick="location.href='pagamento.html'">
+  <div class="image-box" onclick="location.href='Dispatcher?controllerAction=EventiManagement.view'">
     <img src="images/evento.jpg" alt="Eventi">
     <p>Eventi</p>
   </div>

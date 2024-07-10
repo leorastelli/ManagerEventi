@@ -225,4 +225,32 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
 
         return esibizioni;
     }
+
+    @Override
+    public List<Esibizione> getEsibizioniByEvento(String idEvento) {
+        PreparedStatement ps;
+        List<Esibizione> esibizioni = new ArrayList<>();
+
+        try{
+            String sql
+                    = " SELECT * "
+                    + " FROM esibizione "
+                    + " WHERE "
+                    + "   IdEvento = ? AND deleted = 'N'";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, idEvento);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                esibizioni.add(read(rs));
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return esibizioni;
+    }
 }
