@@ -176,6 +176,8 @@
     <div class="question">
         <p><label>Utente:</label> <%= domanda.getUtente().getIdUtente() %></p>
         <p><label>Descrizione:</label> <%= domanda.getDescrizione() %></p>
+
+        <%-- Visualizza le risposte esistenti --%>
         <% if (domanda.getRisposte() != null && !domanda.getRisposte().isEmpty()) { %>
         <% for (i = 0; i < domanda.getRisposte().size(); i++) { %>
         <p><label>Risposta n:<%= i + 1 %>:</label> <%= domanda.getRisposte().get(i).getUtente().getIdUtente() %></p>
@@ -183,12 +185,12 @@
         <% } %>
         <% } %>
 
-        <%-- Form per inserire una nuova risposta, visibile solo se l'utente è autenticato --%>
-        <% if (loggedUser != null) { %>
+        <%-- Form per inserire una nuova risposta, visibile solo se l'utente è autenticato e non è l'autore della domanda --%>
+        <% if (loggedUser != null && !loggedUser.getIdUtente().equals(domanda.getUtente().getIdUtente())) { %>
         <form action="Dispatcher" method="post">
             <input type="hidden" name="controllerAction" value="DomandeManagement.addRisposta"/>
             <input type="hidden" name="idDomanda" value="<%= domanda.getIdDomanda() %>"/>
-            <label for="descrizioneRisposta<%= domanda.getIdDomanda() %>">Rispondi a questa domanda:</label><br>
+            <label for="descrizioneRisposta<%= domanda.getIdDomanda() %>">Rispondi a questa domanda: </label><br>
             <textarea id="descrizioneRisposta<%= domanda.getIdDomanda() %>" name="descrizioneRisposta" rows="4" cols="50"></textarea><br>
             <input type="submit" value="Invia" class="bottone-personalizzato">
         </form>
