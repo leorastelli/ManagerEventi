@@ -55,7 +55,7 @@ public class AziendaManagement {
             SponsorizzazioneDAO sponsorizzazioneDAO = daoFactory.getSponsorizzazioneDAO();
             EventoDAO eventoDAO = daoFactory.getEventoDAO();
             sponsorizzazioni = sponsorizzazioneDAO.getSponsorizzazioniByPartitaIVA(loggedAzienda.getPartitaIVA());
-            eventi = eventoDAO.getEventiPerSponsorizzazione();
+            eventi = eventoDAO.getEventiPerSponsorizzazione(loggedAzienda.getPartitaIVA());
 
 
             sessionDAOFactory.commitTransaction();
@@ -383,7 +383,7 @@ public class AziendaManagement {
             }
 
             sponsorizzazioni = sponsorizzazioneDAO.getSponsorizzazioniByPartitaIVA(loggedAzienda.getPartitaIVA());
-            eventi = eventoDAO.getEventiPerSponsorizzazione();
+            eventi = eventoDAO.getEventiPerSponsorizzazione(loggedAzienda.getPartitaIVA());
 
             sessionDAOFactory.commitTransaction();
             daoFactory.commitTransaction();
@@ -441,7 +441,7 @@ public class AziendaManagement {
             SponsorizzazioneDAO sponsorizzazioneDAO = daoFactory.getSponsorizzazioneDAO();
             EventoDAO eventoDAO = daoFactory.getEventoDAO();
 
-            eventi = eventoDAO.getEventiPerSponsorizzazione();
+            eventi = eventoDAO.getEventiPerSponsorizzazione(loggedAzienda.getPartitaIVA());
 
             Sponsorizzazione spazio = new Sponsorizzazione();
 

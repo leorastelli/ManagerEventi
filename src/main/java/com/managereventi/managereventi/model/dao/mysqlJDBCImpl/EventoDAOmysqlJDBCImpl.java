@@ -333,19 +333,20 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
     }
 
     @Override
-    public List<String> getEventiPerSponsorizzazione() {
+    public List<String> getEventiPerSponsorizzazione(String IdAzienda) {
         PreparedStatement ps;
 
         List<String> eventi = new ArrayList<>();
 
         try{
-            String sql = " SELECT Nome "
-                    + " FROM evento left outer join sponsorizzazione on evento.IdEvento = sponsorizzazione.IdEvento"
-                    + " WHERE deleted = 'N'"
-                    + " GROUP BY Nome"
-                    + " HAVING COUNT(*) < 4";
+            String sql = "SELECT evento.Nome FROM evento WHERE evento.deleted = 'N'" +
+                    " AND evento.IdEvento NOT IN " +
+                    "( SELECT sponsorizzazione.IdEvento  " +
+                         "FROM sponsorizzazione  WHERE sponsorizzazione.PartitaIVA = " +
+                    "?)  GROUP BY evento.Nome  HAVING COUNT(*) < 4";
 
             ps = conn.prepareStatement(sql);
+            ps.setString(1, IdAzienda);
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
