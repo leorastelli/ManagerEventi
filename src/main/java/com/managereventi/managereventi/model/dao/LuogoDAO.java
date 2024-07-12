@@ -5,7 +5,7 @@ import com.managereventi.managereventi.model.mo.Luogo;
 public interface LuogoDAO {
     public Luogo createLuogo(Luogo luogo);
     public Luogo getLuogoById(String idLuogo);
-    public List<Luogo> getAllLuoghi();
+    public List<String> getAllLuoghi();
     public void updateLuogo(Luogo luogo);
     public void deleteLuogo(String idLuogo);
 }

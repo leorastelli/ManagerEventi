@@ -159,6 +159,7 @@ public class EventiManagement {
         DAOFactory sessionDAOFactory= null;
         Utente loggedUser;
         Organizzatore loggedOrganizzatore;
+        List<String> luoghi;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -172,12 +173,19 @@ public class EventiManagement {
 
             OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
 
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            LuogoDAO luogoDAO = daoFactory.getLuogoDAO();
+            luoghi = luogoDAO.getAllLuoghi();
+
 
             loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
 
 
             request.setAttribute("loggedOn",loggedOrganizzatore!=null);
             request.setAttribute("loggedOrganizzatore", loggedOrganizzatore);
+            request.setAttribute("luoghi", luoghi);
             request.setAttribute("viewUrl", "eventiManagement/creaEvento");
 
         } catch (Exception e) {

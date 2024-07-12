@@ -6,6 +6,7 @@ import com.managereventi.managereventi.model.mo.Luogo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LuogoDAOmysqlJDBCImpl implements LuogoDAO {
@@ -77,8 +78,28 @@ public class LuogoDAOmysqlJDBCImpl implements LuogoDAO {
 
 
     @Override
-    public List<Luogo> getAllLuoghi() {
-        return null;
+    public List<String> getAllLuoghi() {
+        PreparedStatement ps;
+        List<String> luoghi = new ArrayList<>();
+
+        try {
+            String sql
+                    = " SELECT IdLuogo "
+                    + " FROM luogo ";
+
+            ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                luoghi.add(rs.getString("IdLuogo"));
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+
+        }
+
+        return luoghi;
     }
 
     @Override
