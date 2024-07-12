@@ -11,6 +11,7 @@
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "Home";
     Sponsorizzazione spazio = (Sponsorizzazione) request.getAttribute("spazio");
+    List<Luogo> luoghi = (List<Luogo>) request.getAttribute("luoghi");
 %>
 <html>
 <style>
@@ -183,6 +184,23 @@
             <input type="text" id="numes" name="numes" required>
             <input class="input" type="file" id="imglogo" name="logo" accept="image/png, image/jpeg">
             <img id="logoPreview" style="max-width: 200px; max-height: 200px">
+            <button id="aggiungiEsibizioneBtn">Aggiungi esibizione</button>
+                <label for="nomeEsibizione" style="display:none;">Nome esibizione</label>
+                <input type="text" id="nomeEsibizione" name="nomeEsibizione" style="display:none;">
+                <label for="descrizioneEsibizione" style="display:none;">Descrizione dell'esibizione</label>
+                <textarea id="descrizioneEsibizione" name="descrizione" style="display:none;"> </textarea>
+                <label for="durata" style="display:none;">Durata esibizione</label>
+                <input type="time" id="durata" name="durata" required style="display:none;">
+                <label for="Orainizio" style="display:none;">Ora di inizio</label>
+                <input type="time" id="Orainizio" name="orainizio" required style="display:none;">
+                <select class="tendina" name="luogo" style="display: none">
+                    <option value="">Luogo</option>
+                    <% for (i=0; i< luoghi.size(); i++) { %>
+                    <option value="<%= luoghi.get(i) %>"><%= luoghi.get(i) %></option>
+                    <% } %>
+                </select>
+                <label for="genere" style="display:none;">Genere </label>
+                <input type="text" id="genere" name="genere" required style="display:none;">
             <input type="hidden" name="idorganizzatore" value="<%=loggedOrganizzatore.getIdOrganizzatore()%>">
             <input type="hidden" name="controllerAction" value="EventiManagement.creaEvento">
             <button type="submit" class="bottone-personalizzato">Pubblica evento</button>
@@ -204,6 +222,17 @@
             }
         });
     }
+
+    document.getElementById('aggiungiEsibizioneBtn').addEventListener('click', function() {
+        var elements = document.querySelectorAll('#nomeEsibizione, #descrizioneEsibizione, #datainizio, #datafine, [for=nomeEsibizione], [for=descrizioneEsibizione], [for=durata], [for=datafine]');
+        elements.forEach(function(el) {
+            if(el.style.display === "none") {
+                el.style.display = "block";
+            } else {
+                el.style.display = "none";
+            }
+        });
+    });
 </script>
 <footer>
     &copy; 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>
