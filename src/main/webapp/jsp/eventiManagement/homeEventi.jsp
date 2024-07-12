@@ -149,6 +149,15 @@
     </nav>
 </header>
 <main>
+    <% if (loggedOrganizzatore != null){ %>
+
+    <form action="Dispatcher" method="post">
+        <input type="hidden" name="controllerAction" value="EventiManagement.gotoCreaEvento">
+        <input type="submit" value="Crea Evento">
+    </form>
+
+    <%}%>
+
     <h1>Tutti gli Eventi</h1>
     <div class="search-sort">
         <input type="text" id="search" placeholder="Cerca evento per nome" oninput="filterEvents()">
