@@ -167,7 +167,7 @@
     </div>
     <div id="eventList">
         <% for (i=0; i<eventi.size();i++){
-           /* Blob logoBlob = eventi.get(i).getImmagine();
+            Blob logoBlob = eventi.get(i).getImmagine();
 
             // Ottieni la lunghezza del Blob (dimensione dell'array di byte)
             int blobLength = (int) logoBlob.length();
@@ -175,9 +175,9 @@
             // Leggi i dati del Blob in un array di byte
             byte[] logoBytes = logoBlob.getBytes(1, blobLength);
             // Assume che getLogo() restituisca un byte array del BLOB
-            String base64Image = Base64.getEncoder().encodeToString(logoBytes);  base64Image */ %>
+            String base64Image = Base64.getEncoder().encodeToString(logoBytes); %>
         <div class="event" data-date=<%=eventi.get(i).getDataInizio()%>>
-            <img src="data:image/jpeg;base64," style="max-width: 200px; max-height: 200px" alt=<%=eventi.get(i).getNome()%>>
+            <img src="data:image/jpeg;base64, <%= base64Image%>" style="max-width: 200px; max-height: 200px" alt=<%=eventi.get(i).getNome()%>>
             <p> Da <%=eventi.get(i).getDataInizio()%> a <%=eventi.get(i).getDataFine()%></p>
             <form>
                 <input type="hidden" name="controllerAction" value="EventiManagement.gotoEvento">
