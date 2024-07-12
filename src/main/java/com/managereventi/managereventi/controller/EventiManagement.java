@@ -148,7 +148,7 @@ public class EventiManagement {
 
     public static void gotoCreaEvento(HttpServletRequest request, HttpServletResponse response){
 
-        request.setAttribute("viewUrl", "eventoManagement/creaEvento");
+        request.setAttribute("viewUrl", "eventoManagement/createEvento");
 
     }
 }
