@@ -6,12 +6,19 @@ import com.managereventi.managereventi.services.Config.Configuration;
 import com.managereventi.managereventi.services.Logservice.LogService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class EventiManagement {
 
@@ -148,7 +155,162 @@ public class EventiManagement {
 
     public static void gotoCreaEvento(HttpServletRequest request, HttpServletResponse response){
 
-        request.setAttribute("viewUrl", "eventoManagement/createEvento");
+        DAOFactory daoFactory = null;
+        DAOFactory sessionDAOFactory= null;
+        Utente loggedUser;
+        Organizzatore loggedOrganizzatore;
 
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
+
+
+            loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
+
+
+            request.setAttribute("loggedOn",loggedOrganizzatore!=null);
+            request.setAttribute("loggedOrganizzatore", loggedOrganizzatore);
+            request.setAttribute("viewUrl", "eventiManagement/creaEvento");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
+    public static void creaEvento(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory= null;
+        Organizzatore loggedOrganizzatore;
+        DAOFactory daoFactory = null;
+        List<Evento> eventi;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+
+
+            sessionDAOFactory.beginTransaction();
+
+            OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
+            loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            EventoDAO eventoDAO = daoFactory.getEventoDAO();
+            eventi = eventoDAO.getAllEventi();
+
+            Evento evento = new Evento();
+
+            evento.setNome(request.getParameter("nome"));
+            evento.setDescrizione(request.getParameter("descrizione"));
+            evento.setNumEsibizioni(Integer.parseInt(request.getParameter("numes")));
+            evento.setIdEvento(RandomString(10));
+            evento.setOrganizzatore(loggedOrganizzatore);
+            String dataInizioString = request.getParameter("datainizio");
+
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsedDate = sdf.parse(dataInizioString);
+            java.sql.Date dataInizio = new java.sql.Date(parsedDate.getTime());
+            evento.setDataInizio(dataInizio);
+
+            String dataFineString = request.getParameter("datafine");
+            Date parsedDateFine = sdf.parse(dataFineString);
+            java.sql.Date dataFine = new java.sql.Date(parsedDateFine.getTime());
+            evento.setDataFine(dataFine);
+
+
+            Part filePart = request.getPart("logo");
+            InputStream fileContent = filePart.getInputStream();
+
+            // Converti l'InputStream in un Blob
+            Blob logoBlob = inputStreamToBlob(fileContent);
+            evento.setImmagine(logoBlob);
+
+            eventoDAO.createEvento(evento);
+
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            request.setAttribute("loggedOn",true);
+            request.setAttribute("loggedOrganizzatore", loggedOrganizzatore);
+            request.setAttribute("eventi", eventi);
+            request.setAttribute("viewUrl", "eventiManagement/homeEventi");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+
+    }
+
+
+    private static String RandomString(int n){
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789"
+                + "abcdefghijklmnopqrstuvxyz";
+
+        StringBuilder sb = new StringBuilder(n);
+
+        for (int i = 0; i < n; i++) {
+            int index = (int)(AlphaNumericString.length() * Math.random());
+            sb.append(AlphaNumericString.charAt(index));
+        }
+
+        return sb.toString();
+    }
+
+    private static Blob inputStreamToBlob(InputStream inputStream) {
+        try {
+            byte[] bytes = inputStream.readAllBytes();  // Leggi tutto il contenuto dell'input stream in un array di byte
+            return new javax.sql.rowset.serial.SerialBlob(bytes);  // Crea un Blob utilizzando SerialBlob
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();  // Gestisci l'eccezione appropriatamente
+            return null;
+        } finally {
+            try {
+                inputStream.close();  // Chiudi l'InputStream
+            } catch (IOException e) {
+                e.printStackTrace();  // Gestisci l'eccezione nel caso di errore di chiusura
+            }
+        }
     }
 }

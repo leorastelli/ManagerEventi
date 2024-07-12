@@ -183,7 +183,6 @@
             <input type="text" id="numes" name="numes" required>
             <input class="input" type="file" id="imglogo" name="logo" accept="image/png, image/jpeg">
             <img id="logoPreview" style="max-width: 200px; max-height: 200px">
-            <input type="text" id="stato" name="stato" required>
             <input type="hidden" name="idorganizzatore" value="<%=loggedOrganizzatore.getIdOrganizzatore()%>">
             <input type="hidden" name="controllerAction" value="EventiManagement.creaEvento">
             <button type="submit" class="bottone-personalizzato">Pubblica evento</button>
