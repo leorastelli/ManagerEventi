@@ -130,9 +130,6 @@
     }
 
     footer {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
         clear: both;
         text-align: center;
         padding: 10px;
@@ -180,15 +177,13 @@
             <input type="date" id="datainizio" name="datainizio" required>
             <label for="datafine">Data di fine evento</label>
             <input type="date" id="datafine" name="datafine" required>
-            <label for="numes">Numero di esibizione</label>
-            <input type="text" id="numes" name="numes" required>
             <input class="input" type="file" id="imglogo" name="logo" accept="image/png, image/jpeg">
             <img id="logoPreview" style="max-width: 200px; max-height: 200px">
             <button id="aggiungiEsibizioneBtn">Aggiungi esibizione</button>
                 <label for="nomeEsibizione" style="display:none;">Nome esibizione</label>
                 <input type="text" id="nomeEsibizione" name="nomeEsibizione" style="display:none;">
                 <label for="descrizioneEsibizione" style="display:none;">Descrizione dell'esibizione</label>
-                <textarea id="descrizioneEsibizione" name="descrizione" style="display:none;"> </textarea>
+                <textarea id="descrizioneEsibizione" name="descrizioneEsibizione" style="display:none;"> </textarea>
                 <label for="durata" style="display:none;">Durata esibizione</label>
                 <input type="time" id="durata" name="durata" required style="display:none;">
                 <label for="Orainizio" style="display:none;">Ora di inizio</label>
@@ -200,6 +195,8 @@
                     <% } %>
                 </select>
                 <label for="genere" style="display:none;">Genere </label>
+                <input class="input" type="file" id="imglogoEsibizione" name="logoEsibizione" style="display:none;" accept="image/png, image/jpeg">
+                <img id="logoPreview1" style="max-width: 200px; max-height: 200px">
                 <input type="text" id="genere" name="genere" required style="display:none;">
             <input type="hidden" name="idorganizzatore" value="<%=loggedOrganizzatore.getIdOrganizzatore()%>">
             <input type="hidden" name="controllerAction" value="EventiManagement.creaEvento">
@@ -221,10 +218,22 @@
                 document.getElementById('logoPreview').src = "";
             }
         });
+        document.getElementById('imglogoEsibizione').addEventListener('change', function (event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                document.getElementById('logoPreview1').src = reader.result;
+            }
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('logoPreview1').src = "";
+            }
+        });
     }
 
     document.getElementById('aggiungiEsibizioneBtn').addEventListener('click', function() {
-        var elements = document.querySelectorAll('#nomeEsibizione, #descrizioneEsibizione, #datainizio, #datafine, [for=nomeEsibizione], [for=descrizioneEsibizione], [for=durata], [for=datafine]');
+        var elements = document.querySelectorAll('#nomeEsibizione, #descrizioneEsibizione, [for=nomeEsibizione], [for=descrizioneEsibizione], [for=durata], [for=Orainizio], #durata, #Orainizio, .tendina, [for=genere], #genere, #imglogoEsibizione, #logoPreview1, .input, [for=imglogoEsibizione], [for=logoPreview1]');
         elements.forEach(function(el) {
             if(el.style.display === "none") {
                 el.style.display = "block";

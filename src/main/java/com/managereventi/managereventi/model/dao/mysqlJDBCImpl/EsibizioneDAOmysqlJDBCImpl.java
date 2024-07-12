@@ -36,7 +36,6 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
             esibizione.setDurata(rs.getTime("Durata"));
             esibizione.setOraInizio(rs.getTime("OraInizio"));
             esibizione.setGenere(rs.getString("Genere"));
-            esibizione.setNumeroArtisti(rs.getInt("NumeroArtisti"));
             esibizione.getOrganizzatore().setIdOrganizzatore(rs.getString("IdOrganizzatore"));
             esibizione.getIdEvento().setIdEvento(rs.getString("IdEvento"));
             esibizione.getIdLuogo().setIdLuogo(rs.getString("IdLuogo"));
@@ -57,8 +56,8 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
         try{
             String sql
                     = " INSERT INTO esibizione "
-                    + "   (IdEsibizione, Nome, Descrizione, Durata, OraInizio, Genere, NumeroArtisti, IdOrganizzatore, IdEvento, IdLuogo, PostiDisponibili, Immagine) "
-                    + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+                    + "   (IdEsibizione, Nome, Descrizione, Durata, OraInizio, Genere, IdOrganizzatore, IdEvento, IdLuogo, Immagine) "
+                    + " VALUES (?,?,?,?,?,?,?,?,?,?)";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, esibizione.getIdEsibizione());
@@ -67,12 +66,10 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
             ps.setTime(4, esibizione.getDurata());
             ps.setTime(5, esibizione.getOraInizio());
             ps.setString(6, esibizione.getGenere());
-            ps.setInt(7, esibizione.getNumeroArtisti());
-            ps.setString(8, esibizione.getOrganizzatore().getIdOrganizzatore());
-            ps.setString(9, esibizione.getIdEvento().getIdEvento());
-            ps.setString(10, esibizione.getIdLuogo().getIdLuogo());
-            ps.setInt(11, esibizione.getPostiDisponibili());
-            ps.setBlob(12, esibizione.getImmagine());
+            ps.setString(7, esibizione.getOrganizzatore().getIdOrganizzatore());
+            ps.setString(8, esibizione.getIdEvento().getIdEvento());
+            ps.setString(9, esibizione.getIdLuogo().getIdLuogo());
+            ps.setBlob(10, esibizione.getImmagine());
 
             ps.executeUpdate();
 

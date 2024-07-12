@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -231,13 +234,14 @@ public class EventiManagement {
             daoFactory.beginTransaction();
 
             EventoDAO eventoDAO = daoFactory.getEventoDAO();
+            EsibizioneDAO esibizioneDAO = daoFactory.getEsibizioneDAO();
+            LuogoDAO luogoDAO = daoFactory.getLuogoDAO();
             eventi = eventoDAO.getAllEventi();
 
             Evento evento = new Evento();
-
+            evento.setIdEvento(RandomString(10));
             evento.setNome(request.getParameter("nome"));
             evento.setDescrizione(request.getParameter("descrizione"));
-            evento.setNumEsibizioni(Integer.parseInt(request.getParameter("numes")));
             evento.setIdEvento(RandomString(10));
             evento.setOrganizzatore(loggedOrganizzatore);
             String dataInizioString = request.getParameter("datainizio");
@@ -262,6 +266,47 @@ public class EventiManagement {
             evento.setImmagine(logoBlob);
 
             eventoDAO.createEvento(evento);
+
+            String nomeEsibizione = request.getParameter("nomeEsibizione");
+
+            if (nomeEsibizione != null && !nomeEsibizione.isEmpty()) {
+
+                Esibizione esibizione = new Esibizione();
+                Luogo luogo = luogoDAO.getLuogoById(request.getParameter("luogo"));
+                esibizione.setNome(request.getParameter("nomeEsibizione"));
+                esibizione.setDescrizione(request.getParameter("descrizioneEsibizione"));
+                esibizione.setIdEsibizione(RandomString(10));
+                esibizione.setIdEvento(evento);
+                esibizione.setIdLuogo(luogo);
+                esibizione.setIdOrganizzatore(loggedOrganizzatore);
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                LocalTime oraInizio = LocalTime.parse(request.getParameter("orainizio"), formatter);
+                java.sql.Time sqlOraInizio = Time.valueOf(oraInizio);
+
+                esibizione.setOraInizio(sqlOraInizio);
+
+                LocalTime durata = LocalTime.parse(request.getParameter("durata"), formatter);
+                java.sql.Time sqlDurata = Time.valueOf(durata);
+                esibizione.setDurata(sqlDurata);
+
+                esibizione.setGenere(request.getParameter("genere"));
+
+
+                Part filePart1 = request.getPart("logoEsibizione");
+                InputStream fileContent1 = filePart1.getInputStream();
+
+                // Converti l'InputStream in un Blob
+                Blob logoBlob1 = inputStreamToBlob(fileContent1);
+                esibizione.setImmagine(logoBlob1);
+
+                try{
+                    esibizioneDAO.createEsibizione(esibizione);
+                }catch (Exception e){
+                    throw new RuntimeException(e);
+                }
+            }
+
 
 
             daoFactory.commitTransaction();

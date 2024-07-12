@@ -32,7 +32,6 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
             evento.setDescrizione(rs.getString("Descrizione"));
             evento.setDataInizio(rs.getDate("DataInizio"));
             evento.setDataFine(rs.getDate("DataFine"));
-            evento.setNumEsibizioni(rs.getInt("NumEsibizioni"));
             evento.getOrganizzatore().setIdOrganizzatore(rs.getString("IdOrganizzatore"));
             evento.setImmagine(rs.getBlob("Immagine"));
 
@@ -51,8 +50,8 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
         try{
             String sql
                     = " INSERT INTO evento "
-                    + "   (IdEvento, Nome, Descrizione, DataInizio, DataFine, NumEsibizioni, IdOrganizzatore, Immagine) "
-                    + " VALUES (?,?,?,?,?,?,?,?)";
+                    + "   (IdEvento, Nome, Descrizione, DataInizio, DataFine, IdOrganizzatore, Immagine) "
+                    + " VALUES (?,?,?,?,?,?,?)";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, evento.getIdEvento());
@@ -60,9 +59,8 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
             ps.setString(3, evento.getDescrizione());
             ps.setDate(4, evento.getDataInizio());
             ps.setDate(5, evento.getDataFine());
-            ps.setInt(6, evento.getNumEsibizioni());
-            ps.setString(7, evento.getOrganizzatore().getIdOrganizzatore());
-            ps.setBlob(8, evento.getImmagine());
+            ps.setString(6, evento.getOrganizzatore().getIdOrganizzatore());
+            ps.setBlob(7, evento.getImmagine());
 
             ps.executeUpdate();
 

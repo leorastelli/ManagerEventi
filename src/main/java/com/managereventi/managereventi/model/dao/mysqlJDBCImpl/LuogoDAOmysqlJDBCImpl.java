@@ -73,7 +73,30 @@ public class LuogoDAOmysqlJDBCImpl implements LuogoDAO {
 
     @Override
     public Luogo getLuogoById(String idLuogo) {
-        return null;
+        PreparedStatement ps;
+        Luogo luogo = new Luogo();
+
+        try {
+            String sql
+                    = " SELECT * "
+                    + " FROM luogo "
+                    + " WHERE IdLuogo = ? ";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, idLuogo);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                luogo = read(rs);
+            } else {
+                return null;
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return luogo;
     }
 
 
