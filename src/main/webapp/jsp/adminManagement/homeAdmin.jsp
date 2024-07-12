@@ -316,14 +316,11 @@
                 <input type="text" id="num-esibizioni" name="num-esibizione" value="<%= eventi.get(i).getNumEsibizioni() %>" > <br>
                 <label for="descrizione-evento">Descrizione: </label>
                 <input type="text" id="descrizione-evento" name="descrizione-evento" value="<%= eventi.get(i).getDescrizione() %>" > <br>
-
                 <input type="hidden" name="idEvento" value="<%=eventi.get(i).getIdEvento()%>"/>
-
                 <!-- Bottone per eliminare l'esibizione -->
                 <button type="submit" class="bottone-personalizzato" name="controllerAction" value="OrganizzatoreManagement.deleteEvento">
                     Elimina evento
                 </button>
-
                 <!-- Bottone per modificare l'esibizione -->
                 <button type="submit" class="bottone-personalizzato" name="controllerAction" value="OrganizzatoreManagement.modifyEvento">
                     Modifica evento
