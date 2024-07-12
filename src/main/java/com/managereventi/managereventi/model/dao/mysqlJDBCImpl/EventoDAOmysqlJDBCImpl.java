@@ -107,7 +107,7 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
 
         try{
             String sql = " SELECT * "
-                    + " FROM evento where deleted = 'N' and DataInizio > CURDATE()";
+                    + " FROM evento where deleted = 'N'";// and ";//DataInizio > CURDATE()";
 
             ps = conn.prepareStatement(sql);
 

@@ -61,7 +61,7 @@ public class EventiManagement {
             request.setAttribute("loggedOrganizzatore", loggedOrganizzatore);
             request.setAttribute("loggedAzienda", loggedAzienda);
             request.setAttribute("eventi", eventi);
-            request.setAttribute("viewUrl", "eventoManagement/homeEventi");
+            request.setAttribute("viewUrl", "eventiManagement/homeEventi");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
