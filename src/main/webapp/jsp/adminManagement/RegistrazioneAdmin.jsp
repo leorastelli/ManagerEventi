@@ -19,14 +19,14 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
+            background-color: #fefefa;
         }
         form {
             padding: 20px;
             border: 1px solid #ddd;
-            background-color: #fff;
+            background-color: #fffdf3;
             border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: dimgray 0 0 5px;
             text-align: center;
             width: 30%;
         }
@@ -44,17 +44,24 @@
             margin-right: 10px;
         }
         .bottone-personalizzato {
-            background-color: #6fa3ef;
-            color: white;
+            background-color: #de32ff;
+            color: #fefefa;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 10px;
+            width: 20%;
+            align-items: center;
+            text-align: center;
+            display: block;
+            margin: auto;
+            font-weight: bolder;
         }
-        button:hover {
-            background-color: #72c7e8;
+
+        .bottone-personalizzato:hover {
+            background-color: #ab00cc;
         }
+
     </style>
 </head>
 <body onload="headerOnLoadHandler()">
@@ -68,7 +75,7 @@
     <input type="email" name="email" placeholder="E-mail" required>
     <input type="password" name="password" placeholder="Password" required>
     <input type="text" name="username" id="username" placeholder="Username" required>
-    <input type="text" name="codiceaut" id="codiceaut" placeholder="CodiceAutorizzazione" required>
+    <input type="text" name="codiceaut" id="codiceaut" placeholder="Codice Autorizzazione" required>
 
     <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.registration"/>
     <input type="submit" class="bottone-personalizzato" value="Registrati">

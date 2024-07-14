@@ -29,12 +29,12 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #fefefa;
         }
         header {
-            background-color: #6fa3ef;
+            background-color: #ffb805;
             padding: 10px;
-            color: #fff;
+            color: #ab00cc;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -60,7 +60,7 @@
             margin-left: 15px;
         }
         nav a {
-            color: white;
+            color: #ab00cc;
             text-decoration: none;
         }
         main {
@@ -74,14 +74,14 @@
             display: block;
             padding: 10px;
             margin: 10px 0;
-            background-color: #A6FBFF;
-            color: black;
+            background-color: #de32ff;
+            color: white;
             text-decoration: none;
             text-align: center;
             border-radius: 5px;
         }
         .sidebar a:hover {
-            background-color: #007FFF;
+            background-color: #00bfff;
         }
         .content {
             width: 100%;
@@ -106,22 +106,25 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
         .bottone-personalizzato {
-            background-color: #6fa3ef;
-            color: white;
+            background-color: #de32ff;
+            color: #fefefa;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            width: 50%;
+            width: 20%;
             align-items: center;
+            text-align: center;
             display: block;
             margin: auto;
-        }
-        .bottone-personalizzato:hover {
-            background-color: #007FFF; /* Colore di sfondo al passaggio del mouse */
+            font-weight: bolder;
         }
 
+        .bottone-personalizzato:hover {
+            background-color: #00bfff;
+        }
 
         section#dati-personali, section#eventi, section#esibizioni, section#recensioni, section#spazi-pubblicitari, section#candidature {
             margin-bottom: 30px;
@@ -145,9 +148,10 @@
             display: grid;
             grid-template-columns: 1fr;
             gap: 2px;
-            background-color: white;
+            background-color: #fffdf3;
             padding: 20px;
             border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
             border-radius: 5px;
             width: 800px;
             margin: auto;
@@ -174,11 +178,11 @@
 
         footer {
             width: 100%;
+            clear: both;
             text-align: center;
             padding: 10px;
-            background-color: #6fa3ef;
-            color: #fff;
-            clear: both;
+            background-color: #ffb805;
+            color: #ab00cc;
             margin-top: 20px;
         }
 
@@ -354,16 +358,18 @@
             <form method="post" action="Dispatcher" name="Candidature">
                 <%--@declare id="posizione"--%>
                 <%--@declare id="telefono"--%><%--@declare id="descrizione-candidatura"--%>
+                <%--@declare id="messaggio"--%>
                 <label for="posizione">Posizione lavorativa: </label> <span class="posizione"><%= candidature.get(i).getPosizione() %></span> <br>
                 <label for="nome">Nome candidato/a: </label> <span class="nome"><%= candidature.get(i).getNome() %></span> <br>
                 <label for="cognome">Cognome candidato/a: </label> <span class="cognome"><%= candidature.get(i).getCognome() %></span> <br>
                 <label for="email">Email candidato/a: </label> <span class="email"><%= candidature.get(i).getEmail() %></span> <br>
                     <input type="hidden" name="email" value="<%= candidature.get(i).getEmail() %>">
                 <label for="telefono">Telefono candidato/a: </label> <span class="telefono"><%= candidature.get(i).getTelefono() %></span> <br>
-                <label for="descrizione-candidatura">Descrizione: </label> <span class="descrizione-candidatura"><%= candidature.get(i).getDescrizione() %></span>
-                <textarea name="mailtext" placeholder="Scrivi un messaggio per il candidato"></textarea>
+                <label for="descrizione-candidatura">Descrizione: </label> <span class="descrizione-candidatura"><%= candidature.get(i).getDescrizione() %></span> <br>
+                <label for="messaggio">Invia un messaggio al candidato/a: </label>
+                <textarea name="mailtext" placeholder="Digita qui"></textarea>
 
-                    <input type="submit" class="bottone-personalizzato" value="Invia la mail">
+                    <input type="submit" class="bottone-personalizzato" value="Invia e-mail">
                     <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.sendEmailCandidato"/>
             </form>
             <% } %>

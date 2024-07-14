@@ -28,12 +28,12 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #fefefa;
         }
         header {
-            background-color: #6fa3ef;
+            background-color: #ffb805;
             padding: 10px;
-            color: #fff;
+            color: #ab00cc;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -57,7 +57,7 @@
             margin-left: 15px;
         }
         nav a {
-            color: white;
+            color: #ab00cc;
             text-decoration: none;
         }
         main {
@@ -93,8 +93,8 @@
             width: 100%;
             text-align: center;
             padding: 10px;
-            background-color: #6fa3ef;
-            color: #fff;
+            background-color: #ffb805;
+            color: #ab00cc;
             position: fixed;
             bottom: 0;
         }

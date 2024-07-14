@@ -95,6 +95,7 @@
         textarea {
             resize: vertical;
         }
+
         .bottone-personalizzato {
             background-color: #de32ff;
             color: #fefefa;
