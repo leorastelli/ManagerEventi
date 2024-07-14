@@ -27,12 +27,12 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f4f4f4;
+      background-color: #fefefa;
     }
     header {
-      background-color: #6fa3ef;
+      background-color: #ffb805;
       padding: 10px;
-      color: #fff;
+      color: #ab00cc;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -56,31 +56,43 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
       margin-left: 15px;
     }
     nav a {
-      color: white;
+      color: #ab00cc;
       text-decoration: none;
     }
     main {
       text-align: center;
       margin-top: 20px;
+      height: 100%;
+      width: auto;
     }
-    h1 {
-      font-size: 2em;
-    }
+
     .title {
       font-size: 45px;
+      color: #ab00cc;
+      text-align: center;
+      margin: auto;
+      width: 100%;
+      justify-content: center;
+      margin-top: 20px;
     }
+
     .image-box {
       margin: 20px auto;
-      width: 90%;
-      height: 90%;
-      max-width: 600px;
-      max-height: 600px;
+      width: 80%;
+      height: 80%;
+      max-width: 500px;
+      max-height: 500px;
       position: relative;
       cursor: pointer;
+      justify-content: space-around;
+      transition: box-shadow 0.2s ease-in-out;
+    }
+    .image-box:hover {
+      box-shadow: #ab00cc 0 0 10px;
     }
     .image-box img {
-      width: 670px;
-      height: 670px;
+      width: 500px;
+      height: 500px;
     }
     .image-box p {
       position: absolute;
@@ -94,14 +106,12 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
       font-size: 40px;
     }
     footer {
-      position: fixed;
-      bottom: 0;
       width: 100%;
       clear: both;
       text-align: center;
       padding: 10px;
-      background-color: #6fa3ef;
-      color: #fff;
+      background-color: #ffb805;
+      color: #ab00cc;
       margin-top: 20px;
     }
   </style>
@@ -144,23 +154,23 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
       </ul>
     </nav>
 </header>
+    <h1 class="title"> Scopri Eventi Unici!</h1>
 <main>
-  <h1 class="title"> Scopri Eventi Unici!</h1>
-  <div class="image-box" onclick="location.href='Dispatcher?controllerAction=EventiManagement.view'">
-    <img src="images/evento.jpg" alt="Eventi">
+  <div id="eventi" class="image-box" onclick="location.href='Dispatcher?controllerAction=EventiManagement.view'">
+    <img src="images/eventi2.jpeg" alt="Eventi">
     <p>Eventi</p>
   </div>
-  <div class="image-box" onclick="location.href='Dispatcher?controllerAction=ReviewManagement.view'">
-    <img src="images/recensioni.jpeg" alt="Cosa dicono di noi">
+  <div id="recensioni" class="image-box" onclick="location.href='Dispatcher?controllerAction=ReviewManagement.view'">
+    <img src="images/recensioni2.png" alt="Cosa dicono di noi">
     <p>Cosa dicono di noi</p>
   </div>
-  <div class="image-box" onclick="location.href='Dispatcher?controllerAction=CandidatureManagement.view'">
-    <img src="images/lavoraconnoi.jpg" alt="Lavora con Noi">
-    <p>Lavora con Noi</p>
+  <div id="candidature" class="image-box" onclick="location.href='Dispatcher?controllerAction=CandidatureManagement.view'">
+    <img src="images/candidarsi.jpeg" alt="Lavora con noi">
+    <p>Lavora con noi</p>
   </div>
-  <div class="image-box" onclick="location.href='Dispatcher?controllerAction=DomandeManagement.view'">
-    <img src="images/domande.jpg" alt="Domande degli utenti">
-    <p>Domande degli utenti</p>
+  <div id="domande" class="image-box" onclick="location.href='Dispatcher?controllerAction=DomandeManagement.view'">
+    <img src="images/forum.jpeg" alt="Il nostro forum">
+    <p>Il nostro forum</p>
   </div>
 </main>
 <footer>

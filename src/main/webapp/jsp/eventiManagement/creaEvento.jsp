@@ -19,8 +19,8 @@
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
+        background-color: #f4f4f4;
     }
-
     header {
         background-color: #6fa3ef;
         padding: 10px;
@@ -55,10 +55,8 @@
     }
 
     main {
-        display: flex;
-        justify-content: space-around;
-        padding: 20px;
-        background-color: white;
+        margin: 20px;
+        height: calc(100% - 150px);
     }
 
     form {
@@ -66,8 +64,8 @@
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto auto;
         grid-template-areas:
-        "indirizzo pagamento"
-        "indirizzo riepilogo";
+        "evento esibizione"
+        "evento esibizione";
         column-gap: 10%;
         width: 90%;
     }
@@ -109,21 +107,18 @@
         text-align: center;
     }
 
-    #indirizzo-fatturazione {
-        grid-area: indirizzo;
+    #evento{
+        grid-area: evento;
+        justify-self: left;
+        align-self: start;
     }
 
-    #dettagli-pagamento {
-        grid-area: pagamento;
-        justify-self: end;
-        margin-bottom: 20px;
+    #esibizione{
+        grid-area: esibizione;
+        justify-self: right;
+        align-self: start;
     }
 
-    #riepilogo-ordine {
-        grid-area: riepilogo;
-        justify-self: end;
-        align-self: end;
-    }
 
     .bottone-personalizzato:hover {
         background-color: #007FFF;
@@ -142,7 +137,7 @@
 <body>
 <header>
     <h1>PrimEvent</h1>
-    <form name="logoutForm" action="Dispatcher" method="post">
+    <form style="width: 10%" name="logoutForm" action="Dispatcher" method="post">
         <input type="hidden" name="controllerAction" value="HomeManagement.logout"/>
     </form>
     <nav>
@@ -151,8 +146,8 @@
                 <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
             </li>
             <% if (loggedOn) { %>
-            <li <%=menuActiveLink.equals("Home Azienda") ? "class=\"active\"" : ""%>>
-                <a href="Dispatcher?controllerAction=AziendaManagement.view">Home Azienda</a>
+            <li <%=menuActiveLink.equals("Home Organizzatore") ? "class=\"active\"" : ""%>>
+                <a href="Dispatcher?controllerAction=OrganizzatoreManagement.view">Home Organizzatore</a>
             </li>
             <li><a href="javascript:logoutForm.submit()">Logout</a></li>
             <% } else { %>
@@ -167,8 +162,8 @@
 
 <main>
     <form id="paymentForm" name="pagamentoForm" method="post" action="Dispatcher" enctype="multipart/form-data">
-        <section id="indirizzo-fatturazione">
-            <h2>Indirizzo di fatturazione</h2>
+        <section id="evento">
+            <h2>Inserisci dettagli evento</h2>
             <label for="nome">Nome Evento</label>
             <input type="text" id="nome" name="nome" required>
             <label for="descrizione">Descrizione dell'evento</label>
@@ -179,25 +174,30 @@
             <input type="date" id="datafine" name="datafine" required>
             <input class="input" type="file" id="imglogo" name="logo" accept="image/png, image/jpeg">
             <img id="logoPreview" style="max-width: 200px; max-height: 200px">
-            <button id="aggiungiEsibizioneBtn">Aggiungi esibizione</button>
-                <label for="nomeEsibizione" style="display:none;">Nome esibizione</label>
-                <input type="text" id="nomeEsibizione" name="nomeEsibizione" style="display:none;">
-                <label for="descrizioneEsibizione" style="display:none;">Descrizione dell'esibizione</label>
-                <textarea id="descrizioneEsibizione" name="descrizioneEsibizione" style="display:none;"> </textarea>
-                <label for="durata" style="display:none;">Durata esibizione</label>
-                <input type="time" id="durata" name="durata" required style="display:none;">
-                <label for="Orainizio" style="display:none;">Ora di inizio</label>
-                <input type="time" id="Orainizio" name="orainizio" required style="display:none;">
-                <select class="tendina" name="luogo" style="display: none">
-                    <option value="">Luogo</option>
-                    <% for (i=0; i< luoghi.size(); i++) { %>
+            <br>
+            <button  class="bottone-personalizzato" id="aggiungiEsibizioneBtn">Aggiungi esibizione</button> <br>
+        <section id="esibizione">
+            <h2 class="titolo" id="titoloEsibizione" style="display:none;">Inserisci dettagli esibizione</h2>
+            <label for="nomeEsibizione" style="display:none;">Nome esibizione</label>
+            <input type="text" id="nomeEsibizione" name="nomeEsibizione" style="display:none;">
+            <label for="descrizioneEsibizione" style="display:none;">Descrizione dell'esibizione</label>
+            <textarea id="descrizioneEsibizione" name="descrizioneEsibizione" style="display:none;"> </textarea>
+            <label for="durata" style="display:none;">Durata esibizione</label>
+            <input type="time" id="durata" name="durata" required style="display:none;">
+            <label for="Orainizio" style="display:none;">Ora di inizio</label>
+            <input type="time" id="Orainizio" name="orainizio" required style="display:none;">
+            <select class="tendina" name="luogo" style="display: none">
+                <option value="">Luogo</option>
+                <% for (i=0; i< luoghi.size(); i++) { %>
                     <option value="<%= luoghi.get(i) %>"><%= luoghi.get(i) %></option>
-                    <% } %>
-                </select>
-                <label for="genere" style="display:none;">Genere </label>
-                <input class="input" type="file" id="imglogoEsibizione" name="logoEsibizione" style="display:none;" accept="image/png, image/jpeg">
-                <img id="logoPreview1" style="max-width: 200px; max-height: 200px">
-                <input type="text" id="genere" name="genere" required style="display:none;">
+                <% } %>
+            </select>
+            <label for="genere" style="display:none;">Genere </label>
+            <input type="text" id="genere" name="genere" required style="display:none;">
+            <input class="input" type="file" id="imglogoEsibizione" name="logoEsibizione" style="display:none;" accept="image/png, image/jpeg">
+            <img id="logoPreview1" style="max-width: 200px; max-height: 200px">
+            <br>
+        </section>
             <input type="hidden" name="idorganizzatore" value="<%=loggedOrganizzatore.getIdOrganizzatore()%>">
             <input type="hidden" name="controllerAction" value="EventiManagement.creaEvento">
             <button type="submit" class="bottone-personalizzato">Pubblica evento</button>
@@ -233,7 +233,7 @@
     }
 
     document.getElementById('aggiungiEsibizioneBtn').addEventListener('click', function() {
-        var elements = document.querySelectorAll('#nomeEsibizione, #descrizioneEsibizione, [for=nomeEsibizione], [for=descrizioneEsibizione], [for=durata], [for=Orainizio], #durata, #Orainizio, .tendina, [for=genere], #genere, #imglogoEsibizione, #logoPreview1, .input, [for=imglogoEsibizione], [for=logoPreview1]');
+        var elements = document.querySelectorAll('#nomeEsibizione, #descrizioneEsibizione, [for=nomeEsibizione], [for=descrizioneEsibizione], [for=durata], [for=Orainizio], #durata, #Orainizio, .tendina, [for=genere], #genere, #imglogoEsibizione, #logoPreview1, .input, [for=imglogoEsibizione], [for=logoPreview1], .titolo, #titoloEsibizione');
         elements.forEach(function(el) {
             if(el.style.display === "none") {
                 el.style.display = "block";
@@ -242,6 +242,7 @@
             }
         });
     });
+
 </script>
 <footer>
     &copy; 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>

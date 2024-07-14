@@ -66,11 +66,6 @@
             margin: 20px;
         }
 
-        .search-bar {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
         .search-bar input[type="text"],
         .search-bar select {
             padding: 10px;
@@ -82,8 +77,44 @@
             background-color: white;
             padding: 20px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 10px;
             margin-bottom: 20px;
+            width: 80%;
+            align-content: center;
+            align-items: center;
+            text-align: center;
+            margin-left: 9%;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            grid-template-areas:
+            "utente utente1"
+            "domanda risposta"
+            "nuovarisp nuovarisp";
+
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            flex-grow: 0.5;
+        }
+
+        #ut {
+            grid-area: utente;
+        }
+
+        #domanda {
+            grid-area: domanda;
+        }
+
+        #ut1 {
+            grid-area: utente1;
+        }
+
+        #risposta {
+            grid-area: risposta;
+        }
+
+        #insrisposta, #descrizioneRisposta {
+            grid-area: nuovarisp;
         }
 
         .question label {
@@ -91,21 +122,37 @@
         }
 
         .bottone-personalizzato {
+            display: block;
+            margin: 0 auto;
+            width: fit-content;
             background-color: #6fa3ef;
             color: white;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            display: inline-block;
-            margin-right: 10px;
+            align-items: center;
+            text-align: center;
         }
+
+        .bottone-personalizzato:hover {
+            background-color: #007FFF;
+        }
+
         .centrato {
-            text-align: center; /* Centra il testo orizzontalmente */
-            margin: auto; /* Utile se vuoi centrare un blocco (es. div) orizzontalmente */
-            width: 100%; /* Assicura che l'elemento occupi tutta la larghezza */
-            /* Per centrare verticalmente potresti dover lavorare con altezza e display flex sul contenitore genitore */
+            text-align: center;
+            margin: auto;
+            width: 100%;
         }
+
+        #inserimento {
+            margin-bottom: 20px;
+            align-content: center;
+            align-items: center;
+            text-align: center;
+
+        }
+
         footer {
             text-align: center;
             padding: 10px;
@@ -158,42 +205,42 @@
 </header>
 
 <main>
-    <h1 class="centrato">Visualizza Domande</h1> <br>
-
+    <h1 class="centrato">Benvenuto nel nostro forum</h1> <br>
+    <h2 class="centrato" style="font-weight: normal">Fai una domanda o rispondi a quelle degli altri utenti!</h2> <br>
     <%-- Form per inserire una nuova domanda, visibile solo se l'utente è autenticato --%>
     <% if (loggedUser != null) { %>
-    <form action="Dispatcher" method="post">
+    <form id="inserimento" action="Dispatcher" method="post">
         <input type="hidden" name="controllerAction" value="DomandeManagement.addDomanda"/>
-        <label for="descrizione">Inserisci la tua domanda:</label><br>
-        <textarea id="descrizione" name="descrizione" rows="4" cols="50"></textarea><br>
+        <label for="descrizione" style="font-weight: bolder; font-size: 20px">Inserisci la tua domanda:</label> <br> <br>
+        <textarea id="descrizione" name="descrizione" rows="10" cols="190" style="border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);"></textarea><br>
         <input type="submit" value="Invia" class="bottone-personalizzato">
     </form>
     <% } %>
-
+    <br>
     <%-- Visualizza le domande esistenti --%>
     <% if (domande != null && !domande.isEmpty()) { %>
     <% for (Domanda domanda : domande) { %>
     <div class="question">
-        <p><label>Utente:</label> <%= domanda.getUtente().getIdUtente() %></p>
-        <p><label>Descrizione:</label> <%= domanda.getDescrizione() %></p>
+        <p><label id="ut" >Utente:</label> <%= domanda.getUtente().getIdUtente() %></p>
+        <p><label id="domanda">Domanda:</label> <%= domanda.getDescrizione() %></p>
 
         <%-- Visualizza le risposte esistenti --%>
         <% if (domanda.getRisposte() != null && !domanda.getRisposte().isEmpty()) { %>
-        <% for (i = 0; i < domanda.getRisposte().size(); i++) { %>
-        <p><label>Risposta n:<%= i + 1 %>:</label> <%= domanda.getRisposte().get(i).getUtente().getIdUtente() %></p>
-        <p><label>Descrizione:</label> <%= domanda.getRisposte().get(i).getDescrizione() %></p>
-        <% } %>
+            <% for (i = 0; i < domanda.getRisposte().size(); i++) { %>
+                <p><label id="ut1" >Utente:</label> <%= domanda.getRisposte().get(i).getUtente().getIdUtente() %></p>
+                <p><label id="risposta">Risposta:</label> <%= domanda.getRisposte().get(i).getDescrizione() %></p>
+            <% } %>
         <% } %>
 
         <%-- Form per inserire una nuova risposta, visibile solo se l'utente è autenticato e non è l'autore della domanda --%>
         <% if (loggedUser != null && !loggedUser.getIdUtente().equals(domanda.getUtente().getIdUtente())) { %>
-        <form action="Dispatcher" method="post">
-            <input type="hidden" name="controllerAction" value="DomandeManagement.addRisposta"/>
-            <input type="hidden" name="idDomanda" value="<%= domanda.getIdDomanda() %>"/>
-            <label for="descrizioneRisposta<%= domanda.getIdDomanda() %>">Rispondi a questa domanda: </label><br>
-            <textarea id="descrizioneRisposta<%= domanda.getIdDomanda() %>" name="descrizioneRisposta" rows="4" cols="50"></textarea><br>
-            <input type="submit" value="Invia" class="bottone-personalizzato">
-        </form>
+            <form id="insrisposta" action="Dispatcher" method="post">
+                <input type="hidden" name="controllerAction" value="DomandeManagement.addRisposta"/>
+                <input type="hidden" name="idDomanda" value="<%= domanda.getIdDomanda() %>"/>
+                <label for="descrizioneRisposta<%= domanda.getIdDomanda() %>">Rispondi a questa domanda: </label><br>
+                <textarea id="descrizioneRisposta<%= domanda.getIdDomanda() %>" name="descrizioneRisposta" rows="8" cols="100"></textarea><br>
+                <input type="submit" value="Invia" class="bottone-personalizzato">
+            </form>
         <% } %>
     </div>
     <% } %>

@@ -92,12 +92,6 @@
             margin-bottom: 30px;
         }
 
-        .section h2 {
-            background-color: #007FFF;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
         form {
             display: grid;
             gap: 10px;
@@ -127,6 +121,8 @@
         .bottone-personalizzato:hover {
             background-color: #007FFF; /* Colore di sfondo al passaggio del mouse */
         }
+
+
         section#dati-personali, section#eventi, section#esibizioni, section#recensioni, section#spazi-pubblicitari, section#candidature {
             margin-bottom: 30px;
             max-width: 1000px;
@@ -135,9 +131,10 @@
         }
 
         section#dati-personali h2, section#eventi h2, section#esibizioni h2, section#recensioni h2, section#spazi-pubblicitari h2, section#candidature h2{
-            background-color: #A6FBFF;
             padding: 10px;
             border-radius: 5px;
+            text-align: center;
+            width: 90%;
         }
 
         section#candidature h3, section#esibizioni h3, section#eventi h3, section#recensioni h3, section#spazi-pubblicitari h3{
@@ -176,8 +173,6 @@
         }
 
         footer {
-            position: fixed;
-            bottom: 0;
             width: 100%;
             text-align: center;
             padding: 10px;

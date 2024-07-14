@@ -24,12 +24,13 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #fefefa;
         }
+
         header {
-            background-color: #6fa3ef;
+            background-color: #ffb805;
             padding: 10px;
-            color: #fff;
+            color: #ab00cc;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -55,7 +56,7 @@
             margin-left: 15px;
         }
         nav a {
-            color: white;
+            color: #ab00cc;
             text-decoration: none;
         }
 
@@ -63,10 +64,17 @@
             max-width: 800px;
             margin: 20px auto;
             padding: 20px;
-            background-color: white;
+            background-color: #fffdf3;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: dimgray 0 0 5px;
             flex-grow: 1;
+        }
+
+        section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         label {
@@ -88,8 +96,8 @@
             resize: vertical;
         }
         .bottone-personalizzato {
-            background-color: #6fa3ef;
-            color: white;
+            background-color: #de32ff;
+            color: #fefefa;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
@@ -99,9 +107,11 @@
             text-align: center;
             display: block;
             margin: auto;
+            font-weight: bolder;
         }
+
         .bottone-personalizzato:hover {
-            background-color: #007FFF;
+            background-color: #ab00cc;
         }
 
         .centrato {
@@ -114,19 +124,15 @@
             text-align: center;
         }
 
-
         footer {
-            position: fixed;
-            bottom: 0;
             width: 100%;
             clear: both;
             text-align: center;
             padding: 10px;
-            background-color: #6fa3ef;
-            color: #fff;
+            background-color: #ffb805;
+            color: #ab00cc;
             margin-top: 20px;
         }
-
 
     </style>
     <script>
@@ -174,53 +180,55 @@
         </ul>
     </nav>
 </header>
-<main>
-        <h1 class="centrato"> Lavora con Noi! </h1>
-        <p class="testo-centrato">Se desideri entrare a far parte del nostro Team, compila il modulo sottostante inserendo la posizione che preferisci ed inviaci la tua candidatura!</p>
-        <form id="applicationForm" method="post" action="Dispatcher">
-            <label for="position">Posizione Lavorativa</label>
-            <select id="position" name="position">
-                <option value="">Tutte le posizioni</option>
-                <option value="marketing">Marketing</option>
-                <option value="socialmedia">Social Media</option>
-                <option value="eventmanager">Event Manager</option>
-                <option value="photographer">Photographer</option>
-                <option value="videomaker">Videomaker</option>
-                <option value="graphicdesigner">Graphic Designer</option>
-                <option value="uxuidesigner">UX/UI Designer</option>
-                <option value="sales">Sales</option>
-                <option value="content manager">Content Manager</option>
-                <option value="developer">Developer</option>
-                <option value="designer">Designer</option>
-                <option value="manager">Manager</option>
-            </select>
+<section>
+    <main>
+            <h1 class="centrato"> Lavora con Noi! </h1>
+            <p class="testo-centrato">Se desideri entrare a far parte del nostro Team, compila il modulo sottostante inserendo la posizione che preferisci ed inviaci la tua candidatura!</p>
+            <form id="applicationForm" method="post" action="Dispatcher">
+                <label for="position">Posizione Lavorativa</label>
+                <select id="position" name="position" style="width: fit-content">
+                    <option value="">Tutte le posizioni</option>
+                    <option value="marketing">Marketing</option>
+                    <option value="socialmedia">Social Media</option>
+                    <option value="eventmanager">Event Manager</option>
+                    <option value="photographer">Photographer</option>
+                    <option value="videomaker">Videomaker</option>
+                    <option value="graphicdesigner">Graphic Designer</option>
+                    <option value="uxuidesigner">UX/UI Designer</option>
+                    <option value="sales">Sales</option>
+                    <option value="content manager">Content Manager</option>
+                    <option value="developer">Developer</option>
+                    <option value="designer">Designer</option>
+                    <option value="manager">Manager</option>
+                </select>
 
-            <label for="nome">Nome: </label>
-            <input type="text" id="nome" name="name" required> <br>
+                <label for="nome">Nome: </label>
+                <input type="text" id="nome" name="name" required> <br>
 
-            <label for="cognome">Cognome: </label>
-            <input type="text" id="cognome" name="surname" required> <br>
+                <label for="cognome">Cognome: </label>
+                <input type="text" id="cognome" name="surname" required> <br>
 
-            <label for="email">Email: </label>
-            <input type="email" id="email" name="email" required> <br>
+                <label for="email">Email: </label>
+                <input type="email" id="email" name="email" required> <br>
 
-            <label for="dataNascita">Data di Nascita: </label>
-            <input type="date" id="dataNascita" name="birthdate" required> <br>
+                <label for="dataNascita">Data di Nascita: </label>
+                <input type="date" id="dataNascita" name="birthdate" required> <br>
 
-            <label for="citta">Citt&agrave; di Residenza: </label>
-            <input type="text" id="citta" name="city" required> <br>
+                <label for="citta">Citt&agrave; di Residenza: </label>
+                <input type="text" id="citta" name="city" required> <br>
 
-            <label for="telefono">Numero di telefono: </label>
-            <input type="tel" id="telefono" name="phone" required> <br>
+                <label for="telefono">Numero di telefono: </label>
+                <input type="tel" id="telefono" name="phone" required> <br>
 
-            <label for="descrizione">Breve presentazione, dicci chi sei e quali sono i tuoi punti di forza! </label>
-            <textarea id="descrizione" name="description" rows="5" required></textarea>
+                <label for="descrizione">Breve presentazione, dicci chi sei e quali sono i tuoi punti di forza! </label>
+                <textarea id="descrizione" name="description" rows="5" required></textarea>
 
-            <input type="hidden" name="controllerAction" value="CandidatureManagement.addCandidatura"/>
-            <input type="submit" class="bottone-personalizzato" value="Invia Candidatura">
-            <!--<button type="submit">Invia candidatura</button>-->
-        </form>
-</main>
+                <input type="hidden" name="controllerAction" value="CandidatureManagement.addCandidatura"/>
+                <input type="submit" class="bottone-personalizzato" value="Invia Candidatura">
+                <!--<button type="submit">Invia candidatura</button>-->
+            </form>
+    </main>
+</section>
 <footer>
     &copy; 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>
     Credits: Leonardo Rastelli e Anna Ferri

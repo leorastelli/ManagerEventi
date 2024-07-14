@@ -1,11 +1,8 @@
 <%@page session="false"%>
-<%@page import="com.managereventi.managereventi.model.mo.Utente"%>
-<%@ page import="com.managereventi.managereventi.model.mo.Organizzatore" %>
-<%@ page import="com.managereventi.managereventi.model.mo.Azienda" %>
-<%@ page import="com.managereventi.managereventi.model.mo.Evento" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.sql.Blob" %>
 <%@ page import="java.util.Base64" %>
+<%@ page import="com.managereventi.managereventi.model.mo.*" %>
 
 <%
     boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
@@ -16,7 +13,9 @@
     String menuActiveLink = "Home";
     int i;
     List<Evento> eventi = (List<Evento>) request.getAttribute("eventi");
-
+    List<Esibizione> esibizioni = (List<Esibizione>) request.getAttribute("esibizioni");
+    List<Azienda> aziende = (List<Azienda>) request.getAttribute("aziende");
+    List<Sponsorizzazione> sponsorizzazioni = (List<Sponsorizzazione>) request.getAttribute("sponsorizzazioni");
 %>
 <!DOCTYPE html>
 <html lang="it">
@@ -89,6 +88,7 @@
             text-align: center;
             font-size: 1.2em;
         }
+
         footer {
             width: 100%;
             text-align: center;
@@ -107,6 +107,31 @@
         .search-sort input, .search-sort select {
             margin: 0 10px;
             padding: 5px;
+        }
+
+        .adv img {
+            width: 100px;
+            height: auto;
+            margin: 10px;
+        }
+
+        figure {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+        figure img {
+            grid-column: 2;
+            max-width: 100%;
+        }
+        figcaption {
+            text-align: left;
+        }
+        .date {
+            text-align: right;
+            padding-right: 10px;
         }
     </style>
 </head>
@@ -149,42 +174,67 @@
     </nav>
 </header>
 <main>
-    <h1>Tutti gli Eventi</h1>
+    <h1>Evento <%=eventi.getNome()%></h1>
+    <label>Descrizione: <%=eventi.getDescrizione()%></label> <br>
+    <label>Luogo: <%=eventi.getLuogo()%></label> <br>
+    <label>Data inizio: <%=eventi.getDataInizio()%></label> <br>
+    <label>Data fine: <%=eventi.getDataFine()%></label> <br>
+
+    <h1>Tutte le esibizioni</h1>
     <div class="search-sort">
-        <input type="text" id="search" placeholder="Cerca evento per nome" oninput="filterEvents()">
+        <input type="text" id="search" placeholder="Cerca esibizione per genere" oninput="filterEvents()">
         <select id="sort" onchange="sortEvents()">
             <option value="date">Ordina per data</option>
         </select>
     </div>
-    <div id="eventList">
-        <% for (i=0; i<eventi.size();i++){
-            Blob logoBlob = eventi.get(i).getImmagine();
+    <div id="esibizioniList">
+        <% for (i=0; i<esibizioni.size();i++){
+            Blob logoBlob = esibizioni.get(i).getImmagine();
             int blobLength = (int) logoBlob.length();
             byte[] logoBytes = logoBlob.getBytes(1, blobLength);
             String base64Image = Base64.getEncoder().encodeToString(logoBytes); %>
-        <div class="event" data-date=<%=eventi.get(i).getDataInizio()%>>
-            <img src="data:image/jpeg;base64, <%= base64Image%>" style="max-width: 200px; max-height: 200px" alt=<%=eventi.get(i).getNome()%>>
-            <p> Da <%=eventi.get(i).getDataInizio()%> a <%=eventi.get(i).getDataFine()%></p>
-            <form>
-                <input type="hidden" name="controllerAction" value="EventiManagement.gotoEvento">
-                <input type="hidden" name="idEvento" value=<%=eventi.get(i).getIdEvento()%>>
-                <input type="submit" value="Vai all'evento">
-            </form>
-        </div>
-        <%}%>
+        <section class="esibizione">
+            <figure data-date="<%=esibizioni.get(i).getIdEvento().getDataInizio()%>>">
+                <figcaption class="date">DOM<br><strong>30</strong><br>GIU 2024</figcaption>
+                <img src="data:image/jpeg;base64, <%= base64Image%>" style="max-width: 200px; max-height: 200px" alt=<%=eventi.get(i).getNome()%>>
+                <figcaption>
+                    Artista <%=esibizioni.get(i).getNomeArtista%><br>
+                    Luogo <%=esibizioni.get(i).getIdLuogo().getCittà()%><br>
+                    Ora <%=esibizioni.get(i).getOraInizio()%>
+                </figcaption>
+            </figure>
+        </section>
+        <form>
+            <input type="hidden" name="controllerAction" value="EsibizioniManagement.gotoEsibizione">
+            <input type="hidden" name="idEvento" value=<%=esibizioni.get(i).getIdEsibizione()%>>
+            <input type="submit" value="Vai all'esibizione">
+        </form>
     </div>
-
-    <% if (loggedOrganizzatore != null){ %>
-
+    <%}%>
     <form action="Dispatcher" method="post">
-        <input type="hidden" name="controllerAction" value="EventiManagement.gotoCreaEvento">
-        <input type="submit" value="Crea Evento">
+        <input type="hidden" name="controllerAction" value="EsibizioniManagement.gotoEvento">
+        <input type="submit" value="Acquista abbonamento">
     </form>
-
+    <% if (loggedOrganizzatore != null){ %>
+    <form action="Dispatcher" method="post">
+        <input type="hidden" name="controllerAction" value="EsibizioneManagement.gotoCreaEsibizione">
+        <input type="submit" value="Aggiungi esibizione">
+    </form>
     <%}%>
 
 </main>
 <footer>
+    <section id="adv" >
+        <% for(Sponsorizzazione sponsorizzazione : sponsorizzazioni) {
+            Blob logoBlob = sponsorizzazioni.get(i).getLogo();
+            int blobLength = (int) logoBlob.length();
+            byte[] logoBytes = logoBlob.getBytes(1, blobLength);
+            String base64Image = Base64.getEncoder().encodeToString(logoBytes);
+        %>
+        <img src="data:image/jpeg;base64, <%= base64Image %>">
+        <% } %>
+    </section>
+
     &copy; 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>
     Credits: Leonardo Rastelli e Anna Ferri
 </footer>

@@ -84,9 +84,8 @@
             background-color: #007FFF;
         }
         .content {
-            float: left;
-            width: 75%;
-            margin-left: 5%;
+            width: 100%;
+            float: right;
         }
 
         .section h2 {
@@ -109,12 +108,6 @@
             margin-bottom: 30px;
             max-width: 600px;
             margin: 0 auto;
-        }
-
-        section#dati-personali h2, section#biglietti h2, section#abbonamenti h2, section#recensioni h2{
-            background-color: #A6FBFF;
-            padding: 10px;
-            border-radius: 5px;
         }
 
         section#dati-personali form {
@@ -242,9 +235,14 @@
             color: gold;
         }
 
+        .centrato {
+            text-align: center;
+            margin: auto;
+            width: 100%;
+            font-weight: bolder;
+        }
+
         footer {
-            position: fixed;
-            bottom: 0;
             width: 100%;
             clear: both;
             text-align: center;
@@ -326,15 +324,14 @@
 
 <main>
     <% if (loggedOn) { %>
+    <h1 class="centrato">Benvenuto/a nella tua area personale <%=loggedUser.getNome()%>!</h1>
     <div class="sidebar">
         <a href="#dati-personali">I miei dati personali</a>
         <a href="#biglietti">I miei biglietti</a>
         <a href="#abbonamenti">I miei abbonamenti</a>
         <a href="#recensioni">Scrivi la tua opinione</a>
     </div>
-
     <div class="content">
-
         <section id="dati-personali">
             <h2>I miei dati personali</h2>
             <form method="post" action="Dispatcher" name="modifyForm">
