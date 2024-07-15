@@ -122,10 +122,7 @@
         figcaption {
             text-align: left;
         }
-        .date {
-            text-align: right;
-            padding-right: 10px;
-        }
+
     </style>
 </head>
 <body>
