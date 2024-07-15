@@ -64,6 +64,7 @@
         }
         main {
             margin: 20px;
+            height: 100%;
         }
 
         .search-bar input[type="text"],
@@ -73,17 +74,18 @@
             border-radius: 5px;
             margin-right: 10px;
         }
-        .question {
+        #question {
             background-color: #fffdf3;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 10px;
             margin-bottom: 20px;
-            width: 80%;
+            width: 60%;
             align-content: center;
             align-items: center;
             text-align: center;
-            margin-left: 9%;
+            margin-right: 20%;
+            margin-left: 20%;
 
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -210,13 +212,13 @@
 
 <main>
     <h1 class="centrato">Benvenuto nel nostro forum</h1> <br>
-    <h2 class="centrato" style="font-weight: normal">Fai una domanda o rispondi a quelle degli altri utenti!</h2> <br>
+    <h2 class="centrato" style="font-weight: normal">Fai il login per aggiungere una domanda o rispondere a quelle degli altri utenti!</h2> <br>
     <%-- Form per inserire una nuova domanda, visibile solo se l'utente è autenticato --%>
     <% if (loggedUser != null) { %>
     <form id="inserimento" action="Dispatcher" method="post">
         <input type="hidden" name="controllerAction" value="DomandeManagement.addDomanda"/>
         <label for="descrizione" style="font-weight: bolder; font-size: 20px">Inserisci la tua domanda:</label> <br> <br>
-        <textarea id="descrizione" name="descrizione" rows="10" cols="190" style="border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);"></textarea><br>
+        <textarea id="descrizione" name="descrizione" style="border-radius: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); width: 500px; height: 100px"></textarea><br>
         <input type="submit" value="Invia" class="bottone-personalizzato">
     </form>
     <% } %>
@@ -224,7 +226,7 @@
     <%-- Visualizza le domande esistenti --%>
     <% if (domande != null && !domande.isEmpty()) { %>
     <% for (Domanda domanda : domande) { %>
-    <div class="question">
+    <section class="question" id="question">
         <p><label id="ut" >Utente:</label> <%= domanda.getUtente().getIdUtente() %></p>
         <p><label id="domanda">Domanda:</label> <%= domanda.getDescrizione() %></p>
 
@@ -235,20 +237,19 @@
                 <p><label id="risposta">Risposta:</label> <%= domanda.getRisposte().get(i).getDescrizione() %></p>
             <% } %>
         <% } %>
-
         <%-- Form per inserire una nuova risposta, visibile solo se l'utente è autenticato e non è l'autore della domanda --%>
-        <% if (loggedUser != null && !loggedUser.getIdUtente().equals(domanda.getUtente().getIdUtente())) { %>
-            <form id="insrisposta" action="Dispatcher" method="post">
-                <input type="hidden" name="controllerAction" value="DomandeManagement.addRisposta"/>
-                <input type="hidden" name="idDomanda" value="<%= domanda.getIdDomanda() %>"/>
-                <label for="descrizioneRisposta<%= domanda.getIdDomanda() %>">Rispondi a questa domanda: </label><br>
-                <textarea id="descrizioneRisposta<%= domanda.getIdDomanda() %>" name="descrizioneRisposta" rows="8" cols="100"></textarea><br>
-                <input type="submit" value="Invia" class="bottone-personalizzato">
-            </form>
+        <% if (loggedUser != null && !loggedUser.getIdUtente().equals(domanda.getUtente().getIdUtente()) ) { %>
+        <form id="insrisposta" action="Dispatcher" method="post">
+            <input type="hidden" name="controllerAction" value="DomandeManagement.addRisposta"/>
+            <input type="hidden" name="idDomanda" value="<%= domanda.getIdDomanda() %>"/>
+            <label for="descrizioneRisposta<%= domanda.getIdDomanda() %>">Rispondi a questa domanda: </label><br>
+            <textarea id="descrizioneRisposta<%= domanda.getIdDomanda() %>" name="descrizioneRisposta" style="width:500px; height:100px; border-radius: 5px"></textarea><br>
+            <input type="submit" value="Invia" class="bottone-personalizzato">
+        </form>
         <% } %>
-    </div>
+    </section>
     <% } %>
-    <% } else { %>
+<% } else { %>
     <p>Nessuna domanda disponibile.</p>
     <% } %>
 

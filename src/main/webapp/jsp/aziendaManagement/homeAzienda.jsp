@@ -79,7 +79,7 @@
             border-radius: 5px;
         }
         .sidebar a:hover {
-            background-color: #08ff00;
+            background-color: #00cc33;
         }
         .content {
             width: 100%;
@@ -136,7 +136,8 @@
             padding: 10px;
             border-radius: 5px;
             text-align: center;
-            width: 90%; /*85%*/
+            width: 100%;
+            margin-left: 15%;
         }
 
         section#dati-aziendali form, section#spazipubblicitari form, section#acquista form {
@@ -221,7 +222,7 @@
 </header>
 <main>
     <% if (loggedOn) { %>
-    <h1 class="centrato">Benvenuto nella tua area personale!</h1>
+    <h1 class="centrato">Benvenuto nella tua area personale <%=loggedAzienda.getNome()%>!</h1>
     <div class="sidebar">
         <a href="#dati-aziendali">Dati aziendali</a>
         <a href="#spazipubblicitari">Spazi pubblicitari acquistati</a>
@@ -229,7 +230,7 @@
     </div>
     <div class="content">
         <section id="dati-aziendali">
-            <h2>I miei dati personali</h2>
+            <h2>Dati aziendali</h2>
             <form method="post" action="Dispatcher" name="modifyForm">
                 <label for="partitaIVA">Partita IVA: </label>
                 <input type="text" id="partitaIVA" name="partitaIVA" value="<%= loggedAzienda.getPartitaIVA() %>" disabled> <br>
@@ -305,7 +306,7 @@
                 <label>
                     <input type="radio" id="checkboxEvento" name="scelta" value="scelta" required> Con scelta dell'evento a prezzo doppio
                 </label>
-                <select class="tendina" id="evento" name="evento" style="display: none">
+                <select class="tendina" id="evento" name="evento" style="display: none; width: fit-content">
                     <option value="">Eventi</option>
                     <% for (i=0; i< eventi.size(); i++) { %>
                     <option value="<%= eventi.get(i) %>"><%= eventi.get(i) %></option>

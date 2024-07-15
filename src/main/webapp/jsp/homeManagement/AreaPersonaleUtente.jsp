@@ -1,4 +1,3 @@
-<!--Area personale dell 'utente, con lista delle 3 aree ovvero dati personali, biglietti e abbonamenti. una volta spinto su una delle 3 aree si viene indirizzati all'area della pagina che le contiene. Ogni area ha un bottone di modifica che spingendolo permette di modificare i dati presenti-->
 <%@page session="false"%>
 <%@page import="com.managereventi.managereventi.model.mo.Utente"%>
 <%@page import="java.util.List"%>
@@ -20,6 +19,7 @@
     List<String> pastEvents = (List<String>) request.getAttribute("pastEvents");
 %>
 
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -33,7 +33,6 @@
             padding: 0;
             background-color: #fefefa;
         }
-
         header {
             background-color: #ffb805;
             padding: 10px;
@@ -42,11 +41,13 @@
             justify-content: space-between;
             align-items: center;
         }
+
         header h1 {
             margin: 0;
             font-family: 'Arial Black', sans-serif;
             font-size: 24px;
         }
+
         nav {
             display: flex;
             align-items: center;
@@ -76,72 +77,37 @@
             padding: 10px;
             margin: 10px 0;
             background-color: #de32ff;
-            color: #fefefa;
+            color: white;
             text-decoration: none;
             text-align: center;
             border-radius: 5px;
         }
         .sidebar a:hover {
-            background-color: #ab00cc;
+            background-color: #fceb00;
+            color: black;
         }
         .content {
             width: 100%;
-            float: right;
-        }
+            margin-left: auto;
 
-        .ticket img, .subscription img {
-            max-width: 100px;
-            margin-right: 20px;
         }
-
-        section#biglietti, section#abbonamenti {
+        .section {
             margin-bottom: 30px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        section#dati-personali{
-            margin-bottom: 30px;
-            max-width: 600px;
-            margin: 0 auto;
         }
 
-        section#dati-personali form {
+        form {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 2px;
-            background-color: #fffdf3;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            gap: 10px;
         }
-
-        section#dati-personali form label {
+        form label {
             margin-right: 50px;
             font-weight: bold;
             text-align: left;
         }
-
-        section#dati-personali form input[type="text"] {
+        form input[type="text"], form textarea {
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
-        }
-
-        section#biglietti div, section#abbonamenti div{
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1px;
-            background-color: white;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        section#biglietti div label, section#abbonamenti div label {
-            font-weight: bold;
-            text-align: left;
-            display: grid;
-            gap: 2px;
         }
 
         .bottone-personalizzato {
@@ -160,65 +126,76 @@
         }
 
         .bottone-personalizzato:hover {
-            background-color: #ab00cc;
-        }
-
-        .bottone-pers {
-            background-color: #de32ff;
-            color: #fefefa;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: fit-content;
-            display: inline-block;
-            margin-right: 10px;
-            text-align: center;
-            font-weight: bolder;
-        }
-
-        .bottone-pers:hover {
             background-color: #fceb00;
+            color: black;
         }
 
-        section#biglietti form {
-            display: grid;
-            justify-content: space-between;
-            align-items: center;
-            grid-gap: 1px;
-        }
-
-        section#recensioni {
+        section#dati-personali, section#biglietti, section#abbonamenti, section#recensioni{
             margin-bottom: 30px;
-            max-width: 600px;
+            max-width: 1000px;
             margin: 0 auto;
+
         }
 
-        section#recensioni form {
+        section#dati-personali h2, section#biglietti h2, section#abbonamenti h2, section#recensioni h2{
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            width: 100%;
+
+        }
+
+        section#candidature h3, section#biglietti h3, section#abbonamenti h3, section#recensioni h3{
+            font-weight: bold;
+        }
+
+        section#dati-personali form, section#biglietti form, section#abbonamenti form{
             display: grid;
             grid-template-columns: 1fr;
             gap: 2px;
             background-color: #fffdf3;
             padding: 20px;
             border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
             border-radius: 5px;
+            width: 800px;
+            margin: auto;
         }
 
-        section#recensioni form label {
+        section#recensioni form{
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2px;
+            background-color: #fffdf3;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
+            border-radius: 5px;
+            width: 800px;
+            margin-left: 11.8%;
+            margin-right: 20%;
+        }
+
+        section#dati-personali form label, section#biglietti form label, section#abbonamenti form label, section#recensioni form label{
+            margin-right: 50px;
             font-weight: bold;
-            margin-bottom: 5px;
+            text-align: left;
+            gap: 10px;
         }
 
-        section#recensioni form select,
-        section#recensioni form textarea,
-        section#recensioni form input[type="submit"] {
-            padding: 10px;
+        section#dati-personali form input[type="text"], section#dati-personali form textarea, section#biglietti form input[type="text"], section#abbonamenti form input[type="text"], section#recensioni form input[type="text"]{
+            padding: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
 
+        .centrato {
+            text-align: center;
+            margin: auto;
+            width: 100%;
+        }
+
         section#recensioni form textarea {
-            resize: vertical;
             min-height: 100px;
         }
 
@@ -231,14 +208,6 @@
         section#recensioni .star.selected {
             color: gold;
         }
-
-        .centrato {
-            text-align: center;
-            margin: auto;
-            width: 100%;
-            font-weight: bolder;
-        }
-
         footer {
             width: 100%;
             clear: both;
@@ -288,35 +257,32 @@
                 });
             });
         });
-
-
     </script>
 </head>
 <body>
-
 <header>
     <h1>PrimEvent</h1>
-    <form name="logoutForm" action="Dispatcher" method="post">
-        <input type="hidden" name="controllerAction" value="HomeManagement.logout"/>
-    </form>
-    <nav>
-        <ul>
-            <li <%=menuActiveLink.equals("Home") ? "class=\"active\"" : ""%>>
-                <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
-            </li>
-            <% if (loggedOn) { %>
-            <li <%=menuActiveLink.equals("Home Utente") ? "class=\"active\"" : ""%>>
-                <a href="Dispatcher?controllerAction=UserManagement.view">Home Utente</a>
-            </li>
-            <li><a href="javascript:logoutForm.submit()">Logout</a></li>
-            <% } else { %>
-            <li <%= menuActiveLink.equals("Accedi") ? "class=\"acrive\"": ""%>>
-                <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a></li>
-            <li <%=menuActiveLink.equals("Registrati")?"class=\"active\"":""%>>
-                <a href="Dispatcher?controllerAction=UserManagement.gotoRegistration">Registrati</a>
-                    <%}%>
-        </ul>
-    </nav>
+        <form name="logoutForm" action="Dispatcher" method="post">
+            <input type="hidden" name="controllerAction" value="HomeManagement.logout"/>
+        </form>
+        <nav>
+            <ul>
+                <li <%=menuActiveLink.equals("Home") ? "class=\"active\"" : ""%>>
+                    <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
+                </li>
+                <% if (loggedOn) { %>
+                <li <%=menuActiveLink.equals("Home Utente") ? "class=\"active\"" : ""%>>
+                    <a href="Dispatcher?controllerAction=UserManagement.view">Home Utente</a>
+                </li>
+                <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+                <% } else { %>
+                <li <%= menuActiveLink.equals("Accedi") ? "class=\"acrive\"": ""%>>
+                    <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a></li>
+                <li <%=menuActiveLink.equals("Registrati")?"class=\"active\"":""%>>
+                    <a href="Dispatcher?controllerAction=UserManagement.gotoRegistration">Registrati</a>
+                        <%}%>
+            </ul>
+        </nav>
 </header>
 
 <main>
@@ -374,7 +340,7 @@
         </section>
 
         <section id="abbonamenti" >
-            <h2>I miei Abbonamenti</h2>
+            <h2>I miei abbonamenti</h2>
             <%if (biglietti != null && !biglietti.isEmpty()){ %>
             <% for (i=0; i<abbonamenti.size();i++){%>
             <h3>Abbonamento n&deg; <%= i + 1 %></h3>
@@ -398,31 +364,31 @@
         </section>
 
         <section id="recensioni">
-            <h2>Scrivi la tua opinione</h2>
-            <form action="Dispatcher" method="post">
-                <%--@declare id="event"--%>
-                <label for="event">Seleziona evento </label>
-                <select name="nomeEvento">
-                    <option value=""></option>
-                    <% for (i=0; i< pastEvents.size(); i++) { %>
-                    <option value="<%= pastEvents.get(i) %>"><%= pastEvents.get(i) %></option>
-                    <% } %>
-                </select>
-                <label for="stelle">Assegna un numero di stelle</label>
-                <div class = "star.selected" id="stelle" style="display: flex;">
-                    <span class="star" data-rating="1">&#9733;</span>
-                    <span class="star" data-rating="2">&#9733;</span>
-                    <span class="star" data-rating="3">&#9733;</span>
-                    <span class="star" data-rating="4">&#9733;</span>
-                    <span class="star" data-rating="5">&#9733;</span>
-                </div>
-                <input type="hidden" name="rating" id="ratingValue" value="">
-                <textarea name="descrizione" placeholder="Aggiungi una descrizione"></textarea>
-                <input type="hidden" name="controllerAction" value="UserManagement.submitReview"/>
-                <br>
-                <input type="submit" class="bottone-personalizzato" value="Invia Recensione">
-            </form>
-        </section>
+        <h2>Scrivi la tua opinione</h2>
+        <form action="Dispatcher" method="post">
+            <%--@declare id="event"--%>
+            <label for="event">Seleziona evento </label>
+            <select name="nomeEvento">
+                <option value=""></option>
+                <% for (i=0; i< pastEvents.size(); i++) { %>
+                <option value="<%= pastEvents.get(i) %>"><%= pastEvents.get(i) %></option>
+                <% } %>
+            </select>
+            <label for="stelle">Assegna un numero di stelle</label>
+            <div class = "star.selected" id="stelle" style="display: flex;">
+                <span class="star" data-rating="1">&#9733;</span>
+                <span class="star" data-rating="2">&#9733;</span>
+                <span class="star" data-rating="3">&#9733;</span>
+                <span class="star" data-rating="4">&#9733;</span>
+                <span class="star" data-rating="5">&#9733;</span>
+            </div>
+            <input type="hidden" name="rating" id="ratingValue" value="">
+            <textarea name="descrizione" placeholder="Aggiungi una descrizione"></textarea>
+            <input type="hidden" name="controllerAction" value="UserManagement.submitReview"/>
+            <br>
+            <input type="submit" class="bottone-personalizzato" value="Invia Recensione">
+        </form>
+    </section>
         <br><br>
 
     </div>
@@ -431,11 +397,9 @@
     <% } %>
 
 </main>
-
 <footer>
     &copy; 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>
     Credits: Leonardo Rastelli e Anna Ferri
 </footer>
-
 </body>
 </html>

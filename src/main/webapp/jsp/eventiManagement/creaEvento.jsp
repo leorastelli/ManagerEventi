@@ -84,19 +84,47 @@
 
         label {
             display: block;
-            margin: 10px 0 5px;
+            width: 500px;
+            margin-right: 20%;
+            margin-left: 20%;
+            /*margin-bottom: 10px;*/
         }
 
         input {
-            width: 100%;
+            width: 500px;
+            margin-right: 20%;
+            margin-left: 20%;
             padding: 8px;
             box-sizing: border-box;
             border: #dddddd 1px solid;
             background-color: transparent;
             border-radius: 5px;
-            margin-bottom: 2px;
+            /*margin-top: 15px;*/
+            /*margin-bottom: 10px;*/
         }
 
+        .tendina {
+            width: fit-content;
+            margin-right: 20%;
+            margin-left: 20%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: #dddddd 1px solid;
+            background-color: transparent;
+            border-radius: 5px;
+            /*margin-top: 15px;*/
+            /*margin-bottom: 10px;*/
+        }
+
+        #descrizione, #descrizioneEsibizione {
+            border: #dddddd 1px solid;
+            margin-left: 20%;
+            margin-right: 20%;
+            width:494px;
+            height:60px;
+            border-radius: 5px;
+            background-color: transparent;
+        }
 
         .bottone-personalizzato {
             background-color: #de32ff;
@@ -157,39 +185,38 @@
 <main>
     <form>
         <section id="evento">
-
             <h2>Inserisci dettagli evento</h2>
-            <label for="nome">Nome Evento</label>
-            <input type="text" id="nome" name="nome" required>
+            <label for="nome">Nome evento</label>
+            <input type="text" id="nome" name="nome" required> <br><br>
             <label for="descrizione">Descrizione dell'evento</label>
-            <textarea id="descrizione" name="descrizione"> </textarea>
+            <textarea id="descrizione" name="descrizione" required> </textarea> <br><br>
             <label for="datainizio">Data di inizio evento</label>
-            <input type="date" id="datainizio" name="datainizio" required>
+            <input type="date" id="datainizio" name="datainizio" required> <br><br>
             <label for="datafine">Data di fine evento</label>
-            <input type="date" id="datafine" name="datafine" required>
-            <input class="input" type="file" id="imglogo" name="logo" accept="image/png, image/jpeg">
+            <input type="date" id="datafine" name="datafine" required> <br><br>
+            <input class="input" type="file" id="imglogo" name="logo" accept="image/png, image/jpeg" required> <br>
             <img id="logoPreview" style="max-width: 200px; max-height: 200px">
             <br>
             <button  class="bottone-personalizzato" id="aggiungiEsibizioneBtn">Aggiungi esibizione</button> <br>
                 <section id="esibizione">
                     <h2 class="titolo" id="titoloEsibizione" style="display:none;">Inserisci dettagli esibizione</h2>
                     <label for="nomeEsibizione" style="display:none;">Nome esibizione</label>
-                    <input type="text" id="nomeEsibizione" name="nomeEsibizione" style="display:none;">
+                    <input type="text" id="nomeEsibizione" name="nomeEsibizione" style="display:none;"><br>
                     <label for="descrizioneEsibizione" style="display:none;">Descrizione dell'esibizione</label>
-                    <textarea id="descrizioneEsibizione" name="descrizioneEsibizione" style="display:none;"> </textarea>
+                    <textarea id="descrizioneEsibizione" name="descrizioneEsibizione" style="display:none;"> </textarea><br>
                     <label for="durata" style="display:none;">Durata esibizione</label>
-                    <input type="time" id="durata" name="durata" required style="display:none;">
+                    <input type="time" id="durata" name="durata" required style="display:none;"><br>
                     <label for="Orainizio" style="display:none;">Ora di inizio</label>
-                    <input type="time" id="Orainizio" name="orainizio" required style="display:none;">
-                    <select class="tendina" name="luogo" style="display: none">
-                        <option value="">Luogo</option>
+                    <input type="time" id="Orainizio" name="orainizio" required style="display:none;"><br>
+                    <select class="tendina" name="luogo" id="tendina" style="display: none">
+                        <option value="">Seleziona id del luogo</option>
                         <% for (i=0; i< luoghi.size(); i++) { %>
                         <option value="<%= luoghi.get(i) %>"><%= luoghi.get(i) %></option>
                         <% } %>
-                    </select>
+                    </select><br>
                     <label for="genere" style="display:none;">Genere </label>
-                    <input type="text" id="genere" name="genere" required style="display:none;">
-                    <input class="input" type="file" id="imglogoEsibizione" name="logoEsibizione" style="display:none;" accept="image/png, image/jpeg">
+                    <input type="text" id="genere" name="genere" required style="display:none;"><br>
+                    <input class="input" type="file" id="imglogoEsibizione" name="logoEsibizione" style="display:none;" accept="image/png, image/jpeg" required>
                     <img id="logoPreview1" style="max-width: 200px; max-height: 200px">
                     <br>
 

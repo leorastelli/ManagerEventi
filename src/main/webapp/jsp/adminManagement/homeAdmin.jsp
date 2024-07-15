@@ -116,7 +116,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            width: 20%;
+            width: fit-content;
             align-items: center;
             text-align: center;
             display: block;
@@ -135,18 +135,41 @@
 
         }
 
-        section#dati-personali h2, section#eventi h2, section#esibizioni h2, section#recensioni h2, section#spazi-pubblicitari h2, section#candidature h2{
+       section#eventi h2, section#esibizioni h2, section#recensioni h2, section#spazi-pubblicitari h2, section#candidature h2{
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            width: 90%;
+           margin-left: 5%;
+        }
+
+        section#dati-personali h2{
             padding: 10px;
             border-radius: 5px;
             text-align: center;
             width: 90%;
         }
-
         section#candidature h3, section#esibizioni h3, section#eventi h3, section#recensioni h3, section#spazi-pubblicitari h3{
             font-weight: bold;
+            margin-left: 11.8%;
+            margin-right: 20%;
         }
 
-        section#dati-personali form, section#eventi form, section#esibizioni form, section#recensioni form, section#spazi-pubblicitari form, section#candidature form{
+        section#eventi form, section#esibizioni form, section#recensioni form, section#spazi-pubblicitari form, section#candidature form{
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2px;
+            background-color: #fffdf3;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
+            border-radius: 5px;
+            width: 800px;
+            margin-left: 11.8%;
+            margin-right: 20%;
+        }
+
+        section#dati-personali form{
             display: grid;
             grid-template-columns: 1fr;
             gap: 2px;
@@ -158,7 +181,6 @@
             width: 800px;
             margin: auto;
         }
-
         section#dati-personali form label, section#esibizioni form label, section#recensioni form label, section#eventi form label, section#spazi-pubblicitari form label, section#candidature form label{
             margin-right: 50px;
             font-weight: bold;

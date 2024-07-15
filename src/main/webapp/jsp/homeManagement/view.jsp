@@ -88,7 +88,7 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
       transition: box-shadow 0.2s ease-in-out;
     }
     .image-box:hover {
-      box-shadow: #ab00cc 0 0 10px;
+      box-shadow: #ab00cc 0 0 15px;
     }
     .image-box img {
       width: 500px;
@@ -156,22 +156,22 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
 </header>
     <h1 class="title"> Scopri Eventi Unici!</h1>
 <main>
-  <div id="eventi" class="image-box" onclick="location.href='Dispatcher?controllerAction=EventiManagement.view'">
+  <section id="eventi" class="image-box" onclick="location.href='Dispatcher?controllerAction=EventiManagement.view'">
     <img src="images/eventi2.jpeg" alt="Eventi">
     <p>Eventi</p>
-  </div>
-  <div id="recensioni" class="image-box" onclick="location.href='Dispatcher?controllerAction=ReviewManagement.view'">
+  </section>
+  <section id="recensioni" class="image-box" onclick="location.href='Dispatcher?controllerAction=ReviewManagement.view'">
     <img src="images/recensioni2.png" alt="Cosa dicono di noi">
     <p>Cosa dicono di noi</p>
-  </div>
-  <div id="candidature" class="image-box" onclick="location.href='Dispatcher?controllerAction=CandidatureManagement.view'">
+  </section>
+  <section id="candidature" class="image-box" onclick="location.href='Dispatcher?controllerAction=CandidatureManagement.view'">
     <img src="images/candidarsi.jpeg" alt="Lavora con noi">
     <p>Lavora con noi</p>
-  </div>
-  <div id="domande" class="image-box" onclick="location.href='Dispatcher?controllerAction=DomandeManagement.view'">
+  </section>
+  <section id="domande" class="image-box" onclick="location.href='Dispatcher?controllerAction=DomandeManagement.view'">
     <img src="images/forum.jpeg" alt="Il nostro forum">
     <p>Il nostro forum</p>
-  </div>
+  </section>
 </main>
 <footer>
   &copy; 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>

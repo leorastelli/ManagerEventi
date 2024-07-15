@@ -70,33 +70,43 @@
         }
         .event {
             margin: 20px auto;
-            width: 90%;
-            max-width: 600px;
-            cursor: pointer;
+            width: 80%;
+            height: 80%;
+            max-width: 300px;
+            max-height: 300px;
             position: relative;
+            cursor: pointer;
+            justify-content: space-around;
+            transition: box-shadow 0.2s ease-in-out;
         }
+        .event:hover {
+            box-shadow: 0 0 10px 5px #ab00cc;
+        }
+
         .event img {
-            width: 100%;
+            width: 300px;
+            height: 300px;
         }
         .event p {
-            margin: 0;
-            padding: 10px;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
             position: absolute;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            font-size: 1.2em;
+            text-align: right;
+            bottom: 10px;
+            right: 15px;
+            margin: 2px;
+            padding: 5px;
+            color:white;
+            font-weight: bolder;
+            font-size: 20px;
         }
+
         footer {
             width: 100%;
+            clear: both;
             text-align: center;
             padding: 10px;
             background-color: #ffb805;
             color: #ab00cc;
-            position: fixed;
-            bottom: 0;
+            margin-top: 20px;
         }
         .search-sort {
             display: flex;
@@ -107,6 +117,25 @@
         .search-sort input, .search-sort select {
             margin: 0 10px;
             padding: 5px;
+        }
+
+        .bottone-personalizzato {
+            background-color: #de32ff;
+            color: #fefefa;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: fit-content;
+            align-items: center;
+            text-align: center;
+            display: block;
+            margin: auto;
+            font-weight: bolder;
+        }
+
+        .bottone-personalizzato:hover {
+            background-color: #00bfff;
         }
     </style>
 </head>
@@ -150,31 +179,33 @@
 </header>
 <main>
     <h1>Tutti gli Eventi</h1>
-    <div class="search-sort">
+    <section class="search-sort">
         <input type="text" id="search" placeholder="Cerca evento per nome" oninput="filterEvents()">
-        <select id="sort" onchange="sortEvents()">
+        <select id="sort" style="border-radius: 5px" onchange="sortEvents()">
+            <option value="default">Ordina per default</option>
             <option value="date">Ordina per data</option>
         </select>
-    </div>
-    <div id="eventList">
+    </section>
+    <section id="eventList">
         <% for (i=0; i<eventi.size();i++){
             Blob logoBlob = eventi.get(i).getImmagine();
             int blobLength = (int) logoBlob.length();
             byte[] logoBytes = logoBlob.getBytes(1, blobLength);
             String base64Image = Base64.getEncoder().encodeToString(logoBytes); %>
-        <div class="event" data-date="<%=eventi.get(i).getDataInizio()%>" data-id-evento="<%=eventi.get(i).getIdEvento()%>">
-            <img src="data:image/jpeg;base64, <%= base64Image%>" style="max-width: 200px; max-height: 200px" alt="<%=eventi.get(i).getNome()%>">
+        <section class="event" data-date="<%=eventi.get(i).getDataInizio()%>" data-id-evento="<%=eventi.get(i).getIdEvento()%>"> <!-- serve per ordinare gli eventi -->
+            <p style="text-align: right; top: 0; right: 0;"><%=eventi.get(i).getNome()%></p>
+            <img src="data:image/jpeg;base64, <%= base64Image%>" alt="<%=eventi.get(i).getNome()%>">
             <p> Da <%=eventi.get(i).getDataInizio()%> a <%=eventi.get(i).getDataFine()%></p>
-        </div>
+        </section>
 
         <%}%>
-    </div>
+    </section>
 
     <% if (loggedOrganizzatore != null){ %>
 
     <form action="Dispatcher" method="post">
         <input type="hidden" name="controllerAction" value="EventiManagement.gotoCreaEvento">
-        <input type="submit" value="Crea Evento">
+        <input type="submit" class="bottone-personalizzato" value="Crea Evento">
     </form>
 
     <%}%>
@@ -199,15 +230,18 @@
         const eventList = document.getElementById('eventList');
         const events = Array.from(eventList.getElementsByClassName('event'));
 
-        events.sort((a, b) => {
-            if (sortValue === 'date') {
+        if (sortValue === 'date') {
+            events.sort((a, b) => {
                 return new Date(a.getAttribute('data-date')) - new Date(b.getAttribute('data-date'));
-            } else if (sortValue === 'name') {
-                const nameA = a.querySelector('img').alt.toLowerCase();
-                const nameB = b.querySelector('img').alt.toLowerCase();
-                return nameA.localeCompare(nameB);
-            }
-        });
+            });
+        }
+
+        if (sortValue === 'default') {
+            events.sort((a, b) => {
+                return a.getAttribute('data-id-evento') - b.getAttribute('data-id-evento');
+            });
+
+        }
 
         events.forEach(event => eventList.appendChild(event));
     }
@@ -224,6 +258,7 @@
             });
         });
     });
+
 </script>
 </body>
 </html>

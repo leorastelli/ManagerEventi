@@ -65,13 +65,7 @@
         h1 {
             font-size: 2em;
         }
-        .event {
-            margin: 20px auto;
-            width: 90%;
-            max-width: 600px;
-            cursor: pointer;
-            position: relative;
-        }
+
         .event img {
             width: 100%;
         }
