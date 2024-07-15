@@ -14,7 +14,7 @@
     int i;
     Evento evento = (Evento) request.getAttribute("evento");
     List<Esibizione> esibizioni = (List<Esibizione>) request.getAttribute("esibizioni");
-    List<Luogo> luoghi = (List<Luogo>) request.getAttribute("luoghi");
+    List<String> luoghi = (List<String>) request.getAttribute("luoghi");
 %>
 <!DOCTYPE html>
 <html lang="it">
@@ -150,34 +150,54 @@
 <main>
     <h2>Inserisci i dettagli dell'esibizione che desideri aggiungere </h2>
     <section id="esibizione">
-        <h2 class="titolo" id="titoloEsibizione" style="display:none;">Inserisci dettagli esibizione</h2>
-        <label for="nomeEsibizione" style="display:none;">Nome esibizione</label>
-        <input type="text" id="nomeEsibizione" name="nomeEsibizione" style="display:none;">
-        <label for="descrizioneEsibizione" style="display:none;">Descrizione dell'esibizione</label>
-        <textarea id="descrizioneEsibizione" name="descrizioneEsibizione" style="display:none;"> </textarea>
-        <label for="durata" style="display:none;">Durata esibizione</label>
-        <input type="time" id="durata" name="durata" required style="display:none;">
-        <label for="Orainizio" style="display:none;">Ora di inizio</label>
-        <input type="time" id="Orainizio" name="orainizio" required style="display:none;">
-        <select class="tendina" name="luogo" style="display: none">
-            <option value="">Luogo</option>
-            <% for (i=0; i< luoghi.size(); i++) { %>
-            <option value="<%= luoghi.get(i) %>"><%= luoghi.get(i) %></option>
-            <% } %>
-        </select>
-        <label for="genere" style="display:none;">Genere </label>
-        <input type="text" id="genere" name="genere" required style="display:none;">
-        <input class="input" type="file" id="imglogoEsibizione" name="logoEsibizione" style="display:none;" accept="image/png, image/jpeg">
-        <img id="logoPreview1" style="max-width: 200px; max-height: 200px">
-        <br>
+        <form name="creaEsibizioneForm" action="Dispatcher" method="post" enctype="multipart/form-data">
+            <h2 class="titolo" id="titoloEsibizione" >Inserisci dettagli esibizione</h2>
+            <label for="nomeEsibizione" style="display:none;">Nome esibizione</label>
+            <input type="text" id="nomeEsibizione" name="nomeEsibizione" >
+            <label for="descrizioneEsibizione" >Descrizione dell'esibizione</label>
+            <textarea id="descrizioneEsibizione" name="descrizioneEsibizione" > </textarea>
+            <label for="durata" >Durata esibizione</label>
+            <input type="time" id="durata" name="durata" required >
+            <label for="Orainizio" >Ora di inizio</label>
+            <input type="time" id="Orainizio" name="orainizio" required >
+            <select class="tendina" name="luogo" >
+                <option value="">Luogo</option>
+                <% for (i=0; i< luoghi.size(); i++) { %>
+                <option value="<%= luoghi.get(i) %>"><%= luoghi.get(i) %></option>
+                <% } %>
+            </select>
+            <label for="genere" >Genere </label>
+            <input type="text" id="genere" name="genere" required >
+            <input class="input" type="file" id="imglogo" name="logoEsibizione"  accept="image/png, image/jpeg">
+            <img id="logoPreview" style="max-width: 200px; max-height: 200px">
+            <br>
+            <input type="hidden" name="idorganizzatore" value="<%=loggedOrganizzatore.getIdOrganizzatore()%>">
+            <input type="hidden" name="idevento" value="<%=evento.getIdEvento()%>">
+            <input type="hidden" name="controllerAction" value="EventiManagement.creaEsibizione">
+            <input type="submit" class="bottone-personalizzato" value="Pubblica Esibizione">
+        </form>
     </section>
-    <input type="hidden" name="idorganizzatore" value="<%=loggedOrganizzatore.getIdOrganizzatore()%>">
-    <input type="hidden" name="controllerAction" value="EsibizioniManagement.gotoCreaEsibizione">
-    <button type="submit" class="bottone-personalizzato">Pubblica esibizione</button>
 </main>
 <footer>
     &copy; 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>
     Credits: Leonardo Rastelli e Anna Ferri
 </footer>
+
+<script>
+    window.onload = function() {
+        document.getElementById('imglogo').addEventListener('change', function (event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                document.getElementById('logoPreview').src = reader.result;
+            }
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('logoPreview').src = "";
+            }
+        });
+    }
+</script>
 </body>
 </html>

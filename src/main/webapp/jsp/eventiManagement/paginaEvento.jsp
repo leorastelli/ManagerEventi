@@ -193,7 +193,7 @@
             byte[] logoBytes = logoBlob.getBytes(1, blobLength);
             String base64Image = Base64.getEncoder().encodeToString(logoBytes); %>
         <section class="esibizione">
-            <figure data-date="<%=esibizioni.get(i).getIdEvento().getDataInizio()%>>">
+            <figure class="esibizione1" data-idesibizione="<%=esibizioni.get(i).getIdEsibizione()%>" data-idevento="<%=evento.getIdEvento()%>" data-date="<%=esibizioni.get(i).getIdEvento().getDataInizio()%>>">
                 <figcaption class="date">DOM<br><strong>30</strong><br>GIU 2024</figcaption>
                 <img src="data:image/jpeg;base64, <%= base64Image%>" style="max-width: 200px; max-height: 200px" alt=<%=esibizioni.get(i).getNome()%>>
                 <figcaption>
@@ -203,11 +203,6 @@
                 </figcaption>
             </figure>
         </section>
-        <form>
-            <input type="hidden" name="controllerAction" value="EsibizioniManagement.gotoEsibizione">
-            <input type="hidden" name="idEsibizione" value=<%=esibizioni.get(i).getIdEsibizione()%>>
-            <input type="submit" value="Vai all'esibizione">
-        </form>
     </div>
     <%}%>
     <form action="Dispatcher" method="post">
@@ -217,7 +212,7 @@
     <% if (loggedOrganizzatore != null && loggedOrganizzatore.getIdOrganizzatore().equals(evento.getOrganizzatore().getIdOrganizzatore())){ %>
     <form action="Dispatcher" method="post">
         <input type="hidden" name="idEvento" value=<%= evento.getIdEvento()%>>
-        <input type="hidden" name="controllerAction" value="EsibizioneManagement.gotoCreaEsibizione">
+        <input type="hidden" name="controllerAction" value="EventiManagement.gotoCreaEsibizione">
         <input type="submit" value="Aggiungi esibizione">
     </form>
     <%}%>
@@ -226,7 +221,7 @@
 <footer>
     <section id="adv" >
         <% for(Sponsorizzazione sponsorizzazione : sponsorizzazioni) {
-            Blob logoBlob = sponsorizzazioni.get(i).getLogo();
+            Blob logoBlob = sponsorizzazione.getLogo();
             int blobLength = (int) logoBlob.length();
             byte[] logoBytes = logoBlob.getBytes(1, blobLength);
             String base64Image = Base64.getEncoder().encodeToString(logoBytes);
@@ -265,6 +260,20 @@
 
         events.forEach(event => eventList.appendChild(event));
     }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var events = document.querySelectorAll('.esibizione1');
+
+        events.forEach(function(event) {
+            event.addEventListener('click', function() {
+                var idEsibizione = this.getAttribute('data-idesibizione');
+                var idEvento = this.getAttribute('data-idevento');
+                var controllerAction = "EsibizioneManagement.view";
+                var url = "Dispatcher?controllerAction=" + controllerAction + "&idEsibizione=" + idEsibizione + "&idEvento=" + idEvento;
+                window.location.href = url;
+            });
+        });
+    });
 </script>
 </body>
 </html>

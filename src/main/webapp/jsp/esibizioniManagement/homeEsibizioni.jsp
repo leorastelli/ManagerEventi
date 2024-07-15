@@ -13,7 +13,7 @@
     String menuActiveLink = "Home";
     int i;
     Evento evento = (Evento) request.getAttribute("evento");
-    List<Esibizione> esibizioni = (List<Esibizione>) request.getAttribute("esibizioni");
+    Esibizione esibizione = (Esibizione) request.getAttribute("esibizione");
 %>
 <!DOCTYPE html>
 <html lang="it">
@@ -164,9 +164,8 @@
     </nav>
 </header>
 <main>
-    <h1>Esibizione <%=esibizioni.getNome()%></h1>
+    <h1>Esibizione <%=esibizione.getNome()%></h1>
     <%
-        Esibizione esibizione = (Esibizione) request.getAttribute("esibizione");
         Blob logoBlob = esibizione.getImmagine();
         int blobLength = (int) logoBlob.length();
         byte[] logoBytes = logoBlob.getBytes(1, blobLength);

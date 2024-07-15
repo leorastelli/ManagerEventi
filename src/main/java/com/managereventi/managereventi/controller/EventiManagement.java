@@ -379,7 +379,7 @@ public class EventiManagement {
                 esibizione.setNome(request.getParameter("nomeEsibizione"));
                 esibizione.setDescrizione(request.getParameter("descrizioneEsibizione"));
                 esibizione.setIdEsibizione(RandomString(10));
-                esibizione.setIdEvento(eventoDAO.getEventoById(request.getParameter("idEvento")));
+                esibizione.setIdEvento(eventoDAO.getEventoById(request.getParameter("idevento")));
                 esibizione.setIdLuogo(luogo);
                 esibizione.setIdOrganizzatore(loggedOrganizzatore);
 
@@ -410,10 +410,9 @@ public class EventiManagement {
                 }
             }
 
-            evento = eventoDAO.getEventoById(request.getParameter("idEvento"));
+            evento = eventoDAO.getEventoById(request.getParameter("idevento"));
             esibizioni = esibizioneDAO.getEsibizioniByEvento(evento.getIdEvento());
             sponsorizzazioni = sponsorizzazioneDAO.getSponsorizzazioniByEvento(evento.getIdEvento());
-
 
 
             daoFactory.commitTransaction();
@@ -451,6 +450,7 @@ public class EventiManagement {
         Utente loggedUser;
         Organizzatore loggedOrganizzatore;
         List<String> luoghi;
+        Evento evento;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -468,6 +468,9 @@ public class EventiManagement {
             daoFactory.beginTransaction();
 
             LuogoDAO luogoDAO = daoFactory.getLuogoDAO();
+            EventoDAO eventoDAO = daoFactory.getEventoDAO();
+
+            evento = eventoDAO.getEventoById(request.getParameter("idEvento"));
             luoghi = luogoDAO.getAllLuoghi();
 
 
@@ -477,6 +480,7 @@ public class EventiManagement {
             request.setAttribute("loggedOn",loggedOrganizzatore!=null);
             request.setAttribute("loggedOrganizzatore", loggedOrganizzatore);
             request.setAttribute("luoghi", luoghi);
+            request.setAttribute("evento", evento);
             request.setAttribute("viewUrl", "esibizioniManagement/creaEsibizione");
 
         } catch (Exception e) {
