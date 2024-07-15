@@ -43,6 +43,7 @@
         input[type="checkbox"] {
             margin-right: 10px;
         }
+
         .bottone-personalizzato {
             background-color: #de32ff;
             color: #fefefa;
@@ -59,7 +60,7 @@
         }
 
         .bottone-personalizzato:hover {
-            background-color: #ab00cc;
+            background-color: #00bfff;
         }
 
     </style>

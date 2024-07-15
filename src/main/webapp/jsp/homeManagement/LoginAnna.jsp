@@ -23,14 +23,14 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f4f4f4;
+            background-color: #fefefa;
         }
         form {
             border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
             padding: 20px;
-            background: #fff;
+            background: #fffdf3;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
             text-align: center;
             width: 350px;
         }
@@ -42,8 +42,9 @@
             margin: 15px 0;
             font-size: 18px;
         }
+
         input[type="text"], input[type="password"] {
-            calc(100% - 20px);
+        calc(100% - 20px);
             padding: 10px;
             margin-bottom: 10px;
             font-size: 16px;
@@ -51,14 +52,24 @@
             border-radius: 5px;
             box-sizing: border-box;
         }
+
         .bottone-personalizzato {
-            background-color: #6fa3ef;
-            color: white;
+            background-color: #de32ff;
+            color: #fefefa;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 10px;
+            width: fit-content;
+            align-items: center;
+            text-align: center;
+            display: block;
+            margin: auto;
+            font-weight: bolder;
+        }
+
+        .bottone-personalizzato:hover {
+            background-color: #00cc33;
         }
 
     </style>

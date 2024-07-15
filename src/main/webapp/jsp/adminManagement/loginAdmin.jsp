@@ -83,7 +83,7 @@
         }
 
         .bottone-personalizzato:hover {
-            background-color: #ab00cc;
+            background-color: #00bfff;
         }
 
 

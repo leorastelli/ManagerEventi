@@ -122,7 +122,7 @@
         }
 
         .bottone-personalizzato:hover {
-            background-color: #08ff00;
+            background-color: #00cc33;
         }
 
         section#dati-aziendali, section#spazipubblicitari, section#acquista{

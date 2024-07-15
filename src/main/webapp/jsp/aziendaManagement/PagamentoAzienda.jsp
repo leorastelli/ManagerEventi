@@ -18,12 +18,13 @@
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
+        background-color: #fefefa;
     }
 
     header {
-        background-color: #6fa3ef;
+        background-color: #ffb805;
         padding: 10px;
-        color: #fff;
+        color: #ab00cc;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -49,7 +50,7 @@
         margin-left: 15px;
     }
     nav a {
-        color: white;
+        color: #ab00cc;
         text-decoration: none;
     }
 
@@ -57,7 +58,7 @@
         display: flex;
         justify-content: space-around;
         padding: 20px;
-        background-color: white;
+        background-color: #fffdf3;
     }
 
     form {
@@ -124,20 +125,23 @@
         align-self: end;
     }
 
-    .bottone-personalizzato:hover {
-        background-color: #007FFF;
+    .bottone-personalizzato {
+        background-color: #de32ff;
+        color: #fefefa;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 20%;
+        align-items: center;
+        text-align: center;
+        display: block;
+        margin: auto;
+        font-weight: bolder;
     }
 
-    footer {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        clear: both;
-        text-align: center;
-        padding: 10px;
-        background-color: #6fa3ef;
-        color: #fff;
-        margin-top: 20px;
+    .bottone-personalizzato:hover {
+        background-color: #00cc33;
     }
 
 </style>

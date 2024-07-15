@@ -29,16 +29,16 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f4f4f4;
+            background-color: #fefefa;
         }
         form {
             border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
             padding: 20px;
-            background: #fff;
+            background: #fffdf3;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
             text-align: center;
-            width: 300px;
+            width: 350px;
         }
         h2 {
             margin-bottom: 20px;
@@ -54,13 +54,22 @@
         }
 
         .bottone-personalizzato {
-            background-color: #6fa3ef;
-            color: white;
+            background-color: #de32ff;
+            color: #fefefa;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 10px;
+            align-items: center;
+            text-align: center;
+            display: block;
+            margin: auto;
+            font-weight: bolder;
+            width: fit-content;
+        }
+
+        .bottone-personalizzato:hover {
+            background-color: #ab00cc;
         }
     </style>
 </head>
