@@ -67,26 +67,19 @@
         h1 {
             font-size: 2em;
         }
-        .event {
+
+        .immagine {
             margin: 20px auto;
-            width: 90%;
-            max-width: 600px;
-            cursor: pointer;
+            width: 300px;
+            height: 300px;
             position: relative;
+            cursor: pointer;
+            justify-content: space-around;
+            transition: box-shadow 0.2s ease-in-out;
         }
-        .event img {
-            width: 100%;
-        }
-        .event p {
-            margin: 0;
-            padding: 10px;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            font-size: 1.2em;
+
+        .immagine:hover {
+            box-shadow: 0 0 10px 5px #ab00cc;
         }
 
         footer {
@@ -112,7 +105,8 @@
         .adv img {
             width: 100px;
             height: auto;
-            margin: 10px;
+            margin-right: 10%;
+            margin-left: 10%;
         }
 
         figure {
@@ -126,6 +120,7 @@
             grid-column: 2;
             max-width: 100%;
         }
+
         figcaption {
             text-align: left;
         }
@@ -133,6 +128,43 @@
             text-align: right;
             padding-right: 10px;
         }
+        .bottone-personalizzato {
+            background-color: #de32ff;
+            color: #fefefa;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: fit-content;
+            align-items: center;
+            text-align: center;
+            display: block;
+            margin: auto;
+            font-weight: bolder;
+        }
+
+        .bottone-personalizzato:hover {
+            background-color: #ab00cc;
+        }
+        .bottone-pers {
+            background-color: #de32ff;
+            color: #fefefa;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: fit-content;
+            align-items: center;
+            text-align: center;
+            display: block;
+            margin: auto;
+            font-weight: bolder;
+        }
+
+        .bottone-pers:hover {
+            background-color: #00bfff;
+        }
+
     </style>
 </head>
 <body>
@@ -175,14 +207,15 @@
 </header>
 <main>
     <h1>Evento <%=evento.getNome()%></h1>
-    <label>Descrizione: <%=evento.getDescrizione()%></label> <br>
-    <label>Data inizio: <%=evento.getDataInizio()%></label> <br>
-    <label>Data fine: <%=evento.getDataFine()%></label> <br>
+    <label style="font-size: 20px"> <%=evento.getDescrizione()%></label> <br>
+    <label style="font-size: 20px">Data inizio evento: <%=evento.getDataInizio()%></label> <br>
+    <label style="font-size: 20px">Data fine evento: <%=evento.getDataFine()%></label> <br>
 
-    <h1>Tutte le esibizioni</h1>
+    <h1>Esibizioni</h1>
     <div class="search-sort">
-        <input type="text" id="search" placeholder="Cerca esibizione per genere" oninput="filterEvents()">
-        <select id="sort" onchange="sortEvents()">
+        <input type="text" id="search" placeholder="Cerca per genere" oninput="filterEvents()">
+        <select id="sort" style="border-radius: 5px" onchange="sortEvents()">
+            <option value="default">Ordinamento di default</option>
             <option value="date">Ordina per data</option>
         </select>
     </div>
@@ -194,11 +227,11 @@
             String base64Image = Base64.getEncoder().encodeToString(logoBytes); %>
         <section class="esibizione">
             <figure class="esibizione1" data-idesibizione="<%=esibizioni.get(i).getIdEsibizione()%>" data-idevento="<%=evento.getIdEvento()%>" data-date="<%=esibizioni.get(i).getIdEvento().getDataInizio()%>>">
-                <figcaption class="date">DOM<br><strong>30</strong><br>GIU 2024</figcaption>
-                <img src="data:image/jpeg;base64, <%= base64Image%>" style="max-width: 200px; max-height: 200px" alt=<%=esibizioni.get(i).getNome()%>>
-                <figcaption>
+                <figcaption class="date" ><%=esibizioni.get(i).getDataEsibizione()%></figcaption>
+                <img class="immagine" src="data:image/jpeg;base64, <%= base64Image%>" style="max-width: 200px; max-height: 200px" alt=<%=esibizioni.get(i).getNome()%>>
+                <figcaption style="margin-left: 20px">
                     Artista: <%=esibizioni.get(i).getNome()%><br>
-                    Luogo: <%=esibizioni.get(i).getIdLuogo().getIdLuogo()%><br>
+                    Luogo: <%=esibizioni.get(i).getIdLuogo().getNome()%><br>
                     Ora di inizio: <%=esibizioni.get(i).getOraInizio()%>
                 </figcaption>
             </figure>
@@ -207,13 +240,14 @@
     <%}%>
     <form action="Dispatcher" method="post">
         <input type="hidden" name="controllerAction" value="EsibizioniManagement.gotoEvento">
-        <input type="submit" value="Acquista abbonamento">
+        <input type="submit" class="bottone-personalizzato" value="Acquista abbonamento">
     </form>
+    <br>
     <% if (loggedOrganizzatore != null && loggedOrganizzatore.getIdOrganizzatore().equals(evento.getOrganizzatore().getIdOrganizzatore())){ %>
     <form action="Dispatcher" method="post">
         <input type="hidden" name="idEvento" value=<%= evento.getIdEvento()%>>
         <input type="hidden" name="controllerAction" value="EventiManagement.gotoCreaEsibizione">
-        <input type="submit" value="Aggiungi esibizione">
+        <input type="submit" class="bottone-pers" value="Aggiungi esibizione">
     </form>
     <%}%>
 
@@ -226,10 +260,10 @@
             byte[] logoBytes = logoBlob.getBytes(1, blobLength);
             String base64Image = Base64.getEncoder().encodeToString(logoBytes);
         %>
-        <img src="data:image/jpeg;base64, <%= base64Image %>">
+        <img src="data:image/jpeg;base64, <%= base64Image %>" style="width: 200px; border-radius: 50%; height: 200px">
         <% } %>
     </section>
-
+    <br>
     &copy; 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>
     Credits: Leonardo Rastelli e Anna Ferri
 </footer>

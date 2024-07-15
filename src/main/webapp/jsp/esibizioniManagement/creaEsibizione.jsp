@@ -16,12 +16,13 @@
     List<Esibizione> esibizioni = (List<Esibizione>) request.getAttribute("esibizioni");
     List<String> luoghi = (List<String>) request.getAttribute("luoghi");
 %>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrimEvent - Pagina Esibizione</title>
+    <title>PrimEvent - Tutti gli Eventi</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -63,35 +64,30 @@
             text-align: center;
             margin-top: 20px;
         }
-        h1 {
-            font-size: 2em;
+
+        #creaEsibizioneForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .event img {
+        section {
             width: 100%;
         }
-        .event p {
-            margin: 0;
-            padding: 10px;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
+
+        section h2 {
+            margin-top: 0;
             text-align: center;
-            font-size: 1.2em;
         }
 
-        footer {
-            width: 100%;
-            clear: both;
-            text-align: center;
-            padding: 10px;
-            background-color: #ffb805;
-            color: #ab00cc;
-            margin-top: 20px;
+        label {
+            display: block;
+            width: 500px;
+            margin-right: 20%;
+            margin-left: 20%;
+            /*margin-bottom: 10px;*/
+            text-align: left;
         }
-
         figure {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
@@ -105,6 +101,69 @@
         }
         figcaption {
             text-align: left;
+        }
+        input {
+            width: 500px;
+            margin-right: 20%;
+            margin-left: 20%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: #dddddd 1px solid;
+            background-color: transparent;
+            border-radius: 5px;
+            /*margin-top: 15px;*/
+            /*margin-bottom: 10px;*/
+        }
+
+        .tendina {
+            width: fit-content;
+            margin-right: 25.5%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: #dddddd 1px solid;
+            background-color: transparent;
+            border-radius: 5px;
+            /*margin-top: 15px;*/
+            /*margin-bottom: 10px;*/
+        }
+
+        #descrizioneEsibizione {
+            border: #dddddd 1px solid;
+            margin-left: 20%;
+            margin-right: 20%;
+            width:494px;
+            height:60px;
+            border-radius: 5px;
+            background-color: transparent;
+        }
+
+        .bottone-personalizzato {
+            background-color: #de32ff;
+            color: #fefefa;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: fit-content;
+            align-items: center;
+            text-align: center;
+            display: block;
+            margin: auto;
+            font-weight: bolder;
+        }
+
+        .bottone-personalizzato:hover {
+            background-color: #00bfff;
+        }
+
+        footer {
+            width: 100%;
+            clear: both;
+            text-align: center;
+            padding: 10px;
+            background-color: #ffb805;
+            color: #ab00cc;
+            margin-top: 20px;
         }
 
     </style>
@@ -121,64 +180,50 @@
                 <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
             </li>
             <% if (loggedOn) { %>
-            <% if (loggedUser != null) { %>
-            <li <%=menuActiveLink.equals("Home Utente") ? "class=\"active\"" : ""%>>
-                <a href="Dispatcher?controllerAction=UserManagement.view">Home Utente</a>
-            </li>
-            <li><a href="javascript:logoutForm.submit()">Logout</a></li>
-            <% } else if (loggedOrganizzatore != null) { %>
             <li <%=menuActiveLink.equals("Home Organizzatore") ? "class=\"active\"" : ""%>>
                 <a href="Dispatcher?controllerAction=OrganizzatoreManagement.view">Home Organizzatore</a>
             </li>
             <li><a href="javascript:logoutForm.submit()">Logout</a></li>
-            <% } else if(loggedAzienda != null){ %>
-            <li <%=menuActiveLink.equals("Home Azienda") ? "class=\"active\"" : ""%>>
-                <a href="Dispatcher?controllerAction=AziendaManagement.view">Home Azienda</a>
-            </li>
-            <li><a href="javascript:logoutForm.submit()">Logout</a></li>
-            <% }} else { %>
-            <li <%=menuActiveLink.equals("Accedi") ? "class=\"active\"" : ""%>>
-                <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a>
-            </li>
-            <li <%=menuActiveLink.equals("Registrati") ? "class=\"active\"" : ""%>>
-                <a href="Dispatcher?controllerAction=HomeManagement.gotoRegistration">Registrati</a>
-            </li>
-            <% } %>
+            <% } else { %>
+            <li <%= menuActiveLink.equals("Accedi") ? "class=\"active\"" : ""%>>
+                <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a></li>
+            <li <%=menuActiveLink.equals("Registrati")?"class=\"active\"":""%>>
+                <a href="Dispatcher?controllerAction=UserManagement.gotoRegistration">Registrati</a>
+                    <%}%>
         </ul>
     </nav>
 </header>
 <main>
-    <h2>Inserisci i dettagli dell'esibizione che desideri aggiungere </h2>
     <section id="esibizione">
         <form id="creaEsibizioneForm" name="creaEsibizioneForm" action="Dispatcher" method="post" enctype="multipart/form-data">
             <h2 class="titolo" id="titoloEsibizione" >Inserisci dettagli esibizione</h2>
-            <label for="nomeEsibizione" style="display:none;">Nome esibizione</label>
-            <input type="text" id="nomeEsibizione" name="nomeEsibizione" >
+            <label for="nomeEsibizione" >Nome esibizione</label>
+            <input type="text" id="nomeEsibizione" name="nomeEsibizione" ><br>
             <label for="descrizioneEsibizione" >Descrizione dell'esibizione</label>
-            <textarea id="descrizioneEsibizione" name="descrizioneEsibizione" > </textarea>
+            <textarea id="descrizioneEsibizione" name="descrizioneEsibizione" > </textarea><br>
+            <label for="dataEsibizione" >Data di inizio esibizione</label>
+            <input type="date" id="dataEsibizione" name="dataEsibizione"  ><br>
             <label for="durata" >Durata esibizione</label>
-            <input type="time" id="durata" name="durata" required >
-            <label for="dataEsibizione" >Data esibizione</label>
-            <input type="date" id="dataEsibizione" name="dataEsibizione" required>
+            <input type="time" id="durata" name="durata"  ><br>
             <label for="Orainizio" >Ora di inizio</label>
-            <input type="time" id="Orainizio" name="orainizio" required >
-            <select class="tendina" name="luogo" >
-                <option value="">Luogo</option>
+            <input type="time" id="Orainizio" name="orainizio" ><br>
+            <select class="tendina" name="luogo" id="tendina" >
+                <option value="">Seleziona luogo</option>
                 <% for (i=0; i< luoghi.size(); i++) { %>
-                <option value="<%= luoghi.get(i) %>"><%= luoghi.get(i) %></option>
+                    <option value="<%= luoghi.get(i) %>"><%= luoghi.get(i) %></option>
                 <% } %>
-            </select>
+            </select><br>
             <label for="genere" >Genere </label>
-            <input type="text" id="genere" name="genere" required >
+            <input type="text" id="genere" name="genere" ><br>
             <input class="input" type="file" id="imglogo" name="logoEsibizione"  accept="image/png, image/jpeg">
-            <img id="logoPreview" style="max-width: 200px; max-height: 200px">
+            <img id="logoPreview" style="max-width: 200px; max-height: 200px" alt="">
             <br>
-            <input type="hidden" name="idorganizzatore" value="<%=loggedOrganizzatore.getIdOrganizzatore()%>">
-            <input type="hidden" name="idevento" value="<%=evento.getIdEvento()%>">
-            <input type="hidden" id="datainizio" name="datainizio" value="<%=evento.getDataInizio()%>">
-            <input type="hidden" id="datafine" name="datafine" value="<%=evento.getDataFine()%>">
-            <input type="hidden" name="controllerAction" value="EventiManagement.creaEsibizione">
-            <input type="submit" class="bottone-personalizzato" value="Pubblica Esibizione">
+                <input type="hidden" name="idorganizzatore" value="<%=loggedOrganizzatore.getIdOrganizzatore()%>">
+                <input type="hidden" name="idevento" value="<%=evento.getIdEvento()%>">
+                <input type="hidden" id="datainizio" name="datainizio" value="<%=evento.getDataInizio()%>">
+                <input type="hidden" id="datafine" name="datafine" value="<%=evento.getDataFine()%>">
+                <input type="hidden" name="controllerAction" value="EventiManagement.creaEsibizione">
+                <input type="submit" class="bottone-personalizzato" value="Pubblica Esibizione">
         </form>
     </section>
 </main>
@@ -186,7 +231,6 @@
     &copy; 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>
     Credits: Leonardo Rastelli e Anna Ferri
 </footer>
-
 <script>
     window.onload = function() {
         document.getElementById('imglogo').addEventListener('change', function (event) {

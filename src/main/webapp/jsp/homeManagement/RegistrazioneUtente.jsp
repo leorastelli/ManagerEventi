@@ -56,7 +56,7 @@ alla pagina di Home(?)-->
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            width: 20%;
+            width: fit-content;
             align-items: center;
             text-align: center;
             display: block;

@@ -196,16 +196,29 @@
                 <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
             </li>
             <% if (loggedOn) { %>
+            <% if (loggedUser != null) { %>
             <li <%=menuActiveLink.equals("Home Utente") ? "class=\"active\"" : ""%>>
                 <a href="Dispatcher?controllerAction=UserManagement.view">Home Utente</a>
             </li>
             <li><a href="javascript:logoutForm.submit()">Logout</a></li>
-            <% } else { %>
-            <li <%= menuActiveLink.equals("Accedi") ? "class=\"active\"": ""%>>
-                <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a></li>
-            <li <%=menuActiveLink.equals("Registrati")?"class=\"active\"":""%>>
-                <a href="Dispatcher?controllerAction=UserManagement.gotoRegistration">Registrati</a>
-                    <%}%>
+            <% } else if (loggedOrganizzatore != null) { %>
+            <li <%=menuActiveLink.equals("Home Organizzatore") ? "class=\"active\"" : ""%>>
+                <a href="Dispatcher?controllerAction=OrganizzatoreManagement.view">Home Organizzatore</a>
+            </li>
+            <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+            <% } else if(loggedAzienda != null){ %>
+            <li <%=menuActiveLink.equals("Home Azienda") ? "class=\"active\"" : ""%>>
+                <a href="Dispatcher?controllerAction=AziendaManagement.view">Home Azienda</a>
+            </li>
+            <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+            <% }} else { %>
+            <li <%=menuActiveLink.equals("Accedi") ? "class=\"active\"" : ""%>>
+                <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a>
+            </li>
+            <li <%=menuActiveLink.equals("Registrati") ? "class=\"active\"" : ""%>>
+                <a href="Dispatcher?controllerAction=HomeManagement.gotoRegistration">Registrati</a>
+            </li>
+            <% } %>
         </ul>
     </nav>
 </header>

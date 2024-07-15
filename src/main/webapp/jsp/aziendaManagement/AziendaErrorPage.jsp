@@ -47,8 +47,8 @@
 
 </head>
 <main>
-    <h1>Si &egrave; verificato un errore nell'inserimento dei dati!</h1>
-    <h3>Torna alla pagina di login e riprova</h3>
+    <h1>Non puoi inserire più promozioni all'interno della stessa pagina evento!</h1>
+    <h3>Torna alla tua area personale per scegliere un altro evento </h3>
     <button onclick="goBack()" class="bottone-personalizzato">Torna indietro</button>
     <script>
         function goBack() {

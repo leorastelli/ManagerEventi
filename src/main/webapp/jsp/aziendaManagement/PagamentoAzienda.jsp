@@ -130,6 +130,17 @@
         background-color: #00cc33;
     }
 
+    footer {
+        width: 100%;
+        clear: both;
+        text-align: center;
+        padding: 10px;
+        background-color: #ffb805;
+        color: #ab00cc;
+        margin-top: 20px;
+    }
+
+
 </style>
 <body>
 <header>

@@ -117,6 +117,25 @@
             text-align: left;
         }
 
+        .bottone-personalizzato {
+            background-color: #de32ff;
+            color: #fefefa;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: fit-content;
+            align-items: center;
+            text-align: center;
+            display: block;
+            margin: auto;
+            font-weight: bolder;
+        }
+
+        .bottone-personalizzato:hover {
+            background-color: #ab00cc;
+        }
+
     </style>
 </head>
 <body>
@@ -165,14 +184,14 @@
         byte[] logoBytes = logoBlob.getBytes(1, blobLength);
         String base64Image = Base64.getEncoder().encodeToString(logoBytes);
     %>
-    <img src="data:image/jpeg;base64, <%= base64Image %>" style="max-width: 200px; max-height: 200px">
-    <label>Descrizione: <%=esibizione.getDescrizione()%></label> <br>
-    <label>Ora inizio: <%=esibizione.getOraInizio()%></label> <br>
-    <label>Data fine: <%=evento.getDataFine()%></label> <br>
-
+    <img src="data:image/jpeg;base64, <%= base64Image %>" style="max-width: 300px; max-height: 300px; align-content: center"><br>
+    <label style="font-size: 20px"><%=esibizione.getDescrizione()%></label> <br>
+    <label style="font-size: 20px">Ora di inizio esibizione: <%=esibizione.getOraInizio()%></label> <br>
+    <label style="font-size: 20px">Data esibizione: <%=esibizione.getDataEsibizione()%></label> <br>
+    <br>
     <form action="Dispatcher" method="post">
         <input type="hidden" name="controllerAction" value="EsibizioniManagement.gotoBiglietti">
-        <input type="submit" value="Acquista biglietto">
+        <input type="submit" class="bottone-personalizzato" value="Acquista biglietto">
     </form>
 </main>
 <footer>
