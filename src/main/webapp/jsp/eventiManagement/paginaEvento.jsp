@@ -91,12 +91,12 @@
 
         footer {
             width: 100%;
+            clear: both;
             text-align: center;
             padding: 10px;
             background-color: #ffb805;
             color: #ab00cc;
-            position: fixed;
-            bottom: 0;
+            margin-top: 20px;
         }
         .search-sort {
             display: flex;
@@ -197,9 +197,9 @@
                 <figcaption class="date">DOM<br><strong>30</strong><br>GIU 2024</figcaption>
                 <img src="data:image/jpeg;base64, <%= base64Image%>" style="max-width: 200px; max-height: 200px" alt=<%=esibizioni.get(i).getNome()%>>
                 <figcaption>
-                    Artista <%=esibizioni.get(i).getNome()%><br>
-                    Luogo <%=esibizioni.get(i).getIdLuogo().getIdLuogo()%><br>
-                    Ora <%=esibizioni.get(i).getOraInizio()%>
+                    Artista: <%=esibizioni.get(i).getNome()%><br>
+                    Luogo: <%=esibizioni.get(i).getIdLuogo().getIdLuogo()%><br>
+                    Ora di inizio: <%=esibizioni.get(i).getOraInizio()%>
                 </figcaption>
             </figure>
         </section>
