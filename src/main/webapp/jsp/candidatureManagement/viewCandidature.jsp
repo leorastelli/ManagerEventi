@@ -68,6 +68,7 @@
             border-radius: 8px;
             box-shadow: dimgray 0 0 5px;
             flex-grow: 1;
+            height: 932px;
         }
 
         section {
@@ -95,7 +96,13 @@
         textarea {
             resize: vertical;
         }
-
+        form{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            margin-top: 20px;
+        }
         .bottone-personalizzato {
             background-color: #de32ff;
             color: #fefefa;
