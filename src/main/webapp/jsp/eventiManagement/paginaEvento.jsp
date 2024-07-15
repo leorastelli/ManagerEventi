@@ -12,7 +12,7 @@
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "Home";
     int i;
-    List<Evento> eventi = (List<Evento>) request.getAttribute("eventi");
+    Evento evento = (Evento) request.getAttribute("evento");
     List<Esibizione> esibizioni = (List<Esibizione>) request.getAttribute("esibizioni");
     List<Azienda> aziende = (List<Azienda>) request.getAttribute("aziende");
     List<Sponsorizzazione> sponsorizzazioni = (List<Sponsorizzazione>) request.getAttribute("sponsorizzazioni");
@@ -174,11 +174,10 @@
     </nav>
 </header>
 <main>
-    <h1>Evento <%=eventi.getNome()%></h1>
-    <label>Descrizione: <%=eventi.getDescrizione()%></label> <br>
-    <label>Luogo: <%=eventi.getLuogo()%></label> <br>
-    <label>Data inizio: <%=eventi.getDataInizio()%></label> <br>
-    <label>Data fine: <%=eventi.getDataFine()%></label> <br>
+    <h1>Evento <%=evento.getNome()%></h1>
+    <label>Descrizione: <%=evento.getDescrizione()%></label> <br>
+    <label>Data inizio: <%=evento.getDataInizio()%></label> <br>
+    <label>Data fine: <%=evento.getDataFine()%></label> <br>
 
     <h1>Tutte le esibizioni</h1>
     <div class="search-sort">
@@ -196,17 +195,17 @@
         <section class="esibizione">
             <figure data-date="<%=esibizioni.get(i).getIdEvento().getDataInizio()%>>">
                 <figcaption class="date">DOM<br><strong>30</strong><br>GIU 2024</figcaption>
-                <img src="data:image/jpeg;base64, <%= base64Image%>" style="max-width: 200px; max-height: 200px" alt=<%=eventi.get(i).getNome()%>>
+                <img src="data:image/jpeg;base64, <%= base64Image%>" style="max-width: 200px; max-height: 200px" alt=<%=esibizioni.get(i).getNome()%>>
                 <figcaption>
-                    Artista <%=esibizioni.get(i).getNomeArtista%><br>
-                    Luogo <%=esibizioni.get(i).getIdLuogo().getCittà()%><br>
+                    Artista <%=esibizioni.get(i).getNome()%><br>
+                    Luogo <%=esibizioni.get(i).getIdLuogo().getIdLuogo()%><br>
                     Ora <%=esibizioni.get(i).getOraInizio()%>
                 </figcaption>
             </figure>
         </section>
         <form>
             <input type="hidden" name="controllerAction" value="EsibizioniManagement.gotoEsibizione">
-            <input type="hidden" name="idEvento" value=<%=esibizioni.get(i).getIdEsibizione()%>>
+            <input type="hidden" name="idEsibizione" value=<%=esibizioni.get(i).getIdEsibizione()%>>
             <input type="submit" value="Vai all'esibizione">
         </form>
     </div>
@@ -215,8 +214,9 @@
         <input type="hidden" name="controllerAction" value="EsibizioniManagement.gotoEvento">
         <input type="submit" value="Acquista abbonamento">
     </form>
-    <% if (loggedOrganizzatore != null){ %>
+    <% if (loggedOrganizzatore != null && loggedOrganizzatore.getIdOrganizzatore().equals(evento.getOrganizzatore().getIdOrganizzatore())){ %>
     <form action="Dispatcher" method="post">
+        <input type="hidden" name="idEvento" value=<%= evento.getIdEvento()%>>
         <input type="hidden" name="controllerAction" value="EsibizioneManagement.gotoCreaEsibizione">
         <input type="submit" value="Aggiungi esibizione">
     </form>

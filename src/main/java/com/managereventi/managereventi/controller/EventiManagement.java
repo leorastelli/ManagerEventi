@@ -138,7 +138,7 @@ public class EventiManagement {
             request.setAttribute("evento", evento);
             request.setAttribute("esibizioni", esibizioni);
             request.setAttribute("sponsorizzazioni", sponsorizzazioni);
-            request.setAttribute("viewUrl", "eventoManagement/homeEvento");
+            request.setAttribute("viewUrl", "eventiManagement/paginaEvento");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -334,6 +334,167 @@ public class EventiManagement {
 
 
     }
+
+    public static void creaEsibizione(HttpServletRequest request, HttpServletResponse response){
+
+        DAOFactory sessionDAOFactory= null;
+        Organizzatore loggedOrganizzatore;
+        DAOFactory daoFactory = null;
+        List<Evento> eventi;
+        Evento evento;
+        List<Esibizione> esibizioni;
+        List<Sponsorizzazione> sponsorizzazioni;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+
+
+            sessionDAOFactory.beginTransaction();
+
+            OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
+            loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            EventoDAO eventoDAO = daoFactory.getEventoDAO();
+            EsibizioneDAO esibizioneDAO = daoFactory.getEsibizioneDAO();
+            LuogoDAO luogoDAO = daoFactory.getLuogoDAO();
+            SponsorizzazioneDAO sponsorizzazioneDAO = daoFactory.getSponsorizzazioneDAO();
+
+            eventi = eventoDAO.getAllEventi();
+
+            String nomeEsibizione = request.getParameter("nomeEsibizione");
+
+            if (nomeEsibizione != null && !nomeEsibizione.isEmpty()) {
+
+                Esibizione esibizione = new Esibizione();
+                Luogo luogo = luogoDAO.getLuogoById(request.getParameter("luogo"));
+                esibizione.setNome(request.getParameter("nomeEsibizione"));
+                esibizione.setDescrizione(request.getParameter("descrizioneEsibizione"));
+                esibizione.setIdEsibizione(RandomString(10));
+                esibizione.setIdEvento(eventoDAO.getEventoById(request.getParameter("idEvento")));
+                esibizione.setIdLuogo(luogo);
+                esibizione.setIdOrganizzatore(loggedOrganizzatore);
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                LocalTime oraInizio = LocalTime.parse(request.getParameter("orainizio"), formatter);
+                java.sql.Time sqlOraInizio = Time.valueOf(oraInizio);
+
+                esibizione.setOraInizio(sqlOraInizio);
+
+                LocalTime durata = LocalTime.parse(request.getParameter("durata"), formatter);
+                java.sql.Time sqlDurata = Time.valueOf(durata);
+                esibizione.setDurata(sqlDurata);
+
+                esibizione.setGenere(request.getParameter("genere"));
+
+
+                Part filePart1 = request.getPart("logoEsibizione");
+                InputStream fileContent1 = filePart1.getInputStream();
+
+                // Converti l'InputStream in un Blob
+                Blob logoBlob1 = inputStreamToBlob(fileContent1);
+                esibizione.setImmagine(logoBlob1);
+
+                try{
+                    esibizioneDAO.createEsibizione(esibizione);
+                }catch (Exception e){
+                    throw new RuntimeException(e);
+                }
+            }
+
+            evento = eventoDAO.getEventoById(request.getParameter("idEvento"));
+            esibizioni = esibizioneDAO.getEsibizioniByEvento(evento.getIdEvento());
+            sponsorizzazioni = sponsorizzazioneDAO.getSponsorizzazioniByEvento(evento.getIdEvento());
+
+
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            request.setAttribute("loggedOn",true);
+            request.setAttribute("loggedOrganizzatore", loggedOrganizzatore);
+            request.setAttribute("eventi", eventi);
+            request.setAttribute("evento", evento);
+            request.setAttribute("esibizioni", esibizioni);
+            request.setAttribute("sponsorizzazioni", sponsorizzazioni);
+            request.setAttribute("viewUrl", "eventiManagement/paginaEvento");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
+    public static void gotoCreaEsibizione(HttpServletRequest request, HttpServletResponse response){
+
+        DAOFactory daoFactory = null;
+        DAOFactory sessionDAOFactory= null;
+        Utente loggedUser;
+        Organizzatore loggedOrganizzatore;
+        List<String> luoghi;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            LuogoDAO luogoDAO = daoFactory.getLuogoDAO();
+            luoghi = luogoDAO.getAllLuoghi();
+
+
+            loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
+
+
+            request.setAttribute("loggedOn",loggedOrganizzatore!=null);
+            request.setAttribute("loggedOrganizzatore", loggedOrganizzatore);
+            request.setAttribute("luoghi", luoghi);
+            request.setAttribute("viewUrl", "esibizioniManagement/creaEsibizione");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+    }
+
 
 
     private static String RandomString(int n){

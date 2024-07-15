@@ -219,7 +219,7 @@
                 <input type="text" id="citta" name="city" required> <br>
 
                 <label for="telefono">Numero di telefono: </label>
-                <input type="tel" id="telefono" name="phone" required> <br>
+                <input type="tel" id="telefono" name="phone" required maxlength="9" pattern="^\+?[0-9]{1,3}?[-.s\]?([0-9]{1,4}[-.\s]?){1,6}$">
 
                 <label for="descrizione">Breve presentazione, dicci chi sei e quali sono i tuoi punti di forza! </label>
                 <textarea id="descrizione" name="description" rows="5" required></textarea>

@@ -1,6 +1,8 @@
 <%@page session="false"%>
 <%@page import="java.util.List"%>
 <%@ page import="com.managereventi.managereventi.model.mo.*" %>
+<%@ page import="java.sql.Blob" %>
+<%@ page import="java.util.Base64" %>
 
 <%
     Boolean loggedOnObj = (Boolean) request.getAttribute("loggedOn");
@@ -379,13 +381,22 @@
         <section id="spazi-pubblicitari" class="section">
             <h2>Spazi pubblicitari</h2>
             <%if (sponsorizzazioni != null && !sponsorizzazioni.isEmpty()) { %>
-            <% for (i=0; i<sponsorizzazioni.size();i++) {%>
+            <% for (i=0; i<sponsorizzazioni.size();i++) {
+                Blob logoBlob = sponsorizzazioni.get(i).getLogo();
+
+                // Ottieni la lunghezza del Blob (dimensione dell'array di byte)
+                int blobLength = (int) logoBlob.length();
+
+                // Leggi i dati del Blob in un array di byte
+                byte[] logoBytes = logoBlob.getBytes(1, blobLength);
+                // Assume che getLogo() restituisca un byte array del BLOB
+                String base64Image = Base64.getEncoder().encodeToString(logoBytes);%>
             <h3>Spazio n&deg; <%= i + 1 %></h3>
             <form>
                 <%--@declare id="partitaiva"--%><%--@declare id="logo"--%><%--@declare id="costo"--%>
                 <label for="partitaIVA">Partita IVA dell'azienda: </label> <span class="partitaIVA"><%= sponsorizzazioni.get(i).getPartitaIVA().getPartitaIVA() %></span>
                 <label for="codice-evento">Codice evento contenente lo spazio: </label> <span class="codice-evento"><%= sponsorizzazioni.get(i).getIdEvento().getIdEvento() %></span>
-                <label for="logo">Logo: </label> <span class="logo"><%= sponsorizzazioni.get(i).getLogo() %></span>
+               <!-- <label for="logo">Logo: </label>--> <img src="data:image/jpeg;base64, <%= base64Image %>" style="max-width: 200px; max-height: 200px" alt="Logo dell'azienda">
                 <label for="costo">Costo: </label> <span class="costo"><%= sponsorizzazioni.get(i).getCosto() %></span>
             </form>
             <% } %>

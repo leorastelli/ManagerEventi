@@ -162,15 +162,11 @@
             int blobLength = (int) logoBlob.length();
             byte[] logoBytes = logoBlob.getBytes(1, blobLength);
             String base64Image = Base64.getEncoder().encodeToString(logoBytes); %>
-        <div class="event" data-date=<%=eventi.get(i).getDataInizio()%>>
-            <img src="data:image/jpeg;base64, <%= base64Image%>" style="max-width: 200px; max-height: 200px" alt=<%=eventi.get(i).getNome()%>>
+        <div class="event" data-date="<%=eventi.get(i).getDataInizio()%>" data-id-evento="<%=eventi.get(i).getIdEvento()%>">
+            <img src="data:image/jpeg;base64, <%= base64Image%>" style="max-width: 200px; max-height: 200px" alt="<%=eventi.get(i).getNome()%>">
             <p> Da <%=eventi.get(i).getDataInizio()%> a <%=eventi.get(i).getDataFine()%></p>
-            <form>
-                <input type="hidden" name="controllerAction" value="EventiManagement.gotoEvento">
-                <input type="hidden" name="idEvento" value=<%=eventi.get(i).getIdEvento()%>>
-                <input type="submit" value="Vai all'evento">
-            </form>
         </div>
+
         <%}%>
     </div>
 
@@ -215,6 +211,19 @@
 
         events.forEach(event => eventList.appendChild(event));
     }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var events = document.querySelectorAll('.event');
+
+        events.forEach(function(event) {
+            event.addEventListener('click', function() {
+                var idEvento = this.getAttribute('data-id-evento');
+                var controllerAction = "EventiManagement.gotoEvento";
+                var url = "Dispatcher?controllerAction=" + controllerAction + "&idEvento=" + idEvento;
+                window.location.href = url;
+            });
+        });
+    });
 </script>
 </body>
 </html>
