@@ -234,6 +234,20 @@
             }
         });
     }
+
+    document.getElementById('paymentForm').addEventListener('submit', function(event) {
+        var scadenza = document.getElementById('scadenza').value;
+        var [year, month] = scadenza.split('-').map(Number);
+        var currentDate = new Date();
+        var currentYear = currentDate.getFullYear();
+        var currentMonth = currentDate.getMonth() + 1; // I mesi in JavaScript sono indicizzati da 0
+
+        if (year < currentYear || (year === currentYear && month < currentMonth)) {
+            event.preventDefault();
+            alert('La data di scadenza deve essere maggiore del mese e anno corrente.');
+        }
+    });
+
 </script>
 <footer>
     &copy; 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>
