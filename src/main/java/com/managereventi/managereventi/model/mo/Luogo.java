@@ -10,6 +10,8 @@ public class Luogo {
     private String città;
     private Integer capienza;
     private String tipologia;
+    private String Nome;
+
 
 
     // Metodi getter e setter per ogni campo
@@ -85,4 +87,11 @@ public class Luogo {
         this.tipologia = tipologia;
     }
 
+    public String getNome() {
+        return Nome;
+    }
+
+    public void setNome(String nome) {
+        Nome = nome;
+    }
 }

@@ -188,7 +188,6 @@ public class OrganizzatoreManagement {
             esibizione.setDurata(durata);
             Time oraInizio = Time.valueOf(LocalTime.parse(request.getParameter("ora-inizio"), DateTimeFormatter.ofPattern("HH:mm:ss")));
             esibizione.setOraInizio(oraInizio);
-            esibizione.setNumeroArtisti(Integer.parseInt(request.getParameter("numero-artisti")));
 
             try {
                 esibizioneDAO.updateEsibizione(esibizione);
@@ -248,7 +247,6 @@ public class OrganizzatoreManagement {
             Evento evento = eventoDAO.getEventoById(request.getParameter("idEvento"));
 
             evento.setNome(request.getParameter("nome-evento"));
-            evento.setNumEsibizioni(Integer.parseInt(request.getParameter("num-esibizione")));
             evento.setDescrizione(request.getParameter("descrizione-evento"));
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

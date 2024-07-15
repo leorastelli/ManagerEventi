@@ -134,7 +134,6 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
                     + "   Descrizione = ?,"
                     + "   DataInizio = ?,"
                     + "   DataFine = ?,"
-                    + "   NumEsibizioni = ?,"
                     + "   IdOrganizzatore = ?,"
                     + "   Immagine = ?"
                     + " WHERE "
@@ -145,10 +144,9 @@ public class EventoDAOmysqlJDBCImpl implements EventoDAO {
             ps.setString(2, evento.getDescrizione());
             ps.setDate(3, evento.getDataInizio());
             ps.setDate(4, evento.getDataFine());
-            ps.setInt(5, evento.getNumEsibizioni());
-            ps.setString(6, evento.getOrganizzatore().getIdOrganizzatore());
-            ps.setBlob(7, evento.getImmagine());
-            ps.setString(8, evento.getIdEvento());
+            ps.setString(5, evento.getOrganizzatore().getIdOrganizzatore());
+            ps.setBlob(6, evento.getImmagine());
+            ps.setString(7, evento.getIdEvento());
 
             ps.executeUpdate();
 

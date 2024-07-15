@@ -8,5 +8,6 @@ public interface LuogoDAO {
     public List<String> getAllLuoghi();
     public void updateLuogo(Luogo luogo);
     public void deleteLuogo(String idLuogo);
+    public Luogo getLuogoByNome(String nome);
 }
 

@@ -150,7 +150,7 @@
 <main>
     <h2>Inserisci i dettagli dell'esibizione che desideri aggiungere </h2>
     <section id="esibizione">
-        <form name="creaEsibizioneForm" action="Dispatcher" method="post" enctype="multipart/form-data">
+        <form id="creaEsibizioneForm" name="creaEsibizioneForm" action="Dispatcher" method="post" enctype="multipart/form-data">
             <h2 class="titolo" id="titoloEsibizione" >Inserisci dettagli esibizione</h2>
             <label for="nomeEsibizione" style="display:none;">Nome esibizione</label>
             <input type="text" id="nomeEsibizione" name="nomeEsibizione" >
@@ -158,6 +158,8 @@
             <textarea id="descrizioneEsibizione" name="descrizioneEsibizione" > </textarea>
             <label for="durata" >Durata esibizione</label>
             <input type="time" id="durata" name="durata" required >
+            <label for="dataEsibizione" >Data esibizione</label>
+            <input type="date" id="dataEsibizione" name="dataEsibizione" required>
             <label for="Orainizio" >Ora di inizio</label>
             <input type="time" id="Orainizio" name="orainizio" required >
             <select class="tendina" name="luogo" >
@@ -173,6 +175,8 @@
             <br>
             <input type="hidden" name="idorganizzatore" value="<%=loggedOrganizzatore.getIdOrganizzatore()%>">
             <input type="hidden" name="idevento" value="<%=evento.getIdEvento()%>">
+            <input type="hidden" id="datainizio" name="datainizio" value="<%=evento.getDataInizio()%>">
+            <input type="hidden" id="datafine" name="datafine" value="<%=evento.getDataFine()%>">
             <input type="hidden" name="controllerAction" value="EventiManagement.creaEsibizione">
             <input type="submit" class="bottone-personalizzato" value="Pubblica Esibizione">
         </form>
@@ -198,6 +202,17 @@
             }
         });
     }
+
+    document.getElementById('creaEsibizioneForm').addEventListener('submit', function(event) {
+        var datainizio = new Date(document.getElementById('datainizio').value);
+        var datafine = new Date(document.getElementById('datafine').value);
+        var dataEsibizione = new Date(document.getElementById('dataEsibizione').value);
+
+        if (dataEsibizione < datainizio || dataEsibizione > datafine) {
+            event.preventDefault();
+            alert('La data dell\'esibizione deve essere compresa tra la' + datainizio +  'e' + datafine);
+        }
+    });
 </script>
 </body>
 </html>

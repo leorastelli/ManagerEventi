@@ -31,6 +31,7 @@ public class LuogoDAOmysqlJDBCImpl implements LuogoDAO {
             luogo.setCittà(rs.getString("Città"));
             luogo.setCapienza(rs.getInt("Capienza"));
             luogo.setTipologia(rs.getString("Tipologia"));
+            luogo.setNome(rs.getString("Nome"));
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -107,14 +108,14 @@ public class LuogoDAOmysqlJDBCImpl implements LuogoDAO {
 
         try {
             String sql
-                    = " SELECT IdLuogo "
+                    = " SELECT Nome "
                     + " FROM luogo ";
 
             ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                luoghi.add(rs.getString("IdLuogo"));
+                luoghi.add(rs.getString("Nome"));
             }
 
         } catch (Exception e) {
@@ -133,5 +134,34 @@ public class LuogoDAOmysqlJDBCImpl implements LuogoDAO {
     @Override
     public void deleteLuogo(String idLuogo) {
 
+    }
+
+    @Override
+    public Luogo getLuogoByNome(String nome) {
+
+        PreparedStatement ps;
+        Luogo luogo = new Luogo();
+
+        try {
+            String sql
+                    = " SELECT * "
+                    + " FROM luogo "
+                    + " WHERE Nome = ? ";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, nome);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                luogo = read(rs);
+            } else {
+                return null;
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return luogo;
     }
 }

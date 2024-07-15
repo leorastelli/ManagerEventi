@@ -183,8 +183,9 @@
     </nav>
 </header>
 <main>
-    <form>
-        <section id="evento">
+    <form id="eventoForm" method="post" action="Dispatcher" enctype="multipart/form-data">
+
+    <section id="evento">
             <h2>Inserisci dettagli evento</h2>
             <label for="nome">Nome evento</label>
             <input type="text" id="nome" name="nome" required> <br><br>
@@ -204,10 +205,12 @@
                     <input type="text" id="nomeEsibizione" name="nomeEsibizione" style="display:none;"><br>
                     <label for="descrizioneEsibizione" style="display:none;">Descrizione dell'esibizione</label>
                     <textarea id="descrizioneEsibizione" name="descrizioneEsibizione" style="display:none;"> </textarea><br>
+                    <label for="dataEsibizione" style="display:none;">Data di inizio esibizione</label>
+                    <input type="date" id="dataEsibizione" name="dataEsibizione"  style="display:none;"><br>
                     <label for="durata" style="display:none;">Durata esibizione</label>
-                    <input type="time" id="durata" name="durata" required style="display:none;"><br>
+                    <input type="time" id="durata" name="durata"  style="display:none;"><br>
                     <label for="Orainizio" style="display:none;">Ora di inizio</label>
-                    <input type="time" id="Orainizio" name="orainizio" required style="display:none;"><br>
+                    <input type="time" id="Orainizio" name="orainizio"  style="display:none;"><br>
                     <select class="tendina" name="luogo" id="tendina" style="display: none">
                         <option value="">Seleziona id del luogo</option>
                         <% for (i=0; i< luoghi.size(); i++) { %>
@@ -215,15 +218,15 @@
                         <% } %>
                     </select><br>
                     <label for="genere" style="display:none;">Genere </label>
-                    <input type="text" id="genere" name="genere" required style="display:none;"><br>
-                    <input class="input" type="file" id="imglogoEsibizione" name="logoEsibizione" style="display:none;" accept="image/png, image/jpeg" required>
+                    <input type="text" id="genere" name="genere"  style="display:none;"><br>
+                    <input class="input" type="file" id="imglogoEsibizione" name="logoEsibizione" style="display:none;" accept="image/png, image/jpeg" >
                     <img id="logoPreview1" style="max-width: 200px; max-height: 200px">
                     <br>
 
                 </section>
             <input type="hidden" name="idorganizzatore" value="<%=loggedOrganizzatore.getIdOrganizzatore()%>">
             <input type="hidden" name="controllerAction" value="EventiManagement.creaEvento">
-            <button type="submit" class="bottone-personalizzato">Pubblica evento</button>
+            <input type="submit" class="bottone-personalizzato" value="Pubblica evento">
         </section>
     </form>
 
@@ -260,15 +263,35 @@
         });
     }
 
-    document.getElementById('aggiungiEsibizioneBtn').addEventListener('click', function() {
-        var elements = document.querySelectorAll('#nomeEsibizione, #descrizioneEsibizione, [for=nomeEsibizione], [for=descrizioneEsibizione], [for=durata], [for=Orainizio], #durata, #Orainizio, .tendina, [for=genere], #genere, #imglogoEsibizione, #logoPreview1, .input, [for=imglogoEsibizione], [for=logoPreview1], .titolo, #titoloEsibizione');
+    document.getElementById('aggiungiEsibizioneBtn').addEventListener('click', function(event) {
+        event.preventDefault(); // Previene il comportamento predefinito del pulsante
+
+        var elements = document.querySelectorAll('#nomeEsibizione, #descrizioneEsibizione, [for=nomeEsibizione], [for=descrizioneEsibizione], [for=durata], [for=Orainizio], #durata, #Orainizio, .tendina, [for=genere], #genere, #imglogoEsibizione, #logoPreview1, .input, [for=imglogoEsibizione], [for=logoPreview1], .titolo, #titoloEsibizione, #dataEsibizione, [for=dataEsibizione]');
+
         elements.forEach(function(el) {
-            if(el.style.display === "none") {
+            if (el.style.display === "none") {
                 el.style.display = "block";
+                if (!el.hasAttribute('required') && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT')) {
+                    el.setAttribute('required', 'required');
+                }
             } else {
                 el.style.display = "none";
+                if (el.hasAttribute('required')) {
+                    el.removeAttribute('required');
+                }
             }
         });
+    });
+
+
+    document.getElementById('eventoForm').addEventListener('submit', function(event) {
+        var datainizio = new Date(document.getElementById('datainizio').value);
+        var datafine = new Date(document.getElementById('datafine').value);
+        var dataEsibizione = new Date(document.getElementById('dataEsibizione').value);
+
+        if (dataEsibizione < datainizio || dataEsibizione > datafine) {
+            event.preventDefault();
+            alert('La data dell\'esibizione deve essere compresa tra la' + datainizio +  'e' + datafine);        }
     });
 
 </script>

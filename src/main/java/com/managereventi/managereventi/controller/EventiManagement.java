@@ -272,7 +272,7 @@ public class EventiManagement {
             if (nomeEsibizione != null && !nomeEsibizione.isEmpty()) {
 
                 Esibizione esibizione = new Esibizione();
-                Luogo luogo = luogoDAO.getLuogoById(request.getParameter("luogo"));
+                Luogo luogo = luogoDAO.getLuogoByNome(request.getParameter("luogo"));
                 esibizione.setNome(request.getParameter("nomeEsibizione"));
                 esibizione.setDescrizione(request.getParameter("descrizioneEsibizione"));
                 esibizione.setIdEsibizione(RandomString(10));
@@ -291,6 +291,14 @@ public class EventiManagement {
                 esibizione.setDurata(sqlDurata);
 
                 esibizione.setGenere(request.getParameter("genere"));
+
+                String dataEsibizioneString = request.getParameter("dataEsibizione");
+
+
+                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+                Date parsedDate1 = sdf1.parse(dataEsibizioneString);
+                java.sql.Date dataEsibizione = new java.sql.Date(parsedDate1.getTime());
+                esibizione.setDataEsibizione(dataEsibizione);
 
 
                 Part filePart1 = request.getPart("logoEsibizione");
@@ -375,7 +383,7 @@ public class EventiManagement {
             if (nomeEsibizione != null && !nomeEsibizione.isEmpty()) {
 
                 Esibizione esibizione = new Esibizione();
-                Luogo luogo = luogoDAO.getLuogoById(request.getParameter("luogo"));
+                Luogo luogo = luogoDAO.getLuogoByNome(request.getParameter("luogo"));
                 esibizione.setNome(request.getParameter("nomeEsibizione"));
                 esibizione.setDescrizione(request.getParameter("descrizioneEsibizione"));
                 esibizione.setIdEsibizione(RandomString(10));
@@ -392,6 +400,15 @@ public class EventiManagement {
                 LocalTime durata = LocalTime.parse(request.getParameter("durata"), formatter);
                 java.sql.Time sqlDurata = Time.valueOf(durata);
                 esibizione.setDurata(sqlDurata);
+
+                String dataEsibizioneString = request.getParameter("dataEsibizione");
+
+
+                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+                Date parsedDate1 = sdf1.parse(dataEsibizioneString);
+                java.sql.Date dataEsibizione = new java.sql.Date(parsedDate1.getTime());
+                esibizione.setDataEsibizione(dataEsibizione);
+
 
                 esibizione.setGenere(request.getParameter("genere"));
 

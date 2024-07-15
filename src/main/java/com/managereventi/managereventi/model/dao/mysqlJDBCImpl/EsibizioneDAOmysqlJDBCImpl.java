@@ -41,6 +41,7 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
             esibizione.getIdLuogo().setIdLuogo(rs.getString("IdLuogo"));
             esibizione.setPostiDisponibili(rs.getInt("PostiDisponibili"));
             esibizione.setImmagine(rs.getBlob("Immagine"));
+            esibizione.setDataEsibizione(rs.getDate("DataEsibizione"));
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -56,8 +57,8 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
         try{
             String sql
                     = " INSERT INTO esibizione "
-                    + "   (IdEsibizione, Nome, Descrizione, Durata, OraInizio, Genere, IdOrganizzatore, IdEvento, IdLuogo, Immagine) "
-                    + " VALUES (?,?,?,?,?,?,?,?,?,?)";
+                    + "   (IdEsibizione, Nome, Descrizione, Durata, OraInizio, Genere, IdOrganizzatore, IdEvento, IdLuogo, Immagine, DataEsibizione) "
+                    + " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, esibizione.getIdEsibizione());
@@ -70,6 +71,7 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
             ps.setString(8, esibizione.getIdEvento().getIdEvento());
             ps.setString(9, esibizione.getIdLuogo().getIdLuogo());
             ps.setBlob(10, esibizione.getImmagine());
+            ps.setDate(11, esibizione.getDataEsibizione());
 
             ps.executeUpdate();
 
@@ -132,7 +134,7 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
                     + "   IdOrganizzatore = ?,"
                     + "   IdEvento = ?,"
                     + "   IdLuogo = ?,"
-                    + "   PostiDisponibili = ?, Immagine = ?"
+                    + "   PostiDisponibili = ?, Immagine = ?, DataEsibizione = ?"
                     + " WHERE "
                     + "   IdEsibizione = ?";
 
@@ -142,13 +144,14 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
             ps.setTime(3, esibizione.getDurata());
             ps.setTime(4, esibizione.getOraInizio());
             ps.setString(5, esibizione.getGenere());
-            ps.setInt(6, esibizione.getNumeroArtisti());
+            ps.setInt(6, '1');
             ps.setString(7, esibizione.getOrganizzatore().getIdOrganizzatore());
             ps.setString(8, esibizione.getIdEvento().getIdEvento());
             ps.setString(9, esibizione.getIdLuogo().getIdLuogo());
             ps.setInt(10, esibizione.getPostiDisponibili());
             ps.setBlob(11, esibizione.getImmagine());
-            ps.setString(12, esibizione.getIdEsibizione());
+            ps.setDate(12, esibizione.getDataEsibizione());
+            ps.setString(13, esibizione.getIdEsibizione());
 
             ps.executeUpdate();
 
