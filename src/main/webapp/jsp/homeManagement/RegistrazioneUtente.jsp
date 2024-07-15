@@ -24,14 +24,14 @@ alla pagina di Home(?)-->
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
+            background-color: #fefefa;
         }
         form {
             padding: 20px;
             border: 1px solid #ddd;
-            background-color: #fff;
+            background-color: #fffdf3;
             border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: dimgray 0 0 5px;
             text-align: center;
             width: 30%;
         }
@@ -48,20 +48,25 @@ alla pagina di Home(?)-->
         input[type="checkbox"] {
             margin-right: 10px;
         }
+
         .bottone-personalizzato {
-            background-color: #6fa3ef;
-            color: white;
+            background-color: #de32ff;
+            color: #fefefa;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 10px;
+            width: 20%;
+            align-items: center;
+            text-align: center;
+            display: block;
+            margin: auto;
+            font-weight: bolder;
         }
 
         .bottone-personalizzato:hover {
-            background-color: #007FFF; /* Colore di sfondo al passaggio del mouse */
+            background-color: #fceb00;
         }
-
     </style>
 </head>
 <body onload="headerOnLoadHandler()">
@@ -80,6 +85,7 @@ alla pagina di Home(?)-->
         <input type="checkbox" name="newsletter"> Acconsento a ricevere newsletter e aggiornamenti a fini commerciali
     </label>
     <input type="hidden" name="controllerAction" value="UserManagement.registration"/> <br>
+    <br>
     <input type="submit" class="bottone-personalizzato" value="Registrati">
 </form>
 

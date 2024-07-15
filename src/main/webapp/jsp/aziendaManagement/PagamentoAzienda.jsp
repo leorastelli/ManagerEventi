@@ -95,20 +95,6 @@
         margin-bottom: 2px;
     }
 
-    .bottone-personalizzato {
-        display: block;
-        margin: 0 auto;
-        width: fit-content;
-        background-color: #6fa3ef;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        align-items: center;
-        text-align: center;
-    }
-
     #indirizzo-fatturazione {
         grid-area: indirizzo;
     }

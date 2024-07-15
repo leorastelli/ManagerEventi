@@ -15,16 +15,17 @@
 %>
 <html>
 <style>
-    body {
+    b body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #f4f4f4;
+        background-color: #fefefa;
     }
+
     header {
-        background-color: #6fa3ef;
+        background-color: #ffb805;
         padding: 10px;
-        color: #fff;
+        color: #ab00cc;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -49,8 +50,9 @@
     nav ul li {
         margin-left: 15px;
     }
+
     nav a {
-        color: white;
+        color: #ab00cc;
         text-decoration: none;
     }
 
@@ -93,18 +95,24 @@
         margin-bottom: 2px;
     }
 
+
     .bottone-personalizzato {
-        display: block;
-        margin: 0 auto;
-        width: fit-content;
-        background-color: #6fa3ef;
-        color: white;
+        background-color: #de32ff;
+        color: #fefefa;
         padding: 10px 20px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        width: fit-content;
         align-items: center;
         text-align: center;
+        display: block;
+        margin: auto;
+        font-weight: bolder;
+    }
+
+    .bottone-personalizzato:hover {
+        background-color: #ab00cc;
     }
 
     #evento{
@@ -119,17 +127,13 @@
         align-self: start;
     }
 
-
-    .bottone-personalizzato:hover {
-        background-color: #007FFF;
-    }
-
     footer {
+        width: 100%;
         clear: both;
         text-align: center;
         padding: 10px;
-        background-color: #6fa3ef;
-        color: #fff;
+        background-color: #ffb805;
+        color: #ab00cc;
         margin-top: 20px;
     }
 

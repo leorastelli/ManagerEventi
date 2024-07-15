@@ -31,12 +31,13 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #fefefa;
         }
+
         header {
-            background-color: #6fa3ef;
+            background-color: #ffb805;
             padding: 10px;
-            color: #fff;
+            color: #ab00cc;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -60,7 +61,7 @@
             margin-left: 15px;
         }
         nav a {
-            color: white;
+            color: #ab00cc;
             text-decoration: none;
         }
         main {
@@ -74,24 +75,18 @@
             display: block;
             padding: 10px;
             margin: 10px 0;
-            background-color: #A6FBFF;
-            color: black;
+            background-color: #de32ff;
+            color: #fefefa;
             text-decoration: none;
             text-align: center;
             border-radius: 5px;
         }
         .sidebar a:hover {
-            background-color: #007FFF;
+            background-color: #ab00cc;
         }
         .content {
             width: 100%;
             float: right;
-        }
-
-        .section h2 {
-            background-color: #007FFF;
-            padding: 10px;
-            border-radius: 5px;
         }
 
         .ticket img, .subscription img {
@@ -114,7 +109,7 @@
             display: grid;
             grid-template-columns: 1fr;
             gap: 2px;
-            background-color: white;
+            background-color: #fffdf3;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -150,38 +145,40 @@
         }
 
         .bottone-personalizzato {
-            background-color: #6fa3ef;
-            color: white;
+            background-color: #de32ff;
+            color: #fefefa;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-right: 10px;
-            width: 50%;
+            width: fit-content;
             align-items: center;
+            text-align: center;
             display: block;
             margin: auto;
+            font-weight: bolder;
         }
 
         .bottone-personalizzato:hover {
-            background-color: #007FFF; /* Colore di sfondo al passaggio del mouse */
+            background-color: #ab00cc;
         }
 
         .bottone-pers {
-            background-color: #6fa3ef;
-            color: white;
+            background-color: #de32ff;
+            color: #fefefa;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            width: 100%;
+            width: fit-content;
             display: inline-block;
             margin-right: 10px;
             text-align: center;
+            font-weight: bolder;
         }
 
         .bottone-pers:hover {
-            background-color: #007FFF; /* Colore di sfondo al passaggio del mouse */
+            background-color: #fceb00;
         }
 
         section#biglietti form {
@@ -201,7 +198,7 @@
             display: grid;
             grid-template-columns: 1fr;
             gap: 2px;
-            background-color: white;
+            background-color: #fffdf3;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -247,8 +244,8 @@
             clear: both;
             text-align: center;
             padding: 10px;
-            background-color: #6fa3ef;
-            color: #fff;
+            background-color: #ffb805;
+            color: #ab00cc;
             margin-top: 20px;
         }
 
@@ -345,7 +342,6 @@
                 <input type="text" id="password" name="password" value="<%=loggedUser.getPassword()%>" > <br>
                 <label for="idutente">Username </label>
                 <input type="text" id="idutente" name="idutente" value="<%=loggedUser.getIdUtente()%>" disabled> <br>
-                <!--<button onclick="toggleEdit('dati-personali')">Modifica i dati personali</button>-->
                 <input type="hidden" name="controllerAction" value="UserManagement.modifyUtente"/>
                 <input type="submit" class="bottone-personalizzato" value="Salva modifiche" >
             </form>
@@ -423,6 +419,7 @@
                 <input type="hidden" name="rating" id="ratingValue" value="">
                 <textarea name="descrizione" placeholder="Aggiungi una descrizione"></textarea>
                 <input type="hidden" name="controllerAction" value="UserManagement.submitReview"/>
+                <br>
                 <input type="submit" class="bottone-personalizzato" value="Invia Recensione">
             </form>
         </section>

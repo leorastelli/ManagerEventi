@@ -19,37 +19,44 @@
             align-items: center;
             justify-content: center;
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+            background-color: #fefefa;
         }
 
         main {
             text-align: center;
             padding: 20px;
             border: 1px solid #ddd;
-            background-color: #fff;
+            background-color: #fffdf3;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
 
-        button {
+        .bottone-personalizzato {
+            background-color: #de32ff;
+            color: #fefefa;
             padding: 10px 20px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #48a6f5;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            width: fit-content;
+            align-items: center;
+            text-align: center;
+            display: block;
+            margin: auto;
+            font-weight: bolder;
         }
 
-        button:hover {
-            background-color: #3091e6;
+        .bottone-personalizzato:hover {
+            background-color: #ab00cc;
         }
+
     </style>
 
 </head>
 <main>
-    <h1>Si e&grave; verificato un errore nell'inserimento dei dati!</h1>
+    <h1>Si &egrave; verificato un errore nell'inserimento dei dati!</h1>
     <h3>Torna alla pagina di login e riprova</h3>
-    <button onclick="goBack()">Torna indietro</button>
+    <button onclick="goBack()" class="bottone-personalizzato">Torna indietro</button>
     <script>
         function goBack() {
             window.history.back();

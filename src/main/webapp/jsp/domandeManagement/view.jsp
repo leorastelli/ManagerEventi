@@ -28,12 +28,12 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #fefefa;
         }
         header {
-            background-color: #6fa3ef;
+            background-color: #ffb805;
             padding: 10px;
-            color: #fff;
+            color: #ab00cc;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -59,7 +59,7 @@
             margin-left: 15px;
         }
         nav a {
-            color: white;
+            color: #ab00cc;
             text-decoration: none;
         }
         main {
@@ -74,7 +74,7 @@
             margin-right: 10px;
         }
         .question {
-            background-color: white;
+            background-color: #fffdf3;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 10px;
@@ -113,7 +113,7 @@
             grid-area: risposta;
         }
 
-        #insrisposta, #descrizioneRisposta {
+        #insrisposta {
             grid-area: nuovarisp;
         }
 
@@ -122,21 +122,22 @@
         }
 
         .bottone-personalizzato {
-            display: block;
-            margin: 0 auto;
-            width: fit-content;
-            background-color: #6fa3ef;
-            color: white;
+            background-color: #de32ff;
+            color: #fefefa;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            width: fit-content;
             align-items: center;
             text-align: center;
+            display: block;
+            margin: auto;
+            font-weight: bolder;
         }
 
         .bottone-personalizzato:hover {
-            background-color: #007FFF;
+            background-color: #ab00cc;
         }
 
         .centrato {
@@ -154,12 +155,15 @@
         }
 
         footer {
+            width: 100%;
+            clear: both;
             text-align: center;
             padding: 10px;
-            background-color: #6fa3ef;
-            color: #fff;
+            background-color: #ffb805;
+            color: #ab00cc;
             margin-top: 20px;
         }
+
     </style>
 </head>
 <body>
