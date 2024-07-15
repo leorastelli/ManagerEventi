@@ -148,7 +148,7 @@
     </nav>
 </header>
 <main>
-    <h2>Inserisci i dettagli dell'esibizione che desideri aggiungere</h2>
+    <h2>Inserisci i dettagli dell'esibizione che desideri aggiungere </h2>
     <section id="esibizione">
         <h2 class="titolo" id="titoloEsibizione" style="display:none;">Inserisci dettagli esibizione</h2>
         <label for="nomeEsibizione" style="display:none;">Nome esibizione</label>
