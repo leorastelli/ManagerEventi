@@ -143,7 +143,7 @@ public class PagamentoManagement {
             request.setAttribute("loggedUser",loggedUser);
             request.setAttribute("evento",evento);
             request.setAttribute("abbonamento",abbonamento);
-            request.setAttribute("viewUrl", "aziendaManagement/PagamentoAzienda");
+            request.setAttribute("viewUrl", "paymentManagement/pagamentoAbbonamento");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);

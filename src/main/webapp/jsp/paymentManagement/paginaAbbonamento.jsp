@@ -177,7 +177,7 @@
                 if (this.checked) {
                     let giorniTotali = generaNumeroGiorni(dataInizio, dataFine).length + 1;
                     prezzo = giorniTotali * 60 - 20;
-                    prezzoTotaleLabel.textContent = prezzo + ' €';
+                    prezzoTotaleLabel.textContent = prezzo + '€' ;
                     tendina.style.display = 'none';
                 }
             });
@@ -191,7 +191,7 @@
             tendina.addEventListener('change', function() {
                 let giorniSelezionati = parseInt(this.value);
                 prezzo = giorniSelezionati * 60;
-                prezzoTotaleLabel.textContent = prezzo + ' €';
+                prezzoTotaleLabel.textContent = prezzo + "&euro;";
             });
         }
 
@@ -227,8 +227,8 @@
 
 <main>
     <% if (loggedOn) { %>
-    <h1 class="centrato">Scegli labbonamento giusto per te per levento <%=evento.getNome()%>!</h1>
-    <form class="content" name="gotoForm" method="post" action="Dispatcher">
+    <h1 class="centrato">Scegli l&apos;abbonamento giusto per te per l&apos;evento <%=evento.getNome()%>!</h1>
+    <form class="content" name="gotoForm" method="post" action="Dispatcher"> <br>
 
         <%
             Blob logoBlob = evento.getImmagine();
@@ -236,17 +236,17 @@
             byte[] logoBytes = logoBlob.getBytes(1, blobLength);
             String base64Image = Base64.getEncoder().encodeToString(logoBytes);
         %>
-        <img src="data:image/jpeg;base64, <%= base64Image %>" style="max-width: 300px; max-height: 300px; align-content: center"><br>
-        <h2>Lacquisto di un abbonamento di permette di avere accesso diretto alla zona VIP</h2>
+        <img src="data:image/jpeg;base64, <%= base64Image %>" style="max-width: 300px; max-height: 300px; align-items: center"><br>
+        <h2>L&apos;acquisto di un abbonamento di permette di avere accesso diretto alla zona VIP</h2>
 
-        <h3>Seleziona il tipo di abbonamento in base al numero di giornate:</h3>
+        <h3 style="font-weight: normal">Seleziona il tipo di abbonamento in base al numero di giornate:</h3>
 
         <label>
-            <input type="radio" id="radioIntero" name="scelta" value="intero" required> Intero
+            <input type="radio" id="radioIntero" name="scelta" value="intero" style="font-weight: normal" required> Intero
         </label>
         <br>
         <label>
-            <input type="radio" id="radioRidotto" name="scelta" value="ridotto" required> Ridotto
+            <input type="radio" id="radioRidotto" name="scelta" value="ridotto" style="font-weight: normal" required> Ridotto
         </label>
 
         <select class="tendina" id="evento" name="numEntrate" style="display: none; width: fit-content">
@@ -255,7 +255,7 @@
 
         <br>
         <label for="prezzoTotale">Prezzo Totale: </label>
-        <label id="prezzoTotale">0 €</label>
+        <label id="prezzoTotale">0 &euro;</label>
         <br>
         <input type="hidden" name="controllerAction" value="PagamentoManagement.gotopagamentoAbbonamento" />
         <input type="hidden" name="idEvento" value="<%=evento.getIdEvento()%>" />
