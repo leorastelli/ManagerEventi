@@ -301,7 +301,7 @@
                 <img id="logoPreview" style="max-width: 200px; max-height: 200px">
                 <br>
                 <label>
-                    <input type="radio" name="scelta" value="casuale" required> Scelta casuale dell'evento
+                    <input type="radio" id="checkbox2" name="scelta" value="casuale" required> Scelta casuale dell'evento
                 </label>
                 <br>
                 <label>
@@ -326,31 +326,37 @@
     <% } %>
 </main>
 <script>
-    window.onload = function() {
-       /* document.getElementById('imglogo').addEventListener('change', function(event) {
-            var file = event.target.files[0];
-            var reader = new FileReader();
-            reader.onloadend = function() {
-                document.getElementById('logoPreview').src = reader.result;
-            }
-            if (file) {
-                reader.readAsDataURL(file);
-            } else {
-                document.getElementById('logoPreview').src = "";
-            }
-        });*/
 
-        document.getElementById('checkboxEvento').addEventListener('change', function() {
+        window.onload = function() {
+        // Funzione per gestire il cambio di stato del radio button
+        document.getElementById('checkboxEvento').addEventListener('change', function () {
             var selectEvento = document.getElementById('evento');
             if (this.checked) {
-                selectEvento.style.display = 'block';
-            } else {
-                selectEvento.style.display = 'none';
+                selectEvento.style.display = 'block'; // Mostra il menu a tendina
+                selectEvento.setAttribute('required', 'required'); // Rendi il menu a tendina required
             }
         });
-    };
+            document.getElementById('checkbox2').addEventListener('change', function () {
+                var selectEvento = document.getElementById('evento');
+                if (this.checked) {
+                    selectEvento.style.display = 'none'; // Mostra il menu a tendina
+                    selectEvento.removeAttribute('required'); // Rendi il menu a tendina required
+                }
+            });
 
+        // Gestione iniziale dello stato del menu a tendina al caricamento della pagina
+        var selectEvento = document.getElementById('evento');
+        if (document.getElementById('checkboxEvento').checked) {
+        selectEvento.style.display = 'block'; // Mostra il menu a tendina se il radio button è già selezionato
+        selectEvento.setAttribute('required', 'required'); // Rendi il menu a tendina required
+         } else {
+            selectEvento.style.display = 'none'; // Altrimenti nascondi il menu a tendina
+            selectEvento.removeAttribute('required'); // E rimuovi il required
+    }
+    };
 </script>
+
+
 <footer>
     &copy; 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>
     Credits: Leonardo Rastelli e Anna Ferri

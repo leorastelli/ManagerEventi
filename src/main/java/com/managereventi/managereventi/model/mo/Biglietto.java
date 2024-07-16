@@ -10,6 +10,8 @@ public class Biglietto {
     private Esibizione esibizione;
     private Evento evento;
 
+    private Integer Posto;
+
 
     // Metodi getter e setter per ogni campo
     public String getIdBiglietto() {
@@ -66,5 +68,13 @@ public class Biglietto {
 
     public void setIdEvento(Evento evento) {
         this.evento = evento;
+    }
+
+    public Integer getPosto() {
+        return Posto;
+    }
+
+    public void setPosto(Integer posto) {
+        Posto = posto;
     }
 }

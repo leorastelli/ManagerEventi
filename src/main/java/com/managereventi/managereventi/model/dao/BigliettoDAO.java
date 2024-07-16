@@ -14,4 +14,6 @@ public interface BigliettoDAO {
     public List<Biglietto> getBigliettiUtente(Utente utente);
 
     public List<String> getIdEventiUtente(Utente utente);
+
+    public List<String> getPostiOccupatiEsibizione(String IdEsibizione);
 }

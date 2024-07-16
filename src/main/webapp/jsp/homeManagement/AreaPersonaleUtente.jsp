@@ -368,7 +368,7 @@
         <form action="Dispatcher" method="post">
             <%--@declare id="event"--%>
             <label for="event">Seleziona evento </label>
-            <select name="nomeEvento">
+            <select name="nomeEvento" required>
                 <option value=""></option>
                 <% for (i=0; i< pastEvents.size(); i++) { %>
                 <option value="<%= pastEvents.get(i) %>"><%= pastEvents.get(i) %></option>

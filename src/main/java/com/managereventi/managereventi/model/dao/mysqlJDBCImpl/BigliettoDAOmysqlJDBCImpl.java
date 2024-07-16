@@ -38,6 +38,7 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
             biglietto.getIdUtente().setIdUtente(rs.getString("IdUtente"));
             biglietto.getIdEvento().setIdEvento(rs.getString("IdEvento"));
             biglietto.getIdEsibizione().setIdEsibizione(rs.getString("IdEsibizione"));
+            biglietto.setPosto(Integer.parseInt(rs.getString("Posto")));
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -60,6 +61,7 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
             biglietto.setPrezzo(rs.getLong("Prezzo"));
             biglietto.setTipo(rs.getString("Tipo"));
             biglietto.setStato(rs.getInt("Stato"));
+            biglietto.setPosto(Integer.parseInt(rs.getString("Posto")));
             biglietto.getIdUtente().setIdUtente(rs.getString("IdUtente"));
 
             // Assuming these fields exist in the ResultSet
@@ -224,6 +226,36 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
     }
 
     @Override
+    public List<String> getPostiOccupatiEsibizione(String IdEsibizione) {
+        PreparedStatement ps;
+
+        List<String> postiOccupati = new ArrayList<>();
+
+        try {
+            String sql
+                    = " SELECT Posto "
+                    + " FROM Biglietto "
+                    + " WHERE IdEsibizione = ? AND Stato = 1 AND Posto != 0";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, IdEsibizione);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                postiOccupati.add(rs.getString("Posto"));
+            }
+
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return postiOccupati;
+    }
+
+    @Override
     public void deleteBiglietto(String idBiglietto) {
         PreparedStatement ps;
 
@@ -240,5 +272,7 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
             throw new RuntimeException(e);
         }
     }
+
+
 
 }
