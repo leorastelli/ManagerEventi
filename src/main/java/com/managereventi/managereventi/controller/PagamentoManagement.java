@@ -6,7 +6,10 @@ import com.managereventi.managereventi.services.Config.Configuration;
 import com.managereventi.managereventi.services.Logservice.LogService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 
+import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
@@ -110,10 +113,12 @@ public class PagamentoManagement {
 
            abbonamento.setIdAbbonamento(RandomString(10));
            abbonamento.setIdUtente(loggedUser);
-           abbonamento.setPrezzo(Long.valueOf(request.getParameter("prezzo")));
+           Long prezzo = Long.parseLong(request.getParameter("prezzo"));
+           abbonamento.setPrezzo(prezzo);
 
 
-            Integer entrate = request.getParameter("entrate") != null ? Integer.parseInt(request.getParameter("numEntrate")) : 0;
+           String numEntrate = request.getParameter("numEntrate");
+           Integer entrate = Integer.parseInt(numEntrate);
 
             if(entrate > 0) {
                 abbonamento.setEntrate(entrate);
@@ -128,7 +133,7 @@ public class PagamentoManagement {
 
                 Period period = Period.between(inizio, fine);
 
-                abbonamento.setEntrate(period.getDays());
+                abbonamento.setEntrate(period.getDays() +1);
                 abbonamento.setTipo("Intero");
             }
 
@@ -161,6 +166,79 @@ public class PagamentoManagement {
             } catch (Throwable t) {
             }
         }
+    }
+
+    public static void pagamentoAbbonamento (HttpServletRequest request, HttpServletResponse response){
+
+        DAOFactory sessionDAOFactory= null;
+        Utente loggedUser;
+        String applicationMessage = null;
+        DAOFactory daoFactory = null;
+        Evento evento;
+        Abbonamento abbonamento;
+
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUser = sessionUserDAO.findLoggedUser();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+
+            AbbonamentoDAO abbonamentoDAO = daoFactory.getAbbonamentoDAO();
+            EventoDAO eventoDAO = daoFactory.getEventoDAO();
+            abbonamento = new Abbonamento();
+
+            abbonamento.setIdAbbonamento(request.getParameter("idAbbonamento"));
+            abbonamento.setIdUtente(loggedUser);
+            abbonamento.setTipo(request.getParameter("tipo"));
+            abbonamento.setEntrate(Integer.parseInt(request.getParameter("numEntrate")));
+            abbonamento.setPrezzo(Long.parseLong(request.getParameter("prezzo")));
+
+            evento = eventoDAO.getEventoById(request.getParameter("idEvento"));
+            abbonamento.setIdEvento(evento);
+
+            try{
+                abbonamentoDAO.createAbbonamento(abbonamento);
+                request.setAttribute("viewUrl", "homeManagement/PagamentoSuccesso");
+            }
+            catch (Exception e) {
+                //throw new RuntimeException(e);
+                request.setAttribute("viewUrl", "homeManagement/ErrorPage");
+            }
+
+
+
+            sessionDAOFactory.commitTransaction();
+            daoFactory.commitTransaction();
+
+
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
     }
 
 

@@ -28,7 +28,7 @@ public class AbbonamentoDAOmysqlJDBCImpl implements AbbonamentoDAO {
 
             String sql
                     = " INSERT INTO abbonamento "
-                    + "   (IdAbbonamento, Tipo, Prezzo, Durata, IdUtente,IdEvento ) "
+                    + "   (IdAbbonamento, Tipo, Prezzo, Entrate, IdUtente,IdEvento ) "
                     + " VALUES (?,?,?,?,?,?)";
 
             ps = conn.prepareStatement(sql);

@@ -375,7 +375,7 @@ public class AziendaManagement {
 
             try{
                 sponsorizzazioneDAO.createSponsorizzazione(sponsorizzazione);
-                request.setAttribute("viewUrl", "aziendaManagement/homeAzienda");
+                request.setAttribute("viewUrl", "homeManagement/PagamentoSuccesso");
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -497,6 +497,69 @@ public class AziendaManagement {
         }
 
     }
+
+    public static void deleteSpazio(HttpServletRequest request, HttpServletResponse response){
+
+        DAOFactory sessionDAOFactory= null;
+        Azienda loggedAzienda;
+        DAOFactory daoFactory = null;
+        List<Sponsorizzazione> sponsorizzazioni;
+        List<String> eventi;
+
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            AziendaDAO sessionAziendaDAO = sessionDAOFactory.getAziendDAO();
+            loggedAzienda = sessionAziendaDAO.findLoggedUser();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+            daoFactory.beginTransaction();
+
+            SponsorizzazioneDAO sponsorizzazioneDAO = daoFactory.getSponsorizzazioneDAO();
+
+            String PIva = loggedAzienda.getPartitaIVA();
+            String idEvento = request.getParameter("idevento");
+            sponsorizzazioneDAO.deleteSponsorizzazione(PIva, idEvento);
+
+            EventoDAO eventoDAO = daoFactory.getEventoDAO();
+            sponsorizzazioni = sponsorizzazioneDAO.getSponsorizzazioniByPartitaIVA(loggedAzienda.getPartitaIVA());
+            eventi = eventoDAO.getEventiPerSponsorizzazione(loggedAzienda.getPartitaIVA());
+
+
+            sessionDAOFactory.commitTransaction();
+
+            request.setAttribute("loggedOn",loggedAzienda!=null);
+            request.setAttribute("loggedAzienda",loggedAzienda);
+            request.setAttribute("sponsorizzazioni",sponsorizzazioni);
+            request.setAttribute("eventi",eventi);
+            request.setAttribute("viewUrl", "aziendaManagement/homeAzienda");
+
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
 
     private static Blob inputStreamToBlob(InputStream inputStream) {
         try {

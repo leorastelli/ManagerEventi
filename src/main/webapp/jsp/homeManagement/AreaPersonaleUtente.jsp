@@ -341,7 +341,7 @@
 
         <section id="abbonamenti" >
             <h2>I miei abbonamenti</h2>
-            <%if (biglietti != null && !biglietti.isEmpty()){ %>
+            <%if (abbonamenti != null && !abbonamenti.isEmpty()){ %>
             <% for (i=0; i<abbonamenti.size();i++){%>
             <h3>Abbonamento n&deg; <%= i + 1 %></h3>
             <div>

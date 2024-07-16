@@ -172,12 +172,14 @@
             let radioRidotto = document.getElementById('radioRidotto');
             let tendina = document.getElementById('evento');
             let prezzoTotaleLabel = document.getElementById('prezzoTotale');
+            let prezzoHiddenInput = document.getElementById('prezzo');
 
             radioIntero.addEventListener('change', function() {
                 if (this.checked) {
                     let giorniTotali = generaNumeroGiorni(dataInizio, dataFine).length + 1;
                     prezzo = giorniTotali * 60 - 20;
                     prezzoTotaleLabel.textContent = prezzo + '€' ;
+                    prezzoHiddenInput.value = prezzo;
                     tendina.style.display = 'none';
                 }
             });
@@ -191,6 +193,7 @@
             tendina.addEventListener('change', function() {
                 let giorniSelezionati = parseInt(this.value);
                 prezzo = giorniSelezionati * 60;
+                prezzoHiddenInput.value = prezzo;
                 prezzoTotaleLabel.textContent = prezzo + "&euro;";
             });
         }
@@ -250,7 +253,7 @@
         </label>
 
         <select class="tendina" id="evento" name="numEntrate" style="display: none; width: fit-content">
-            <option value="">Numero giornate</option>
+            <option value="0">Numero giornate</option>
         </select>
 
         <br>
@@ -259,7 +262,7 @@
         <br>
         <input type="hidden" name="controllerAction" value="PagamentoManagement.gotopagamentoAbbonamento" />
         <input type="hidden" name="idEvento" value="<%=evento.getIdEvento()%>" />
-        <input type="hidden" name="prezzo" value="<%= prezzo %>">
+        <input type="hidden" id="prezzo" name="prezzo" value="<%=prezzo%>">
         <input type="submit" class="bottone-personalizzato" value="Procedi con l'acquisto">
 
 

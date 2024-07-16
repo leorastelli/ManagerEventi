@@ -173,7 +173,7 @@
 </header>
 
 <main>
-    <form id="paymentForm" name="pagamentoForm" method="post" action="Dispatcher" enctype="multipart/form-data">
+    <form id="paymentForm" name="pagamentoForm" method="post" action="Dispatcher" >
         <section id="indirizzo-fatturazione">
             <h2>Indirizzo di fatturazione</h2>
             <label for="nomeAzienda">Nome azienda</label>
@@ -214,7 +214,11 @@
             <p><strong>Tipo abbonamento: </strong><%= abbonamento.getTipo() %> <span class="prezzo"><%= abbonamento.getPrezzo() %> &euro;</span></p>
             <p><strong>Numero di entrate:</strong> <%= abbonamento.getEntrate()%></p>
             <input type="hidden" name="controllerAction" value="PagamentoManagement.pagamentoAbbonamento" />
-            <input type="hidden" name="idEvento" value="<%= evento.getIdEvento()%> ">
+            <input type="hidden" name="idEvento" value="<%= evento.getIdEvento()%>">
+            <input type="hidden" id="prezzo" name="prezzo" value="<%= abbonamento.getPrezzo()%>">
+            <input type="hidden" name="idAbbonamento" value="<%= abbonamento.getIdAbbonamento()%>">
+            <input type="hidden" name="numEntrate" value="<%= abbonamento.getEntrate()%>">
+            <input type="hidden" name="tipo" value="<%=abbonamento.getTipo()%>">
             <input type="submit" value="Paga ora" class="bottone-personalizzato">
         </section>
     </form>

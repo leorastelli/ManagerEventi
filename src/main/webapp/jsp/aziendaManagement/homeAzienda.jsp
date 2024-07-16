@@ -284,6 +284,7 @@
                 <form name="deleteSpazio" action="Dispatcher" method="post">
                     <input type="hidden" name="controllerAction" value="AziendaManagement.deleteSpazio"/>
                     <input type="hidden" name="idsapzio" value="<%=sponsorizzazioni.get(i).getPartitaIVA()%>"/>
+                    <input type="hidden" name="idevento" value="<%=sponsorizzazioni.get(i).getIdEvento().getIdEvento()%>"/>
                     <input type="submit" class="bottone-personalizzato" value="Elimina spazio">
                 </form>
             </form>
