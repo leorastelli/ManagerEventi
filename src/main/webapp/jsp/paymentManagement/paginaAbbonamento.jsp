@@ -183,7 +183,7 @@
         <select class="tendina" id="evento" name="evento" style="display: none; width: fit-content">
             <option value="">Numero giornate</option>
             <% for (i=0; i < ; i++) { %>
-            <option value="<%= .get(i) %>"><%= .get(i) %></option>
+            <option value="<%= .get(i) %>"><%= .get(i) %> </option>
             <% } %>
         </select>
         <br>
