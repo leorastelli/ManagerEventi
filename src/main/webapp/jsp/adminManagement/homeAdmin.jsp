@@ -319,7 +319,7 @@
             </form>
             <% } %>
             <% } %>
-            <br><button class="bottone-personalizzato" onclick="toggleEdit('esibizioni')">Modifica esibizione</button>
+            <br>
         </section>
         <section id="eventi" class="section">
             <h2>Overview eventi</h2>
@@ -352,7 +352,7 @@
             </form>
             <% } %>
             <% } %>
-            <br><button class="bottone-personalizzato" onclick="toggleEdit('eventi')">Modifica evento</button>
+            <br>
         </section>
 
         <section id="candidature" class="section">
