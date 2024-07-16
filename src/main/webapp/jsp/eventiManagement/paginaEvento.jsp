@@ -239,7 +239,8 @@
     </div>
     <%}%>
     <form action="Dispatcher" method="post">
-        <input type="hidden" name="controllerAction" value="EsibizioniManagement.gotoEvento">
+        <input type="hidden" name="controllerAction" value="PagamentoManagement.gotoAbbonamento">
+        <input type="hidden" name="idEvento" value=<%= evento.getIdEvento()%>>
         <input type="submit" class="bottone-personalizzato" value="Acquista abbonamento">
     </form>
     <br>

@@ -3,6 +3,7 @@
 <%@ page import="com.managereventi.managereventi.model.mo.*" %>
 <%@ page import="java.sql.Blob" %>
 <%@ page import="java.util.Base64" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 
 <%
     Boolean loggedOnObj = (Boolean) request.getAttribute("loggedOn");
@@ -16,6 +17,12 @@
     List<Abbonamento> abbonamenti = (List<Abbonamento>) request.getAttribute("abbonamenti");
     List<Recensione> recensioni = (List<Recensione>) request.getAttribute("recensioni");
     Evento evento = (Evento) request.getAttribute("evento");
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    String dataInizio = sdf.format(evento.getDataInizio());
+    String dataFine = sdf.format(evento.getDataFine());
+
+    int prezzo = 0;
 %>
 
 
@@ -129,6 +136,65 @@
 
     </style>
     <script>
+        function generaNumeroGiorni(dataInizio, dataFine) {
+            let dataInizioDate = new Date(dataInizio);
+            let dataFineDate = new Date(dataFine);
+
+            if (dataInizioDate > dataFineDate) {
+                console.error("La data di inizio deve essere precedente o uguale alla data di fine.");
+                return [];
+            }
+
+            let giorniTotali = Math.floor((dataFineDate - dataInizioDate) / (1000 * 60 * 60 * 24));
+            let listaGiorni = [];
+            for (let i = 1; i <= giorniTotali; i++) {
+                listaGiorni.push(i);
+            }
+
+            return listaGiorni;
+        }
+
+
+        window.onload = function() {
+            let dataInizio = '<%= dataInizio %>';
+            let dataFine = '<%= dataFine %>';
+            let lista = generaNumeroGiorni(dataInizio, dataFine);
+
+            let tendinaGiornate = document.getElementById('evento');
+            lista.forEach(function(giorno) {
+                let option = document.createElement('option');
+                option.value = giorno;
+                option.textContent = giorno;
+                tendinaGiornate.appendChild(option);
+            });
+
+            let radioIntero = document.getElementById('radioIntero');
+            let radioRidotto = document.getElementById('radioRidotto');
+            let tendina = document.getElementById('evento');
+            let prezzoTotaleLabel = document.getElementById('prezzoTotale');
+
+            radioIntero.addEventListener('change', function() {
+                if (this.checked) {
+                    let giorniTotali = generaNumeroGiorni(dataInizio, dataFine).length + 1;
+                    prezzo = giorniTotali * 60 - 20;
+                    prezzoTotaleLabel.textContent = prezzo + ' €';
+                    tendina.style.display = 'none';
+                }
+            });
+
+            radioRidotto.addEventListener('change', function() {
+                if (this.checked) {
+                    tendina.style.display = 'block';
+                }
+            });
+
+            tendina.addEventListener('change', function() {
+                let giorniSelezionati = parseInt(this.value);
+                prezzo = giorniSelezionati * 60;
+                prezzoTotaleLabel.textContent = prezzo + ' €';
+            });
+        }
+
     </script>
 </head>
 <body>
@@ -152,15 +218,17 @@
                 <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a></li>
             <li <%=menuActiveLink.equals("Registrati")?"class=\"active\"":""%>>
                 <a href="Dispatcher?controllerAction=UserManagement.gotoRegistration">Registrati</a>
-                    <%}%>
+
+            </li>
+            <%}%>
         </ul>
     </nav>
 </header>
 
 <main>
     <% if (loggedOn) { %>
-    <h1 class="centrato">Scegli l’abbonamento giusto per te per l’evento <%=evento.getNome()%>!</h1>
-    <form class="content">
+    <h1 class="centrato">Scegli labbonamento giusto per te per levento <%=evento.getNome()%>!</h1>
+    <form class="content" name="gotoForm" method="post" action="Dispatcher">
 
         <%
             Blob logoBlob = evento.getImmagine();
@@ -169,27 +237,31 @@
             String base64Image = Base64.getEncoder().encodeToString(logoBytes);
         %>
         <img src="data:image/jpeg;base64, <%= base64Image %>" style="max-width: 300px; max-height: 300px; align-content: center"><br>
-        <h2>L’acquisto di un abbonamento di permette di avere accesso diretto alla zona VIP</h2>
+        <h2>Lacquisto di un abbonamento di permette di avere accesso diretto alla zona VIP</h2>
 
         <h3>Seleziona il tipo di abbonamento in base al numero di giornate:</h3>
 
         <label>
-            <input type="radio" name="scelta" value="casuale" required> Intero
+            <input type="radio" id="radioIntero" name="scelta" value="intero" required> Intero
         </label>
         <br>
         <label>
-            <input type="radio" id="checkboxEvento" name="scelta" value="scelta" required> Ridotto
+            <input type="radio" id="radioRidotto" name="scelta" value="ridotto" required> Ridotto
         </label>
-        <select class="tendina" id="evento" name="evento" style="display: none; width: fit-content">
+
+        <select class="tendina" id="evento" name="numEntrate" style="display: none; width: fit-content">
             <option value="">Numero giornate</option>
-            <% for (i=0; i < ; i++) { %>
-            <option value="<%= .get(i) %>"><%= .get(i) %> </option>
-            <% } %>
         </select>
+
         <br>
+        <label for="prezzoTotale">Prezzo Totale: </label>
+        <label id="prezzoTotale">0 €</label>
         <br>
-        <input type="hidden" name="controllerAction" value="PagamentoManagement.gotoPagamento" />
+        <input type="hidden" name="controllerAction" value="PagamentoManagement.gotopagamentoAbbonamento" />
+        <input type="hidden" name="idEvento" value="<%=evento.getIdEvento()%>" />
+        <input type="hidden" name="prezzo" value="<%= prezzo %>">
         <input type="submit" class="bottone-personalizzato" value="Procedi con l'acquisto">
+
 
     </form>
     <% } else { %>
