@@ -212,6 +212,7 @@
             <p><strong>Cognome: </strong><%= loggedUser.getCognome() %></p>
             <p><strong>Nome evento: </strong><%= evento.getNome() %></p>
             <p><strong>Tipo abbonamento: </strong><%= abbonamento.getTipo() %> <span class="prezzo"><%= abbonamento.getPrezzo() %> &euro;</span></p>
+            <p><strong>Numero di entrate:</strong> <%= abbonamento.getEntrate()%></p>
             <input type="hidden" name="controllerAction" value="PagamentoManagement.pagamentoAbbonamento" />
             <input type="hidden" name="idEvento" value="<%= evento.getIdEvento()%> ">
             <input type="submit" value="Paga ora" class="bottone-personalizzato">
