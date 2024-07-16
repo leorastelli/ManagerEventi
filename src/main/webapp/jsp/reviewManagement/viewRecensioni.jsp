@@ -63,7 +63,7 @@
         }
         main {
             margin: 20px;
-            height: 995px;
+            height:100%;
         }
 
         .search-bar {

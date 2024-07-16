@@ -18,7 +18,7 @@ Si vedono 3 grandi blocchi, Eventi, Recensioni e Lavora con noi ai quali si acce
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <%@include file="/include/htmlHead.inc"%>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PrimEvent - Home</title>
