@@ -90,17 +90,18 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
        try{
               String sql
                      = " INSERT INTO biglietto "
-                     + "   (IdBiglietto, Prezzo, Tipo, Stato, IdUtente, IdEvento, IdEsibizione) "
-                     + " VALUES (?,?,?,?,?,?,?)";
+                     + "   (IdBiglietto, Prezzo, Tipo, Stato, IdUtente, IdEvento, IdEsibizione, Posto) "
+                     + " VALUES (?,?,?,?,?,?,?,?)";
 
               ps = conn.prepareStatement(sql);
               ps.setString(1, biglietto.getIdBiglietto());
               ps.setLong(2, biglietto.getPrezzo());
               ps.setString(3, biglietto.getTipo());
-              ps.setInt(4, biglietto.getStato());
+              ps.setInt(4, 1);
               ps.setString(5, biglietto.getIdUtente().getIdUtente());
               ps.setString(6, biglietto.getIdEvento().getIdEvento());
               ps.setString(7, biglietto.getIdEsibizione().getIdEsibizione());
+                ps.setInt(8, biglietto.getPosto());
 
               ps.executeUpdate();
 

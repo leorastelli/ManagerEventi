@@ -11,6 +11,7 @@ import javax.lang.model.element.NestingKind;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewsletterDAOmysqlJDBCImpl implements NewsletterDAO {
@@ -90,12 +91,11 @@ public class NewsletterDAOmysqlJDBCImpl implements NewsletterDAO {
     @Override
     public List<String> getMailList(String idUtente) {
         PreparedStatement ps;
-        List<String> mailList = null;
+        List<String> mailList = new ArrayList<>();
 
         try {
-            String sql = "SELECT Email FROM Newsletter WHERE IdUtente = ?";
+            String sql = "SELECT Email FROM Newsletter";
             ps = conn.prepareStatement(sql);
-            ps.setString(1, idUtente);
 
             ResultSet rs = ps.executeQuery();
 

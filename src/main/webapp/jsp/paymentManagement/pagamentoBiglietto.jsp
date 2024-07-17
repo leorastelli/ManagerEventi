@@ -216,11 +216,14 @@
             <% for (Biglietto biglietto : biglietti){ %>
             <p><strong>Tipo Biglietto: </strong><%= biglietto.getTipo() %> <span class="prezzo"><%= biglietto.getPrezzo() %> &euro;</span></p>
             <p><strong>Posto</strong> <%= biglietto.getPosto()%></p>
-            <input type="hidden" name="controllerAction" value="PagamentoManagement.pagamentoAbbonamento" />
+            <input type="hidden" name="controllerAction" value="PagamentoManagement.pagamentoBiglietto" />
+            <input type="hidden" name="idBiglietto" value="<%= biglietto.getIdBiglietto() %>">
+            <input type="hidden" name="posto" value="<%= biglietto.getPosto() %>">
+            <input type="hidden" name="prezzo" value="<%= biglietto.getPrezzo() %>">
+            <input type="hidden" name="tipo" value="<%= biglietto.getTipo() %>">
+            <% } %>
             <input type="hidden" name="idEvento" value="<%= evento.getIdEvento()%>">
             <input type="hidden" name="idEsibizione" value="<%= esibizione.getIdEsibizione()%>">
-            <input type="hidden" name="tipo" value="<%=biglietti%>">
-            <% } %>
             <input type="submit" value="Paga ora" class="bottone-personalizzato">
         </section>
     </form>

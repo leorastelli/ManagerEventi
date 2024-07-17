@@ -257,6 +257,7 @@
         <a href="#candidature">Candidature</a>
         <a href="#spazi-pubblicitari">Spazi pubblicitari</a>
         <a href="#recensioni">Le recensioni ai tuoi eventi</a>
+        <a href="#newsletter">Invia una Newsletter</a>
     </div>
     <div class="content">
         <section id="dati-personali">
@@ -430,7 +431,7 @@
             <%if (recensioni != null && !recensioni.isEmpty()) { %>
             <% for (i=0; i<recensioni.size();i++) {%>
             <h3>Recensione n&deg; <%= i + 1 %></h3>
-            <form>
+            <form method="post" action="Dispatcher">
                 <%--@declare id="stelle"--%>
                 <label for="nome-evento">Nome Evento: </label> <span class="nome-evento"><%= recensioni.get(i).getIdEvento().getNome() %></span>
                 <label for="nome">Nome Utente: </label> <span class="nome"><%= recensioni.get(i).getIdUtente().getNome() %></span>
@@ -445,6 +446,20 @@
             </form>
             <% } %>
             <% } %>
+        </section>
+
+        <section id="newsletter" class="section">
+            <h2>Newsletter</h2>
+            <h3>Invia una Newsletter</h3>
+
+            <form method="post" action="Dispatcher" name="Newsletter">
+                <label for="messaggio">Inserisci il testo della newsletter: </label>
+                <textarea name="mailtext" placeholder="Digita qui"></textarea>
+                <input type="submit" class="bottone-personalizzato" value="Invia e-mail">
+                <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.sendNewsletter"/>
+            </form>
+
+
         </section>
     </div>
     <% } else{ %>
