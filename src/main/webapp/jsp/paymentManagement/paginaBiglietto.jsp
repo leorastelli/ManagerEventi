@@ -13,10 +13,11 @@
     Utente loggedUser = (Utente) request.getAttribute("loggedUser");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "Home";
-    List<Biglietto> biglietti = (List<Biglietto>) request.getAttribute("biglietti");
+    List<String> biglietti = (List<String>) request.getAttribute("biglietti");
     Esibizione esibizione = (Esibizione) request.getAttribute("esibizione");
     Evento evento = (Evento) request.getAttribute("evento");
-    request.setAttribute("esibizione", esibizione);
+
+    String bigliettiString = String.join(",", biglietti);
 %>
 
 
@@ -256,18 +257,19 @@
         <h3>Seleziona la categoria di Parterre che preferisci e il numero di biglietti che desideri acquistare:</h3>
         <label for="numeroPosti">Numero di posti:</label>
         <button id="decrementa" style="border: none; font-size: 20px; font-weight: bolder">-</button>
-        <input type="number" id="numeroPosti" style="font-size: 20px; border: none" min="0" max="6" readonly value="0">
+        <input type="number" id="numeroPosti" name="numPosti" style="font-size: 20px; border: none" min="0" max="6" readonly value="0">
         <button id="incrementa" style="border: none; font-size: 20px; font-weight: bolder">+</button>
         <br>
         <label for="categoria">Categoria:</label>
         <select id="categoria" name="categoria" onchange="aggiornaNumeroPosti()">
-            <option value="parterre">Parterre</option>
-            <option value="parterreVIP">Parterre VIP</option>
+            <option value="1">Parterre</option>
+            <option value="2">Parterre VIP</option>
         </select>
         <br>
-        <input type="hidden" name="controllerAction" value="BigliettiManagement.gotoPagamento">
-        <input type="hidden" id="allSelectedSeats" name="allSelectedSeats">
-
+        <input type="hidden" name="controllerAction" value="PagamentoManagement.gotoPagamentoBiglietto">
+        <input type="hidden" id="allSelectedSeats1" name="allSelectedSeats1">
+        <input type="hidden" name="idEsibizione" value="<%=esibizione.getIdEsibizione()%>">
+        <input type="hidden" name="idEvento" value="<%=evento.getIdEvento()%>">
         <input type="submit" class="bottone-personalizzato" value="Procedi con l'acquisto">
 
             <% } else { %>
@@ -277,21 +279,23 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        var occupiedSeats = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        var occupiedSeats = [<%=bigliettiString%>];
         var seatsPerRow = 9; // Numero di posti per fila nelle sezioni tribuna-sx, parterre, tribuna-dx
         var rows = 6; // Numero di file per ogni sezione
 
         var selectedSeats = []; // Array per memorizzare i posti selezionati
 
         var numeroPostiInput = document.getElementById('numeroPosti');
-        document.getElementById('incrementa').addEventListener('click', function() {
+        document.getElementById('incrementa').addEventListener('click', function(event) {
+            event.preventDefault();
             if (numeroPostiInput.value < numeroPostiInput.max) {
                 numeroPostiInput.value = parseInt(numeroPostiInput.value) + 1;
                 aggiornaNumeroPosti();
             }
         });
 
-        document.getElementById('decrementa').addEventListener('click', function() {
+        document.getElementById('decrementa').addEventListener('click', function(event) {
+            event.preventDefault();
             if (numeroPostiInput.value > numeroPostiInput.min) {
                 numeroPostiInput.value = parseInt(numeroPostiInput.value) - 1;
                 aggiornaNumeroPosti();
@@ -327,30 +331,46 @@
 
         // Modifica la funzione per accettare un parametro aggiuntivo: seatsPerRowForSection
         function populateSection(table, sectionId, seatsPerRowForSection) {
+            var startId;
+            switch (sectionId) {
+                case 'tribuna-sx':
+                    startId = 1;
+                    break;
+                case 'tribuna-dx':
+                    startId = 101;
+                    break;
+                case 'tribuna':
+                    startId = 201;
+                    break;
+                default:
+                    startId = 1; // Default case, se non corrisponde a nessuna delle sezioni specificate
+            }
+
             for (var i = 0; i < rows; i++) {
                 var row = document.createElement('tr');
                 table.appendChild(row);
                 for (var j = 0; j < seatsPerRowForSection; j++) {
-                    var cell = document.createElement('td'); // Crea una cella
-                    var button = document.createElement('button'); // Crea un bottone
-                    button.id = (i * seatsPerRowForSection) + j + 1; // Imposta l'id del bottone
-                    button.addEventListener('click', function() { // Aggiungi un listener per il click
-                        if (this.classList.contains('occupied')) { // Se il posto è già occupato
-                            alert('Seat already occupied'); // Mostra un alert
-                        } else { // Altrimenti
-                            this.classList.add('selected');
+                    var cell = document.createElement('td');
+                    var button = document.createElement('button');
+                    var seatId = startId++; // Incrementa startId per ogni posto creato
+                    button.id = seatId; // Assegna l'ID incrementato al bottone
+                    button.textContent = seatId; // Opzionale: mostra l'ID sul bottone per facilitare il riconoscimento
+                    button.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        if (this.classList.contains('occupied')) {
+                            alert('Seat already occupied');
+                        } else {
+                            this.classList.toggle('selected');
+                            updateSelectedSeats(this.id);
                         }
-                        updateSelectedSeats(this.id); // Aggiorna i posti selezionati
                     });
 
                     cell.appendChild(button);
                     row.appendChild(cell);
 
-                    if (occupiedSeats.includes((i * seatsPerRowForSection) + j + 1)) { // Se il posto è già occupato
-                        button.classList.add('occupied'); // Aggiungi la classe occupied
+                    if (occupiedSeats.includes(seatId)) {
+                        button.classList.add('occupied');
                     }
-
-
                 }
             }
         }
@@ -366,6 +386,7 @@
 
 
     });
+
 
 </script>
 <footer>

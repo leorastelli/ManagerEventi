@@ -13,10 +13,7 @@ import java.sql.Blob;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -166,6 +163,125 @@ public class PagamentoManagement {
             } catch (Throwable t) {
             }
         }
+    }
+
+    public static void gotoPagamentoBiglietto(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory= null;
+        Utente loggedUser;
+        DAOFactory daoFactory = null;
+        String applicationMessage = null;
+        List<Biglietto> biglietti = new ArrayList<>();
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUser = sessionUserDAO.findLoggedUser();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+            daoFactory.beginTransaction();
+
+            EventoDAO eventoDAO = daoFactory.getEventoDAO();
+            EsibizioneDAO esibizioneDAO = daoFactory.getEsibizioneDAO();
+            BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
+
+            Esibizione esibizione = esibizioneDAO.getEsibizioneById(request.getParameter("idEsibizione"));
+            Evento evento = eventoDAO.getEventoById(request.getParameter("idEvento"));
+
+
+            int cont = Integer.parseInt(request.getParameter("numPosti"));
+
+            for (int i = 0; i < cont; i++) {
+                Biglietto biglietto = new Biglietto();  // Crea un nuovo oggetto biglietto per ogni iterazione
+                biglietto.setIdBiglietto(RandomString(10));
+                biglietto.setIdUtente(loggedUser);
+                biglietto.setIdEsibizione(esibizione);
+                biglietto.setIdEvento(evento);
+                biglietto.setPosto(0);
+
+                Integer categoria = Integer.parseInt(request.getParameter("categoria"));
+                if (categoria == 1) {
+                    biglietto.setTipo("Parterre");
+                    biglietto.setPrezzo(50L);
+                } else {
+                    biglietto.setTipo("Parterre VIP");
+                    biglietto.setPrezzo(100L);
+                }
+
+                biglietti.add(biglietto);
+            }
+
+            String allSelectedSeats = request.getParameter("allSelectedSeats");
+
+            if (allSelectedSeats != null && !allSelectedSeats.isEmpty()) {
+                // Dividi il valore in un array di stringhe
+                String[] selectedSeatsArray = allSelectedSeats.split(",");
+
+                for (int i = 0; i < selectedSeatsArray.length; i++) {
+                    Biglietto biglietto = new Biglietto();  // Crea un nuovo oggetto biglietto per ogni iterazione
+                    biglietto.setIdBiglietto(RandomString(10));
+                    biglietto.setIdEvento(evento);
+                    biglietto.setIdEsibizione(esibizione);
+                    biglietto.setIdUtente(loggedUser);
+
+                    int posto = Integer.parseInt(selectedSeatsArray[i]);
+                    biglietto.setPosto(posto);
+
+                    // Assegna il prezzo e il tipo in base al valore di 'posto'
+                    if (posto >= 1 && posto <= 54) {
+                        biglietto.setPrezzo(90L);
+                        biglietto.setTipo("Tribuna Sinistra");
+                    } else if (posto >= 101 && posto <= 154) {
+                        biglietto.setPrezzo(90L);
+                        biglietto.setTipo("Tribuna Destra");
+                    } else if (posto >= 201 && posto <= 338) {
+                        biglietto.setPrezzo(70L);
+                        biglietto.setTipo("Tribuna Frontale");
+                    }
+
+                    biglietti.add(biglietto);
+                }
+
+            }
+
+
+
+
+            sessionDAOFactory.commitTransaction();
+            daoFactory.commitTransaction();
+
+            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("loggedUser",loggedUser);
+            request.setAttribute("evento",evento);
+            request.setAttribute("esibizione",esibizione);
+            request.setAttribute("biglietti",biglietti);
+            request.setAttribute("viewUrl", "paymentManagement/pagamentoBiglietto");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+                if (daoFactory != null) daoFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
     }
 
     public static void pagamentoAbbonamento (HttpServletRequest request, HttpServletResponse response){

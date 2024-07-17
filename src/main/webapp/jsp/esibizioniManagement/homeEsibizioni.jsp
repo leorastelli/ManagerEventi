@@ -190,7 +190,9 @@
     <label style="font-size: 20px">Data esibizione: <%=esibizione.getDataEsibizione()%></label> <br>
     <br>
     <form action="Dispatcher" method="post">
-        <input type="hidden" name="controllerAction" value="EsibizioniManagement.gotoBiglietti">
+        <input type="hidden" name="idEsibizione" value="<%=esibizione.getIdEsibizione()%>">
+        <input type="hidden" name="idEvento" value="<%= evento.getIdEvento()%>">
+        <input type="hidden" name="controllerAction" value="EsibizioneManagement.gotoBiglietti">
         <input type="submit" class="bottone-personalizzato" value="Acquista biglietto">
     </form>
 </main>
