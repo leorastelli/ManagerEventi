@@ -271,6 +271,7 @@
         <input type="hidden" name="idEsibizione" value="<%=esibizione.getIdEsibizione()%>">
         <input type="hidden" name="idEvento" value="<%=evento.getIdEvento()%>">
         <input type="submit" class="bottone-personalizzato" value="Procedi con l'acquisto">
+    </form>
 
             <% } else { %>
         <p>Effettua il login per vedere i tuoi dati.</p>
