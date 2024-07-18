@@ -71,10 +71,19 @@
         main{
             margin: 20px;
         }
+
         .content {
             width: 100%;
             margin-left: auto;
 
+        }
+
+        .layout-esterno {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center; /* Centra i contenuti orizzontalmente */
+            align-items: start; /* Allinea i contenuti in alto */
+            gap: 10px; /* Distanza tra la piantina e le tariffe */
         }
 
         .container {
@@ -82,23 +91,37 @@
             grid-template-columns: 1fr 1fr 1fr; /* 3 colonne */
             grid-template-rows: auto auto auto auto; /* 4 righe */
             gap: 20px; /* Spazio tra gli elementi */
-            max-width: 600px; /* Larghezza massima */
-            height: 400px; /* Altezza fissa */
-            transform: scale(0.25); /* Scala il contenitore a un quarto della dimensione originale */
+            max-width: 400px; /* Larghezza massima */
+            height: 200px; /* Altezza fissa */
+            transform: scale(0.5); /* Scala il contenitore a un quarto della dimensione originale */
             transform-origin: center; /* Punto di origine per la trasformazione */
             position: relative; /* Per posizionare gli elementi interni */
-            margin-left: 22%;
+            margin-left: 19%;
             margin-right: 30%;
+            margin-top: 0;
+            margin-bottom: 1px;
             /*background-color: #fffdf3;
             border: 1px solid #ccc;
             box-shadow: dimgray 0 0 5px;*/
         }
 
+        .tariffe {
+            margin-top: 10%;
+            width: 500px;
+            align-content: center;
+            text-align: center;
+            background-color: #fffdf3;
+            border-radius: 8px;
+            box-shadow: dimgray 0 0 5px;
+        }
+
         #parterreVIP {
             grid-column: 2; /* Seconda colonna */
             grid-row: 2; /* Seconda riga */
-            border: 1px solid black;
-            background-color: white;
+            border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
+            background-color: #fffdf3;
+            border-radius: 10px;
             width: 450px;
             height: 150px;
         }
@@ -113,8 +136,9 @@
         #parterre {
             grid-column: 2; /* Seconda colonna */
             grid-row: 3; /* Seconda riga */
-            border: 1px solid black;
-            background-color: white;
+            border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
+            background-color: #fffdf3;
             width: 450px;
             height: 250px;
 
@@ -135,8 +159,10 @@
         #palco {
             grid-column: 2 / 3; /* Seconda colonna */
             grid-row: 1; /* Prima riga */
-            border: 1px solid black;
-            background-color: white;
+            border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
+            background-color: #fffdf3;
+            border-radius: 10px;
             width: 450px;
             height: 200px;
             align-content: center;
@@ -146,20 +172,40 @@
         button {
             width: 40px;
             height: 40px;
-            border-radius: 5px;
-            border: 1px solid black;
-            background-color: white;
-            color: black;
+            border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
+            background-color: #fffdf3;
         }
 
         button.occupied {
-            background-color: red;
+            background-color: darkred;
             color: white;
         }
 
         button.selected{
             background-color: green;
             color: white;
+        }
+
+        select{
+            width: 98%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: left;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+            outline: none; /* Rimuove il bordo azzurro */
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input:focus {
+            outline: none; /* Rimuove il bordo azzurro quando l'input è in focus */
         }
 
         .bottone-personalizzato {
@@ -180,6 +226,16 @@
         .bottone-personalizzato:hover {
             background-color: #fceb00;
             color: black;
+        }
+
+        .bottone-scelta {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            border: 1px solid black;
+            background-color: #ffb805;
+            color: black;
+            margin: 0 5px;
         }
 
         .centrato {
@@ -230,47 +286,59 @@
 
 <main>
     <% if (loggedOn) { %>
-    <h1 class="centrato">Selezione il biglietto che preferisci!</h1>
-    <form class="content" name="gotoForm" method="post" action="Dispatcher"> <br>
-        <div class="container">
-            <table id="palco">
-                <tr>
-                    <td style="text-align: center; font-size: 40px">PALCO</td>
-                </tr>
-            </table>
-            <table id="parterre" onclick="aggiornaNumeroPosti()">
-                <tr>
-                    <td style="text-align: center; font-size: 40px">PARTERRE</td>
-                </tr>
-            </table>
-            <table id="parterreVIP" onclick="aggiornaNumeroPosti()">
-                <tr>
-                    <td style="text-align: center; font-size: 40px">PARTERRE VIP</td>
-                </tr>
-            </table>
-            <table id="tribuna"></table>
+    <h1 class="centrato">Seleziona il biglietto che preferisci!</h1>
+    <br>
+    <p class="centrato">Seleziona i posti numerati che desideri acquistare direttamente dalla piantina e i posti in parterre dal men&ugrave; sottostante</p>
+    <form class="content" name="gotoForm" method="post" action="Dispatcher">
+        <section class="layout-esterno">
+            <section class="container">
+                <table id="palco">
+                    <tr>
+                        <td style="text-align: center; font-size: 40px">PALCO</td>
+                    </tr>
+                </table>
+                <table id="parterre" onclick="aggiornaNumeroPosti()">
+                    <tr>
+                        <td style="text-align: center; font-size: 40px">PARTERRE</td>
+                    </tr>
+                </table>
+                <table id="parterreVIP" onclick="aggiornaNumeroPosti()">
+                    <tr>
+                        <td style="text-align: center; font-size: 40px">PARTERRE VIP</td>
+                    </tr>
+                </table>
+                <table id="tribuna"></table>
 
-            <table id="tribuna-sx"></table>
+                <table id="tribuna-sx"></table>
 
-            <table id="tribuna-dx"></table>
-        </div>
-        <h3>Seleziona la categoria di Parterre che preferisci e il numero di biglietti che desideri acquistare:</h3>
-        <label for="numeroPosti">Numero di posti:</label>
-        <button id="decrementa" style="border: none; font-size: 20px; font-weight: bolder">-</button>
-        <input type="number" id="numeroPosti" name="numPosti" style="font-size: 20px; border: none" min="0" max="6" readonly value="0">
-        <button id="incrementa" style="border: none; font-size: 20px; font-weight: bolder">+</button>
-        <br>
-        <label for="categoria">Categoria:</label>
-        <select id="categoria" name="categoria" onchange="aggiornaNumeroPosti()">
+                <table id="tribuna-dx"></table>
+            </section>
+            <article class="tariffe">
+                <h3>Tariffe:</h3>
+                <h4>Parterre 50 &euro;</h4>
+                <h4>Parterre VIP 100 &euro;</h4>
+                <h4>Tribuna frontale 70 &euro;</h4>
+                <h4>Tribuna laterale destra 90 &euro;</h4>
+                <h4>Tribuna laterale sinistra 90 &euro;</h4>
+            </article>
+        </section>
+        <h3 style="margin-top: 10%; margin-left: 30%">Seleziona la categoria che desideri acquistare:</h3>
+        <select id="categoria" name="categoria" style="width: fit-content; margin-left: 30%" onchange="aggiornaNumeroPosti()">
+            <option value="">Categoria</option>
             <option value="1">Parterre</option>
             <option value="2">Parterre VIP</option>
         </select>
         <br>
+        <h3 style="margin-left: 30%">Seleziona il numero di posti che desideri acquistare:</h3>
+        <label style="margin-left: 30%" for="numeroPosti">Numero di posti:</label>
+        <button class="bottone-scelta" id="decrementa" style="border: none; font-size: 20px; font-weight: bolder">-</button>
+        <input type="number" id="numeroPosti" name="numPosti" style="font-size: 20px; border: none" min="0" max="6" value="0" readonly>
+        <button class="bottone-scelta" id="incrementa" style="border: none; font-size: 20px; font-weight: bolder">+</button>
         <input type="hidden" name="controllerAction" value="PagamentoManagement.gotoPagamentoBiglietto">
         <input type="hidden" id="allSelectedSeats1" name="allSelectedSeats1">
         <input type="hidden" name="idEsibizione" value="<%=esibizione.getIdEsibizione()%>">
         <input type="hidden" name="idEvento" value="<%=evento.getIdEvento()%>">
-        <input type="submit" class="bottone-personalizzato" value="Procedi con l'acquisto">
+        <input type="submit" style="margin-top: 20px" class="bottone-personalizzato" value="Procedi con l'acquisto">
     </form>
 
             <% } else { %>
