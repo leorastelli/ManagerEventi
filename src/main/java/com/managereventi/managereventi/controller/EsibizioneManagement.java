@@ -92,8 +92,6 @@ public class EsibizioneManagement {
         DAOFactory daoFactory = null;
         DAOFactory sessionDAOFactory= null;
         Utente loggedUser;
-        Organizzatore loggedOrganizzatore;
-        Azienda loggedAzienda;
         Esibizione esibizione;
         Evento evento;
         List<String> biglietti;
@@ -109,8 +107,7 @@ public class EsibizioneManagement {
             sessionDAOFactory.beginTransaction();
 
             UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
-            OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
-            AziendaDAO sessionAziendaDAO = sessionDAOFactory.getAziendDAO();
+
 
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
             daoFactory.beginTransaction();
@@ -121,8 +118,7 @@ public class EsibizioneManagement {
 
 
             loggedUser = sessionUserDAO.findLoggedUser();
-            loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
-            loggedAzienda = sessionAziendaDAO.findLoggedUser();
+
 
             esibizione = esibizioneDAO.getEsibizioneById((request.getParameter("idEsibizione")));
             evento = eventoDAO.getEventoById(request.getParameter("idEvento"));
@@ -131,10 +127,8 @@ public class EsibizioneManagement {
 
             sessionDAOFactory.commitTransaction();
 
-            request.setAttribute("loggedOn",loggedUser!=null || loggedOrganizzatore!=null || loggedAzienda!=null);
+            request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
-            request.setAttribute("loggedOrganizzatore", loggedOrganizzatore);
-            request.setAttribute("loggedAzienda", loggedAzienda);
             request.setAttribute("esibizione", esibizione);
             request.setAttribute("evento", evento);
             request.setAttribute("biglietti", biglietti);
