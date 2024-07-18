@@ -114,7 +114,34 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
 
     @Override
     public Biglietto getBigliettoById(String idBiglietto) {
-        return null;
+        PreparedStatement ps;
+        Biglietto biglietto = null;
+
+        try{
+            String sql
+                    = " SELECT * "
+                    + " FROM Biglietto "
+                    + " WHERE "
+                    + "   IdBiglietto = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, idBiglietto);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                biglietto = read(rs);
+            }
+
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return biglietto;
+
+
+
     }
 
     @Override

@@ -6,14 +6,14 @@ import com.managereventi.managereventi.services.Config.Configuration;
 import com.managereventi.managereventi.services.Logservice.LogService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Properties;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -253,6 +253,111 @@ public class UserManagement {
             } catch (Throwable t) {
             }
         }
+    }
+
+    public static  void stampaAbbonamento(HttpServletRequest request, HttpServletResponse response){
+
+        DAOFactory sessionDAOFactory= null;
+        Utente loggedUser;
+        Abbonamento abbonamento;
+        DAOFactory daoFactory = null;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUser = sessionUserDAO.findLoggedUser();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
+            AbbonamentoDAO abbonamentoDAO = daoFactory.getAbbonamentoDAO();
+
+            abbonamento = abbonamentoDAO.getAbbonamentoById(request.getParameter("idAbbonamento"));
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            File qrCodeFile = PagamentoManagement.generateQRCodeFile(abbonamento.getIdAbbonamento(), 150, 150);
+            byte[] fileContent = Files.readAllBytes(qrCodeFile.toPath());
+            String base64Encoded = Base64.getEncoder().encodeToString(fileContent);
+
+            request.setAttribute("abbonamento", abbonamento);
+            request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("qrcode", base64Encoded);
+            request.setAttribute("viewUrl", "homeManagement/StampaAbbonamento");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        }
+
+    }
+    public static  void stampaBiglietto(HttpServletRequest request, HttpServletResponse response){
+
+        DAOFactory sessionDAOFactory= null;
+        Utente loggedUser;
+        Biglietto biglietto;
+        DAOFactory daoFactory = null;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUser = sessionUserDAO.findLoggedUser();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
+            BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
+
+            biglietto = bigliettoDAO.getBigliettoById(request.getParameter("idBiglietto"));
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            File qrCodeFile = PagamentoManagement.generateQRCodeFile(biglietto.getIdBiglietto(), 150, 150);
+            byte[] fileContent = Files.readAllBytes(qrCodeFile.toPath());
+            String base64Encoded = Base64.getEncoder().encodeToString(fileContent);
+
+            request.setAttribute("biglietto", biglietto);
+            request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("qrcode", base64Encoded);
+            request.setAttribute("viewUrl", "homeManagement/StampaBiglietto");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        }
+
     }
 
     public static void deleteBiglietto(HttpServletRequest request, HttpServletResponse response) {

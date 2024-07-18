@@ -48,7 +48,7 @@
 </head>
 <main>
     <h1>Pagamento avvenuto con Successo!</h1>
-    <h3>Torna alla Home di login e riprova</h3>
+    <h3>Ora puoi tornare alla HomePage</h3>
     <form method="post" action="Dispatcher">
         <input type="hidden" name="controllerAction" value="HomeManagement.view">
         <input type="submit" class="bottone-personalizzato" value="Torna alla Home">

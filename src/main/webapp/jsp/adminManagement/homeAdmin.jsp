@@ -94,21 +94,6 @@
             margin-bottom: 30px;
         }
 
-        form {
-            display: grid;
-            gap: 10px;
-        }
-        form label {
-            margin-right: 50px;
-            font-weight: bold;
-            text-align: left;
-        }
-        form input[type="text"], form textarea {
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
         .bottone-personalizzato {
             background-color: #de32ff;
             color: #fefefa;
@@ -135,7 +120,7 @@
 
         }
 
-       section#eventi h2, section#esibizioni h2, section#recensioni h2, section#spazi-pubblicitari h2, section#candidature h2{
+        section#eventi h2, section#esibizioni h2, section#recensioni h2, section#spazi-pubblicitari h2, section#candidature h2, section#newsletter h2{
             padding: 10px;
             border-radius: 5px;
             text-align: center;
@@ -169,6 +154,20 @@
             margin-right: 20%;
         }
 
+        section#newsletter form{
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2px;
+            background-color: #fffdf3;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
+            border-radius: 5px;
+            width: 800px;
+            margin-left: 22.7%;
+            margin-right: 20%;
+        }
+
         section#dati-personali form{
             display: grid;
             grid-template-columns: 1fr;
@@ -188,7 +187,7 @@
             gap: 10px;
         }
 
-        section#dati-personali form input[type="text"], section#dati-personali form textarea, section#eventi form input[type="text"], section#eventi form textarea, section#esibizioni form input[type="text"], section#esibizioni form textarea, section#recensioni form input[type="text"], section#recensioni form textarea{
+        section#dati-personali form input[type="text"], section#dati-personali form textarea, section#eventi form input[type="text"], section#eventi form textarea, section#esibizioni form input[type="text"], section#esibizioni form textarea, section#recensioni form input[type="text"], section#recensioni form textarea, section#newsletter form textarea, section#spazi-pubblicitari form input[type="text"], section#candidature form input[type="text"], section#newsletter textarea{
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -201,7 +200,6 @@
         }
 
         footer {
-            width: 100%;
             clear: both;
             text-align: center;
             padding: 10px;
@@ -295,11 +293,9 @@
                 <input type="text" id="ora-inizio" name="ora-inizio" value="<%= esibizioni.get(i).getOraInizio() %>" > <br>
                 <label for="genere">Genere: </label>
                 <input type="text" id="genere" name="genere" value="<%= esibizioni.get(i).getGenere() %>" > <br>
-                <label for="numero-artisti">Codice di Autorizzazione: </label>
-                <input type="text" id="numero-artisti" name="numero-artisti" value="<%= esibizioni.get(i).getNumeroArtisti() %>" > <br>
                 <label for="codiceevento">Codice evento al quale appartiene: </label>
                 <input type="text" id="codiceevento" name="codiceevento" value="<%= esibizioni.get(i).getIdEvento().getIdEvento()%>" disabled > <br>
-                <label for="codice-luogo">Codice luogo nel quale si svolge: </label>
+                <label for="codice-luogo" >Codice luogo nel quale si svolge: </label>
                 <input type="text" id="codice-luogo" name="codice-luogo" value="<%= esibizioni.get(i).getIdLuogo().getIdLuogo() %>" disabled> <br>
                 <label for="descrizione">Descrizione: </label>
                 <input type="text" id="descrizione" name="descrizione" value="<%= esibizioni.get(i).getDescrizione() %>" > <br>
@@ -336,11 +332,9 @@
                 <input type="date" id="data-inizio" name="data-inizio" value="<%= eventi.get(i).getDataInizio() %>" > <br>
                 <label for="data-fine">Data di fine: </label>
                 <input type="date" id="data-fine" name="data-fine" value="<%= eventi.get(i).getDataFine() %>" > <br>
-                <label for="num-esibizioni">Numero di esibizioni: </label>
-                <input type="text" id="num-esibizioni" name="num-esibizione" value="<%= eventi.get(i).getNumEsibizioni() %>" > <br>
-                <label for="descrizione-evento">Descrizione: </label>
+                <label for="descrizione-evento" >Descrizione:  </label>
                 <input type="text" id="descrizione-evento" name="descrizione-evento" value="<%= eventi.get(i).getDescrizione() %>" > <br>
-                <input type="hidden" name="idEvento" value="<%=eventi.get(i).getIdEvento()%>"/>
+                <input type="hidden" name="idEvento" value="<%=eventi.get(i).getIdEvento()%>">
                 <!-- Bottone per eliminare l'esibizione -->
                 <button type="submit" class="bottone-personalizzato" name="controllerAction" value="OrganizzatoreManagement.deleteEvento">
                     Elimina evento
@@ -356,18 +350,18 @@
             <br>
         </section>
 
-        <section id="candidature" class="section">
+        <section id="candidature" class="section" >
             <h2>Overview Candidature</h2>
             <form method="post" action="Dispatcher" name="cercaCandidatura">
                 <select id="position" name="position">
-                    <option value="">Tutte le posizioni</option>
-                    <option value="marketing">Marketing</option>
-                    <option value="socialmedia">Social Media</option>
-                    <option value="eventmanager">Event Manager</option>
-                    <option value="photographer">Photographer</option>
-                    <option value="videomaker">Videomaker</option>
-                    <option value="graphicdesigner">Graphic Designer</option>
-                    <option value="uxuidesigner">UX/UI Designer</option>
+                    <option value="" >Tutte le posizioni</option>
+                    <option value="marketing">Marketing </option>
+                    <option value="socialmedia" >Social Media </option>
+                    <option value="eventmanager" >Event Manager </option>
+                    <option value="photographer" >Photographer </option>
+                    <option value="videomaker" >Videomaker </option>
+                    <option value="graphicdesigner" >Graphic Designer</option>
+                    <option value="uxuidesigner" >UX/UI Designer</option>
                     <option value="sales">Sales</option>
                     <option value="content manager">Content Manager</option>
                     <option value="developer">Developer</option>
@@ -449,13 +443,13 @@
         </section>
 
         <section id="newsletter" class="section">
-            <h2>Newsletter</h2>
-            <h3>Invia una Newsletter</h3>
-
+            <h2>Invia una newsletter</h2>
             <form method="post" action="Dispatcher" name="Newsletter">
                 <label for="messaggio">Inserisci il testo della newsletter: </label>
-                <textarea name="mailtext" placeholder="Digita qui"></textarea>
-                <input type="submit" class="bottone-personalizzato" value="Invia e-mail">
+                <br>
+                <textarea style="border-radius: 5px; height: 50px" name="mailtext" placeholder="Digita qui"></textarea>
+                <br>
+                <input type="submit" class="bottone-personalizzato" value="Invia">
                 <input type="hidden" name="controllerAction" value="OrganizzatoreManagement.sendNewsletter"/>
             </form>
 

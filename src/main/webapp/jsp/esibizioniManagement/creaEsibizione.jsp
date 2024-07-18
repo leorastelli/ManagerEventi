@@ -32,7 +32,7 @@
         }
         header {
             background-color: #ffb805;
-            padding: 10px;
+            padding: 12px;
             color: #ab00cc;
             display: flex;
             justify-content: space-between;
@@ -63,6 +63,7 @@
         main {
             text-align: center;
             margin-top: 20px;
+            height: 100%;
         }
 
         #creaEsibizioneForm {
@@ -117,7 +118,7 @@
 
         .tendina {
             width: fit-content;
-            margin-right: 25.5%;
+            margin-right: 23.5%;
             padding: 8px;
             box-sizing: border-box;
             border: #dddddd 1px solid;
@@ -157,10 +158,9 @@
         }
 
         footer {
-            width: 100%;
             clear: both;
             text-align: center;
-            padding: 10px;
+            padding: 12px;
             background-color: #ffb805;
             color: #ab00cc;
             margin-top: 20px;
@@ -198,24 +198,24 @@
         <form id="creaEsibizioneForm" name="creaEsibizioneForm" action="Dispatcher" method="post" enctype="multipart/form-data">
             <h2 class="titolo" id="titoloEsibizione" >Inserisci dettagli esibizione</h2>
             <label for="nomeEsibizione" >Nome esibizione</label>
-            <input type="text" id="nomeEsibizione" name="nomeEsibizione" ><br>
+            <input type="text" id="nomeEsibizione" name="nomeEsibizione" required><br>
             <label for="descrizioneEsibizione" >Descrizione dell'esibizione</label>
-            <textarea id="descrizioneEsibizione" name="descrizioneEsibizione" > </textarea><br>
+            <textarea id="descrizioneEsibizione" name="descrizioneEsibizione" required> </textarea><br>
             <label for="dataEsibizione" >Data di inizio esibizione</label>
-            <input type="date" id="dataEsibizione" name="dataEsibizione"  ><br>
+            <input type="date" id="dataEsibizione" name="dataEsibizione" required ><br>
             <label for="durata" >Durata esibizione</label>
-            <input type="time" id="durata" name="durata"  ><br>
+            <input type="time" id="durata" name="durata" required ><br>
             <label for="Orainizio" >Ora di inizio</label>
-            <input type="time" id="Orainizio" name="orainizio" ><br>
-            <select class="tendina" name="luogo" id="tendina" >
+            <input type="time" id="Orainizio" name="orainizio" required><br>
+            <select class="tendina" name="luogo" id="tendina" required>
                 <option value="">Seleziona luogo</option>
                 <% for (i=0; i< luoghi.size(); i++) { %>
                     <option value="<%= luoghi.get(i) %>"><%= luoghi.get(i) %></option>
                 <% } %>
             </select><br>
             <label for="genere" >Genere </label>
-            <input type="text" id="genere" name="genere" ><br>
-            <input class="input" type="file" id="imglogo" name="logoEsibizione"  accept="image/png, image/jpeg">
+            <input type="text" id="genere" name="genere" required><br>
+            <input class="input" type="file" id="imglogo" name="logoEsibizione"  accept="image/png, image/jpeg" required>
             <img id="logoPreview" style="max-width: 200px; max-height: 200px" alt="">
             <br>
                 <input type="hidden" name="idorganizzatore" value="<%=loggedOrganizzatore.getIdOrganizzatore()%>">

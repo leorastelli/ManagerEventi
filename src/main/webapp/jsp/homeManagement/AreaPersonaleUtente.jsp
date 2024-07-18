@@ -104,11 +104,6 @@
             font-weight: bold;
             text-align: left;
         }
-        form input[type="text"], form textarea {
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
 
         .bottone-personalizzato {
             background-color: #de32ff;
@@ -147,9 +142,11 @@
 
         section#candidature h3, section#biglietti h3, section#abbonamenti h3, section#recensioni h3{
             font-weight: bold;
+            margin-left: 11.8%;
+            margin-right: 20%;
         }
 
-        section#dati-personali form, section#biglietti form, section#abbonamenti form{
+        section#dati-personali form{
             display: grid;
             grid-template-columns: 1fr;
             gap: 2px;
@@ -160,6 +157,20 @@
             border-radius: 5px;
             width: 800px;
             margin: auto;
+        }
+
+        section#biglietto, section#abbonamento {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2px;
+            background-color: #fffdf3;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
+            border-radius: 5px;
+            width: 800px;
+            margin-left: 11.8%;
+            margin-right: 20%;
         }
 
         section#recensioni form{
@@ -176,14 +187,21 @@
             margin-right: 20%;
         }
 
-        section#dati-personali form label, section#biglietti form label, section#abbonamenti form label, section#recensioni form label{
+        section#dati-personali form label, section#recensioni form label, section#biglietto span{
             margin-right: 50px;
-            font-weight: bold;
+           /* font-weight: bold;*/
             text-align: left;
             gap: 10px;
         }
 
-        section#dati-personali form input[type="text"], section#dati-personali form textarea, section#biglietti form input[type="text"], section#abbonamenti form input[type="text"], section#recensioni form input[type="text"]{
+        section#biglietto label, section#abbonamento label{
+            display: inline-block;
+            min-width: 150px; /* Imposta la larghezza fissa desiderata */
+            margin-right: 50px;
+        }
+
+
+        section#dati-personali form input[type="text"], section#dati-personali form textarea, section#biglietto input[type="text"], section#abbonamento input[type="text"], section#recensioni form input[type="text"]{
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -208,8 +226,8 @@
         section#recensioni .star.selected {
             color: gold;
         }
+
         footer {
-            width: 100%;
             clear: both;
             text-align: center;
             padding: 10px;
@@ -318,25 +336,30 @@
             <%if (biglietti != null && !biglietti.isEmpty()){ %>
             <% for (i=0; i<biglietti.size();i++){%>
             <h3>Biglietto n&deg; <%= i + 1 %></h3>
-            <div>
+            <section id="biglietto">
                 <%--@declare id="data"--%><%--@declare id="prezzo"--%><%--@declare id="tipo"--%>
                 <%--@declare id="ora"--%>
-                <label for="nome">Nome Esibizione </label> <span class="nome"><%= biglietti.get(i).getIdEsibizione().getNome() %></span>
-                <label for="ora">Ora Inizio Esibizione </label> <span class="ora"><%= biglietti.get(i).getIdEsibizione().getOraInizio() %></span>
-                <label for="data">Data Inizio Evento </label> <span class="data"><%= biglietti.get(i).getIdEvento().getDataInizio() %></span>
-                <label for="nome">Nome </label> <span class="nome"><%=biglietti.get(i).getIdUtente().getNome()%></span>
-                <label for="cognome">Cognome </label> <span class="cognome"><%=biglietti.get(i).getIdUtente().getCognome()%></span>
-                <label for="prezzo">Prezzo </label> <span class="prezzo"><%=biglietti.get(i).getPrezzo()%> &euro;</span>
-                <label for="tipo">Tipo </label> <span class="tipo"><%=biglietti.get(i).getTipo()%></span>
-            </div>
+                <label for="nome"> <strong> Nome esibizione:</strong> <%= biglietti.get(i).getIdEsibizione().getNome() %> </label>
+                <label for="ora" > <strong> Ora inizio esibizione: </strong><%= biglietti.get(i).getIdEsibizione().getOraInizio() %> </label>
+                <label for="data" > <strong> Data inizio evento: </strong> <%= biglietti.get(i).getIdEvento().getDataInizio() %> </label>
+                <label for="nome"> <strong>Nome:  </strong><%=biglietti.get(i).getIdUtente().getNome()%></label>
+                <label for="cognome"> <strong>Cognome: </strong> <%=biglietti.get(i).getIdUtente().getCognome()%></label>
+                <label for="prezzo"><strong> Prezzo:</strong> <%=biglietti.get(i).getPrezzo()%> &euro;</label>
+                <label for="tipo"> <strong>Tipo:  </strong><%=biglietti.get(i).getTipo()%></label>
 
-            <form name="deletBiglietto" action="Dispatcher" method="post">
-                <input type="hidden" name="controllerAction" value="UserManagement.deleteBiglietto"/>
-                <input type="hidden" name="idBiglietto" value="<%=biglietti.get(i).getIdBiglietto()%>"/>
-                <input type="submit" class="bottone-pers" value="Annulla Biglietto">
-            </form>
+                <form name="deletBiglietto" action="Dispatcher" method="post">
+                    <input type="hidden" name="controllerAction" value="UserManagement.deleteBiglietto"/>
+                    <input type="hidden" name="idBiglietto" value="<%=biglietti.get(i).getIdBiglietto()%>"/>
+                    <input type="submit" class="bottone-personalizzato" value="Annulla Biglietto">
+                </form>
+
+                <form name="stampaBiglietto" action="Dispatcher" method="post">
+                    <input type="hidden" name="controllerAction" value="UserManagement.stampaBiglietto"/>
+                    <input type="hidden" name="idBiglietto" value="<%=biglietti.get(i).getIdBiglietto()%>"/>
+                    <input type="submit" class="bottone-personalizzato" value="Stampa Biglietto">
+                </form>
+            </section>
             <% }} %>
-            <br><button class="bottone-personalizzato" onclick="toggleEdit('biglietti')">Modifica nominativi</button>
         </section>
 
         <section id="abbonamenti" >
@@ -344,23 +367,28 @@
             <%if (abbonamenti != null && !abbonamenti.isEmpty()){ %>
             <% for (i=0; i<abbonamenti.size();i++){%>
             <h3>Abbonamento n&deg; <%= i + 1 %></h3>
-            <div>
+            <section id="abbonamento">
                 <%--@declare id="entrate"--%>
-                <label for="nome">Nome Evento </label> <span class="nome"><%= abbonamenti.get(i).getIdEvento().getNome() %></span>
-                <label for="data">Data Inizio </label> <span class="data"><%= abbonamenti.get(i).getIdEvento().getDataInizio() %></span>
-                <label for="nome">Nome </label> <span class="nome"><%=abbonamenti.get(i).getIdUtente().getNome()%></span>
-                <label for="cognome">Cognome </label> <span class="cognome"><%=abbonamenti.get(i).getIdUtente().getCognome()%></span>
-                <label for="prezzo">Prezzo </label> <span class="prezzo"><%=abbonamenti.get(i).getPrezzo()%> &euro;</span>
-                <label for="tipo">Tipo </label> <span class="tipo"><%=abbonamenti.get(i).getTipo()%></span>
-                <label for="entrate">Entrate</label> <span class="entrate"><%=abbonamenti.get(i).getEntrate()%></span>
-            </div>
-            <form name="deleteAbbonamento" action="Dispatcher" method="post">
-                <input type="hidden" name="controllerAction" value="UserManagement.deleteAbbonamento"/>
-                <input type="hidden" name="idAbbonamento" value="<%=abbonamenti.get(i).getIdAbbonamento()%>"/>
-                <input type="submit" class="bottone-personalizzato" value="Annulla Abbonamento">
-            </form>
+                <label for="nome"><strong> Nome evento: </strong> <%= abbonamenti.get(i).getIdEvento().getNome() %> </label>
+                <label for="data"><strong> Data inizio: </strong> <%= abbonamenti.get(i).getIdEvento().getDataInizio() %> </label>
+                <label for="nome"><strong> Nome: </strong> <%=abbonamenti.get(i).getIdUtente().getNome()%></label>
+                <label for="cognome"><strong> Cognome: </strong> <%=abbonamenti.get(i).getIdUtente().getCognome()%></label>
+                <label for="prezzo"><strong> Prezzo: </strong> <%=abbonamenti.get(i).getPrezzo()%> &euro;</label>
+                <label for="tipo"><strong> Tipo: </strong> <%=abbonamenti.get(i).getTipo()%></label>
+                <label for="entrate"><strong>Giornate: </strong> <%=abbonamenti.get(i).getEntrate()%></label>
+
+                <form name="deleteAbbonamento" action="Dispatcher" method="post">
+                    <input type="hidden" name="controllerAction" value="UserManagement.deleteAbbonamento"/>
+                    <input type="hidden" name="idAbbonamento" value="<%=abbonamenti.get(i).getIdAbbonamento()%>"/>
+                    <input type="submit" class="bottone-personalizzato" value="Annulla Abbonamento">
+                </form>
+                <form name="stampaAbbonamento" action="Dispatcher" method="post">
+                    <input type="hidden" name="controllerAction" value="UserManagement.stampaAbbonamento"/>
+                    <input type="hidden" name="idAbbonamento" value="<%=abbonamenti.get(i).getIdAbbonamento()%>"/>
+                    <input type="submit" class="bottone-personalizzato" value="Stampa Abbonamento">
+                </form>
+            </section>
             <% } }%>
-            <br><button class="bottone-personalizzato" onclick="toggleEdit('abbonamenti')">Modifica nominativi</button>
         </section>
 
         <section id="recensioni">

@@ -83,7 +83,7 @@
         }
 
         footer {
-            width: 100%;
+
             clear: both;
             text-align: center;
             padding: 10px;

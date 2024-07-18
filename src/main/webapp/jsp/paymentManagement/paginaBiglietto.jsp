@@ -96,8 +96,7 @@
             transform: scale(0.5); /* Scala il contenitore a un quarto della dimensione originale */
             transform-origin: center; /* Punto di origine per la trasformazione */
             position: relative; /* Per posizionare gli elementi interni */
-            margin-left: 19%;
-            margin-right: 30%;
+            margin-right: 52%;
             margin-top: 0;
             margin-bottom: 1px;
             /*background-color: #fffdf3;
@@ -109,10 +108,11 @@
             margin-top: 10%;
             width: 500px;
             align-content: center;
-            text-align: center;
+            text-align: left;
             background-color: #fffdf3;
             border-radius: 8px;
             box-shadow: dimgray 0 0 5px;
+            padding-left: 20px;
         }
 
         #parterreVIP {
@@ -175,6 +175,7 @@
             border: 1px solid #ccc;
             box-shadow: dimgray 0 0 5px;
             background-color: #fffdf3;
+            border-radius: 5px;
         }
 
         button.occupied {
@@ -287,10 +288,18 @@
 <main>
     <% if (loggedOn) { %>
     <h1 class="centrato">Seleziona il biglietto che preferisci!</h1>
-    <br>
+    <br><br>
     <p class="centrato">Seleziona i posti numerati che desideri acquistare direttamente dalla piantina e i posti in parterre dal men&ugrave; sottostante</p>
     <form class="content" name="gotoForm" method="post" action="Dispatcher">
         <section class="layout-esterno">
+            <article class="tariffe">
+                <h3>Tariffe:</h3>
+                <h4>Parterre 50 &euro;</h4>
+                <h4>Parterre VIP 100 &euro;</h4>
+                <h4>Tribuna frontale 70 &euro;</h4>
+                <h4>Tribuna laterale destra 90 &euro;</h4>
+                <h4>Tribuna laterale sinistra 90 &euro;</h4>
+            </article>
             <section class="container">
                 <table id="palco">
                     <tr>
@@ -313,26 +322,19 @@
 
                 <table id="tribuna-dx"></table>
             </section>
-            <article class="tariffe">
-                <h3>Tariffe:</h3>
-                <h4>Parterre 50 &euro;</h4>
-                <h4>Parterre VIP 100 &euro;</h4>
-                <h4>Tribuna frontale 70 &euro;</h4>
-                <h4>Tribuna laterale destra 90 &euro;</h4>
-                <h4>Tribuna laterale sinistra 90 &euro;</h4>
-            </article>
+
         </section>
-        <h3 style="margin-top: 10%; margin-left: 30%">Seleziona la categoria che desideri acquistare:</h3>
-        <select id="categoria" name="categoria" style="width: fit-content; margin-left: 30%" onchange="aggiornaNumeroPosti()">
-            <option value="">Categoria</option>
+        <br>
+        <h3 style="margin-top: 10%; margin-left: 26%">Seleziona la categoria di posti che desideri acquistare:</h3>
+        <select id="categoria" name="categoria" style="width: fit-content; margin-left: 26%" onchange="aggiornaNumeroPosti()">
             <option value="1">Parterre</option>
             <option value="2">Parterre VIP</option>
         </select>
         <br>
-        <h3 style="margin-left: 30%">Seleziona il numero di posti che desideri acquistare:</h3>
-        <label style="margin-left: 30%" for="numeroPosti">Numero di posti:</label>
+        <h3 style="margin-left: 26%">Seleziona il numero di posti che desideri acquistare:</h3>
+        <label style="margin-left: 26%" for="numeroPosti">Numero di posti </label>
         <button class="bottone-scelta" id="decrementa" style="border: none; font-size: 20px; font-weight: bolder">-</button>
-        <input type="number" id="numeroPosti" name="numPosti" style="font-size: 20px; border: none" min="0" max="6" value="0" readonly>
+        <input type="number" id="numeroPosti" name="numPosti" style="margin-bottom:30px; font-size: 20px; border: none" min="0" max="6" value="0" readonly>
         <button class="bottone-scelta" id="incrementa" style="border: none; font-size: 20px; font-weight: bolder">+</button>
         <input type="hidden" name="controllerAction" value="PagamentoManagement.gotoPagamentoBiglietto">
         <input type="hidden" id="allSelectedSeats1" name="allSelectedSeats1">
@@ -353,6 +355,7 @@
         var rows = 6; // Numero di file per ogni sezione
 
         var selectedSeats = []; // Array per memorizzare i posti selezionati
+        const selectPosti = document.getElementById('numeroPosti');
 
         var numeroPostiInput = document.getElementById('numeroPosti');
         document.getElementById('incrementa').addEventListener('click', function(event) {
@@ -374,14 +377,22 @@
         function updateSelectedSeats(seatId) {
             if (!selectedSeats.includes(seatId)) {
                 selectedSeats.push(seatId); // Aggiungi il posto all'array dei selezionati
+
                 // Crea un input hidden e aggiungilo al form
                 var input = document.createElement('input');
                 input.type = 'hidden';
                 input.name = 'selectedSeats[]'; // Usa un array per il nome per facilitare la gestione lato server
                 input.value = seatId;
+                input.id =seatId; // Assegna un ID univoco all'input nascosto
                 document.forms['gotoForm'].appendChild(input); // Assumi che il form si chiami 'gotoForm'
-            }
+            } else {
+                // Trova l'indice del posto nell'array
+                var index = selectedSeats.indexOf(seatId);
+                if (index > -1) {
+                    selectedSeats.splice(index, 1); // Rimuovi il posto dall'array
+                }
 
+            }
             // Aggiorna un input hidden con tutti i posti selezionati, separati da virgola
             var allSelectedSeatsInput = document.getElementById('allSelectedSeats');
             if (!allSelectedSeatsInput) {
@@ -423,7 +434,7 @@
                     var button = document.createElement('button');
                     var seatId = startId++; // Incrementa startId per ogni posto creato
                     button.id = seatId; // Assegna l'ID incrementato al bottone
-                    button.textContent = seatId; // Opzionale: mostra l'ID sul bottone per facilitare il riconoscimento
+                    //button.textContent = seatId; // Opzionale: mostra l'ID sul bottone per facilitare il riconoscimento
                     button.addEventListener('click', function(event) {
                         event.preventDefault();
                         if (this.classList.contains('occupied')) {
@@ -452,9 +463,18 @@
         populateSection(tribunaDxTable, 'tribuna-dx', seatsPerRow); // Usa il valore originale per tribuna-dx
         populateSection(tribunaSxTable, 'tribuna-sx', seatsPerRow); // Usa il valore originale per tribuna-sx
 
+        document.querySelector('form[name="gotoForm"]').addEventListener('submit', function(event) {
+            var selectPostiValue = document.getElementById('numeroPosti').value;
+            // Controlla se selectedSeats è vuoto (contiene solo una stringa vuota) o selectPostiValue è 0
+            if (selectPostiValue === '0' && selectedSeats.length === 0) {
+                event.preventDefault(); // Ferma il submit del form
+                alert('Devi selezionare almeno un posto o indicare il numero di posti desiderati.');
+            }
+        });
 
 
     });
+
 
 
 </script>

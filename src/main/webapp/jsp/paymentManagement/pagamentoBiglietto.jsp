@@ -134,7 +134,7 @@
     }
 
     footer {
-        width: 100%;
+
         clear: both;
         text-align: center;
         padding: 10px;
@@ -215,7 +215,9 @@
             <p><strong>Nome Esibizione: </strong><%= esibizione.getNome() %></p>
             <% for (Biglietto biglietto : biglietti){ %>
             <p><strong>Tipo Biglietto: </strong><%= biglietto.getTipo() %> <span class="prezzo"><%= biglietto.getPrezzo() %> &euro;</span></p>
+            <% if (biglietto.getPosto() != 0) { %>
             <p><strong>Posto</strong> <%= biglietto.getPosto()%></p>
+            <% } %>
             <input type="hidden" name="controllerAction" value="PagamentoManagement.pagamentoBiglietto" />
             <input type="hidden" name="idBiglietto" value="<%= biglietto.getIdBiglietto() %>">
             <input type="hidden" name="posto" value="<%= biglietto.getPosto() %>">

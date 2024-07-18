@@ -95,12 +95,12 @@
             margin: 2px;
             padding: 5px;
             color:white;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
             font-weight: bolder;
             font-size: 20px;
         }
 
         footer {
-            width: 100%;
             clear: both;
             text-align: center;
             padding: 10px;
@@ -108,6 +108,7 @@
             color: #ab00cc;
             margin-top: 20px;
         }
+
         .search-sort {
             display: flex;
             justify-content: center;

@@ -29,7 +29,7 @@
         }
         header {
             background-color: #ffb805;
-            padding: 10px;
+            padding: 12px;
             color: #ab00cc;
             display: flex;
             justify-content: space-between;
@@ -146,10 +146,10 @@
         }
 
         footer {
-            width: 100%;
+
             clear: both;
             text-align: center;
-            padding: 10px;
+            padding: 12px;
             background-color: #ffb805;
             color: #ab00cc;
             margin-top: 20px;
