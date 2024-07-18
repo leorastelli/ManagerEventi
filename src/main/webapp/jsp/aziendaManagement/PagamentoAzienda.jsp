@@ -206,11 +206,11 @@
             <h2>Riepilogo Ordine</h2>
             <p><strong>Nome evento: </strong><%= spazio.getIdEvento().getNome()%> </p>
             <p><strong>Nome azienda: </strong><%= loggedAzienda.getNome() %></p>
-            <p><strong>Spazio: </strong><%= spazio.getIdEvento().getNome() %> <span class="prezzo"><%= spazio.getCosto() %> &euro;</span></p>
+            <p><strong>Spazio: </strong><%= spazio.getIdEvento().getNome() %> </p>
             <label style="font-weight: bold" for="imglogo">Carica il logo che desideri esibire</label>
             <input class="input" type="file" id="imglogo" name="logo" accept="image/png, image/jpeg">
             <img id="logoPreview" style="max-width: 200px; max-height: 200px">
-            <p><strong>Totale: </strong> <span class="prezzo">Calcola il totale qui</span></p>
+            <p><strong>Totale: </strong> <span class="prezzo"><%= spazio.getCosto() %> </span></p>
             <input type="hidden" name="controllerAction" value="AziendaManagement.pagamento" />
             <input type="hidden" name="partitaIVA" value="<%=  spazio.getPartitaIVA().getPartitaIVA()%> ">
             <input type="hidden" name="idEvento" value="<%= spazio.getIdEvento().getIdEvento()%>">

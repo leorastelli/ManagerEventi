@@ -178,7 +178,7 @@
                 if (this.checked) {
                     let giorniTotali = generaNumeroGiorni(dataInizio, dataFine).length + 1;
                     prezzo = giorniTotali * 60 - 20;
-                    prezzoTotaleLabel.textContent = prezzo + '€' ;
+                    prezzoTotaleLabel.textContent = prezzo + "\u20AC" ;
                     prezzoHiddenInput.value = prezzo;
                     tendina.style.display = 'none';
                 }
@@ -194,7 +194,7 @@
                 let giorniSelezionati = parseInt(this.value);
                 prezzo = giorniSelezionati * 60;
                 prezzoHiddenInput.value = prezzo;
-                prezzoTotaleLabel.textContent = prezzo + "&euro;";
+                prezzoTotaleLabel.textContent = prezzo + "\u20AC";
             });
         }
 

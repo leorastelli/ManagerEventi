@@ -208,7 +208,9 @@
 </header>
 <main>
     <h1>Evento <%=evento.getNome()%></h1>
-    <label style="font-size: 20px"> <%=evento.getDescrizione()%></label> <br>
+    <br>
+    <label style="font-size: 20px;color:black; text-shadow: dimgray 0 0 1px;"> <%=evento.getDescrizione()%></label> <br>
+    <br>
     <label style="font-size: 20px">Data inizio evento: <%=evento.getDataInizio()%></label> <br>
     <label style="font-size: 20px">Data fine evento: <%=evento.getDataFine()%></label> <br>
 

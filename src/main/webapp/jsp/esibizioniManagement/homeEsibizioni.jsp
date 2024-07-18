@@ -69,6 +69,7 @@
         .event img {
             width: 100%;
         }
+
         .event p {
             margin: 0;
             padding: 10px;
@@ -184,8 +185,9 @@
         byte[] logoBytes = logoBlob.getBytes(1, blobLength);
         String base64Image = Base64.getEncoder().encodeToString(logoBytes);
     %>
-    <img src="data:image/jpeg;base64, <%= base64Image %>" style="max-width: 300px; max-height: 300px; align-content: center"><br>
-    <label style="font-size: 20px"><%=esibizione.getDescrizione()%></label> <br>
+    <img src="data:image/jpeg;base64, <%= base64Image %>" style="max-width: 300px; max-height: 300px; align-content: center; margin-bottom: 30px;  box-shadow: dimgray 0 0 10px;"> <br>
+    <label style="font-size: 20px; color:black; text-shadow: dimgray 0 0 1px"><%=esibizione.getDescrizione()%></label> <br>
+    <br>
     <label style="font-size: 20px">Ora di inizio esibizione: <%=esibizione.getOraInizio()%></label> <br>
     <label style="font-size: 20px">Data esibizione: <%=esibizione.getDataEsibizione()%></label> <br>
     <br>
