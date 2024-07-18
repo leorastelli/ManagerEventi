@@ -176,8 +176,10 @@
     <form id="paymentForm" name="pagamentoForm" method="post" action="Dispatcher" >
         <section id="indirizzo-fatturazione">
             <h2>Indirizzo di fatturazione</h2>
-            <label for="nomeAzienda">Nome azienda</label>
-            <input type="text" id="nomeAzienda" name="nomeAzienda" required>
+            <label for="nome1">Nome:</label>
+            <input type="text" id="nome1" name="nome1" required>
+            <label for="cognome1">Cognome</label>
+            <input type="text" id="cognome1" name="cognome1" required>
             <label for="indirizzo">Indirizzo</label>
             <input type="text" id="indirizzo" name="indirizzo" required>
             <label for="citta">Citt&agrave;</label>

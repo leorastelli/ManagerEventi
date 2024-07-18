@@ -42,6 +42,7 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
             esibizione.setPostiDisponibili(rs.getInt("PostiDisponibili"));
             esibizione.setImmagine(rs.getBlob("Immagine"));
             esibizione.setDataEsibizione(rs.getDate("DataEsibizione"));
+            esibizione.getIdLuogo().setNome(rs.getString("NomeLuogo"));
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -89,8 +90,8 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
 
         try{
             String sql
-                    = " SELECT * "
-                    + " FROM esibizione "
+                    = " SELECT esibizione.*, Luogo.Nome as NomeLuogo "
+                    + " FROM esibizione JOIN Luogo on esibizione.IdLuogo = Luogo.IdLuogo"
                     + " WHERE "
                     + "   IdEsibizione = ? AND deleted = 'N'";
 
@@ -205,8 +206,8 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
 
         try{
             String sql
-                    = " SELECT * "
-                    + " FROM esibizione "
+                    = " SELECT esibizione.*, Luogo.Nome as NomeLuogo"
+                    + " FROM esibizione JOIN Luogo on esibizione.IdLuogo = Luogo.IdLuogo "
                     + " WHERE "
                     + "   IdOrganizzatore = ? AND deleted = 'N'";
 
@@ -233,8 +234,8 @@ public class EsibizioneDAOmysqlJDBCImpl implements EsibizioneDAO {
 
         try{
             String sql
-                    = " SELECT * "
-                    + " FROM esibizione "
+                    = " SELECT esibizione.*, Luogo.Nome as NomeLuogo "
+                    + " FROM esibizione join Luogo on esibizione.IdLuogo = Luogo.IdLuogo "
                     + " WHERE "
                     + "   IdEvento = ? AND deleted = 'N'";
 

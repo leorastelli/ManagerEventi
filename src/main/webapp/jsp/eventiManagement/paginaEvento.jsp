@@ -6,6 +6,8 @@
 
 <%
     boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
+    Boolean isuserabbonatoObj = (Boolean) request.getAttribute("isuserabbonato");
+    boolean isuserabbonato = (isuserabbonatoObj != null) ? isuserabbonatoObj : false;
     Utente loggedUser = (Utente) request.getAttribute("loggedUser");
     Organizzatore loggedOrganizzatore = (Organizzatore) request.getAttribute("loggedOrganizzatore");
     Azienda loggedAzienda = (Azienda) request.getAttribute("loggedAzienda");
@@ -83,7 +85,6 @@
         }
 
         footer {
-
             clear: both;
             text-align: center;
             padding: 10px;
@@ -238,11 +239,14 @@
         </section>
     </div>
     <%}%>
+
+    <% if(!isuserabbonato){ %>
     <form action="Dispatcher" method="post">
         <input type="hidden" name="controllerAction" value="PagamentoManagement.gotoAbbonamento">
         <input type="hidden" name="idEvento" value=<%= evento.getIdEvento()%>>
         <input type="submit" class="bottone-personalizzato" value="Acquista abbonamento">
     </form>
+    <%}%>
     <br>
     <% if (loggedOrganizzatore != null && loggedOrganizzatore.getIdOrganizzatore().equals(evento.getOrganizzatore().getIdOrganizzatore())){ %>
     <form action="Dispatcher" method="post">

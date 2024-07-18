@@ -1,12 +1,7 @@
 package com.managereventi.managereventi.controller;
 
-import com.managereventi.managereventi.model.dao.DAOFactory;
-import com.managereventi.managereventi.model.dao.EventoDAO;
-import com.managereventi.managereventi.model.dao.RecensioneDAO;
-import com.managereventi.managereventi.model.dao.UtenteDAO;
-import com.managereventi.managereventi.model.mo.Evento;
-import com.managereventi.managereventi.model.mo.Recensione;
-import com.managereventi.managereventi.model.mo.Utente;
+import com.managereventi.managereventi.model.dao.*;
+import com.managereventi.managereventi.model.mo.*;
 import com.managereventi.managereventi.services.Config.Configuration;
 import com.managereventi.managereventi.services.Logservice.LogService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +21,8 @@ public class ReviewManagement {
 
         DAOFactory sessionDAOFactory= null;
         Utente loggedUser;
+        Organizzatore loggedOrganizer;
+        Azienda loggedCompany;
         List<Recensione> recensioni;
         List <String> eventi;
 
@@ -40,6 +37,11 @@ public class ReviewManagement {
             sessionDAOFactory.beginTransaction();
 
             UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+            AziendaDAO sessionCompanyDAO = sessionDAOFactory.getAziendDAO();
+            OrganizzatoreDAO sessionOrganizerDAO = sessionDAOFactory.getOrganizzatoreDAO();
+
+            loggedOrganizer = sessionOrganizerDAO.finLoggedOrganizzatore();
+            loggedCompany = sessionCompanyDAO.findLoggedUser();
             loggedUser = sessionUserDAO.findLoggedUser();
 
             DAOFactory daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
@@ -55,8 +57,10 @@ public class ReviewManagement {
             sessionDAOFactory.commitTransaction();
             daoFactory.commitTransaction();
 
-            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("loggedOn",loggedUser!=null || loggedOrganizer!=null || loggedCompany!=null);
             request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("loggedOrganizzatore", loggedOrganizer);
+            request.setAttribute("loggedAzienda", loggedCompany);
             request.setAttribute("recensioni", recensioni);
             request.setAttribute("eventi", eventi);
             request.setAttribute("viewUrl", "reviewManagement/viewRecensioni");

@@ -197,7 +197,7 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
                     + " JOIN Evento e ON b.IdEvento = e.IdEvento "
                     + " JOIN Utente u ON b.IdUtente = u.IdUtente "
                     + " JOIN Esibizione es ON b.IdEsibizione = es.IdEsibizione "
-                    + " WHERE b.IdUtente = ? AND b.Stato = 1";
+                    + " WHERE b.IdUtente = ? AND b.Stato = 1 and es.DataEsibizione > CURDATE() and es.deleted = 'N'";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, utente.getIdUtente());

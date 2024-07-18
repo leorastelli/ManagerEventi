@@ -190,7 +190,7 @@
             <label for="nome">Nome evento</label>
             <input type="text" id="nome" name="nome" required> <br><br>
             <label for="descrizione">Descrizione dell'evento</label>
-            <textarea id="descrizione" name="descrizione" required> </textarea> <br><br>
+            <textarea id="descrizione" name="descrizione" maxlength="254" required> </textarea> <br><br>
             <label for="datainizio">Data di inizio evento</label>
             <input type="date" id="datainizio" name="datainizio" required> <br><br>
             <label for="datafine">Data di fine evento</label>
@@ -204,7 +204,7 @@
                     <label for="nomeEsibizione" style="display:none;">Nome esibizione</label>
                     <input type="text" id="nomeEsibizione" name="nomeEsibizione" style="display:none;"><br>
                     <label for="descrizioneEsibizione" style="display:none;">Descrizione dell'esibizione</label>
-                    <textarea id="descrizioneEsibizione" name="descrizioneEsibizione" style="display:none;"> </textarea><br>
+                    <textarea id="descrizioneEsibizione" maxlength="254" name="descrizioneEsibizione" style="display:none"> </textarea><br>
                     <label for="dataEsibizione" style="display:none;">Data di inizio esibizione</label>
                     <input type="date" id="dataEsibizione" name="dataEsibizione"  style="display:none;"><br>
                     <label for="durata" style="display:none;">Durata esibizione</label>
@@ -212,7 +212,7 @@
                     <label for="Orainizio" style="display:none;">Ora di inizio</label>
                     <input type="time" id="Orainizio" name="orainizio"  style="display:none;"><br>
                     <select class="tendina" name="luogo" id="tendina" style="display: none">
-                        <option value="">Seleziona id del luogo</option>
+                        <option value="">Seleziona il luogo</option>
                         <% for (i=0; i< luoghi.size(); i++) { %>
                         <option value="<%= luoghi.get(i) %>"><%= luoghi.get(i) %></option>
                         <% } %>

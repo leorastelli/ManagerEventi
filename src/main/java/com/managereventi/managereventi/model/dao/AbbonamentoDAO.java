@@ -11,6 +11,8 @@ public interface AbbonamentoDAO {
     public void updateAbbonamento(Abbonamento abbonamento);
     public void deleteAbbonamento(String idAbbonamento);
 
+    public List<String> getAbbonatiEvento(String idEvento);
+
     public List<Abbonamento> getAbbonamentiUtente(Utente utente);
 }
 

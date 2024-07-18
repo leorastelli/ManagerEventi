@@ -79,8 +79,8 @@ alla pagina di Home(?)-->
     <input type="text" name="nome" placeholder="Nome" required>
     <input type="text" name="cognome" placeholder="Cognome" required>
     <input type="email" name="email" placeholder="E-mail" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <input type="text" name="username" id="username" placeholder="Username" required>
+    <input type="password" name="password" placeholder="Password" required maxlength="10">
+    <input type="text" name="username" id="username" placeholder="Username" required maxlength="10">
     <label>
         <input type="checkbox" name="newsletter"> Acconsento a ricevere newsletter e aggiornamenti a fini commerciali
     </label>

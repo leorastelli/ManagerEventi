@@ -26,6 +26,8 @@ public class CandidatureManagement {
     public static void view(HttpServletRequest request, HttpServletResponse response) {
         DAOFactory sessionDAOFactory = null;
         Utente loggedUser;
+        Organizzatore loggedOrganizer;
+        Azienda loggedCompany;
         List<Candidature> candidature;
 
         Logger logger = LogService.getApplicationLogger();
@@ -38,6 +40,11 @@ public class CandidatureManagement {
             sessionDAOFactory.beginTransaction();
 
             UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+            AziendaDAO sessionCompanyDAO = sessionDAOFactory.getAziendDAO();
+            OrganizzatoreDAO sessionOrganizerDAO = sessionDAOFactory.getOrganizzatoreDAO();
+
+            loggedOrganizer = sessionOrganizerDAO.finLoggedOrganizzatore();
+            loggedCompany = sessionCompanyDAO.findLoggedUser();
             loggedUser = sessionUserDAO.findLoggedUser();
 
             DAOFactory daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
@@ -49,7 +56,9 @@ public class CandidatureManagement {
             sessionDAOFactory.commitTransaction();
             daoFactory.commitTransaction();
 
-            request.setAttribute("loggedOn", loggedUser != null);
+            request.setAttribute("loggedOn", loggedUser != null || loggedCompany != null || loggedOrganizer != null);
+            request.setAttribute("loggedAzienda", loggedCompany);
+            request.setAttribute("loggedOrganizzatore", loggedOrganizer);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("candidature", candidature);
             request.setAttribute("viewUrl", "candidatureManagement/viewCandidature");

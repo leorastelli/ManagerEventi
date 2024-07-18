@@ -378,8 +378,8 @@ public class AziendaManagement {
                 request.setAttribute("viewUrl", "homeManagement/PagamentoSuccesso");
             }
             catch (Exception e) {
-                throw new RuntimeException(e);
-                //request.setAttribute("viewUrl", "homeManagement/ErrorPage");
+                //throw new RuntimeException(e);
+                request.setAttribute("viewUrl", "homeManagement/ErrorPage");
             }
 
             sponsorizzazioni = sponsorizzazioneDAO.getSponsorizzazioniByPartitaIVA(loggedAzienda.getPartitaIVA());

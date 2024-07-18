@@ -8,6 +8,8 @@
 
     int i;
     Utente loggedUser = (Utente) request.getAttribute("loggedUser");
+    Organizzatore loggedOrganizzatore = (Organizzatore) request.getAttribute("loggedOrganizzatore");
+    Azienda loggedAzienda = (Azienda) request.getAttribute("loggedAzienda");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "Home";
     List<Candidature> candidature = (List<Candidature>) request.getAttribute("candidature");
@@ -175,16 +177,29 @@
                 <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
             </li>
             <% if (loggedOn) { %>
+            <% if (loggedUser != null) { %>
             <li <%=menuActiveLink.equals("Home Utente") ? "class=\"active\"" : ""%>>
                 <a href="Dispatcher?controllerAction=UserManagement.view">Home Utente</a>
             </li>
             <li><a href="javascript:logoutForm.submit()">Logout</a></li>
-            <% } else { %>
-            <li <%= menuActiveLink.equals("Accedi") ? "class=\"acrive\"": ""%>>
-                <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a></li>
-            <li <%=menuActiveLink.equals("Registrati")?"class=\"active\"":""%>>
-                <a href="Dispatcher?controllerAction=UserManagement.gotoRegistration">Registrati</a>
-                    <%}%>
+            <% } else if (loggedOrganizzatore != null) { %>
+            <li <%=menuActiveLink.equals("Home Organizzatore") ? "class=\"active\"" : ""%>>
+                <a href="Dispatcher?controllerAction=OrganizzatoreManagement.view">Home Organizzatore</a>
+            </li>
+            <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+            <% } else if(loggedAzienda != null){ %>
+            <li <%=menuActiveLink.equals("Home Azienda") ? "class=\"active\"" : ""%>>
+                <a href="Dispatcher?controllerAction=AziendaManagement.view">Home Azienda</a>
+            </li>
+            <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+            <% }} else { %>
+            <li <%=menuActiveLink.equals("Accedi") ? "class=\"active\"" : ""%>>
+                <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a>
+            </li>
+            <li <%=menuActiveLink.equals("Registrati") ? "class=\"active\"" : ""%>>
+                <a href="Dispatcher?controllerAction=HomeManagement.gotoRegistration">Registrati</a>
+            </li>
+            <% } %>
         </ul>
     </nav>
 </header>

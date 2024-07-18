@@ -87,7 +87,7 @@ public class AziendaDAOmysqlJDBCImpl implements AziendaDAO {
             String sql
                     = " SELECT * "
                     + " FROM azienda "
-                    + " WHERE PartitaIVA = ?";
+                    + " WHERE PartitaIVA = ? and deleted='N'";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, partitaIVA);
@@ -154,6 +154,20 @@ public class AziendaDAOmysqlJDBCImpl implements AziendaDAO {
 
     @Override
     public void deleteAzienda(String partitaIVA) {
+
+        PreparedStatement ps;
+
+        try{
+            String sql= "UPDATE Azienda SET deleted='Y' WHERE PartitaIVA = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, partitaIVA);
+
+            ps.executeUpdate();
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

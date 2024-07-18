@@ -2,6 +2,8 @@
 <%@ page import="com.managereventi.managereventi.model.mo.Utente" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.managereventi.managereventi.model.mo.Recensione" %>
+<%@ page import="com.managereventi.managereventi.model.mo.Azienda" %>
+<%@ page import="com.managereventi.managereventi.model.mo.Organizzatore" %>
 
 
 <%
@@ -9,6 +11,8 @@
     boolean loggedOn = (loggedOnObj != null) ? loggedOnObj : false;
     int i;
     Utente loggedUser = (Utente) request.getAttribute("loggedUser");
+    Organizzatore loggedOrganizzatore = (Organizzatore) request.getAttribute("loggedOrganizzatore");
+    Azienda loggedAzienda = (Azienda) request.getAttribute("loggedAzienda");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "Home";
     List<Recensione> recensioni = (List<Recensione>) request.getAttribute("recensioni");
@@ -63,7 +67,7 @@
         }
         main {
             margin: 20px;
-            height:100%;
+            height: calc(100% - 20px);
         }
 
         .search-bar {
@@ -160,16 +164,29 @@
                 <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
             </li>
             <% if (loggedOn) { %>
+            <% if (loggedUser != null) { %>
             <li <%=menuActiveLink.equals("Home Utente") ? "class=\"active\"" : ""%>>
                 <a href="Dispatcher?controllerAction=UserManagement.view">Home Utente</a>
             </li>
             <li><a href="javascript:logoutForm.submit()">Logout</a></li>
-            <% } else { %>
-            <li <%= menuActiveLink.equals("Accedi") ? "class=\"active\"": ""%>>
-                <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a></li>
-            <li <%=menuActiveLink.equals("Registrati")?"class=\"active\"":""%>>
-                <a href="Dispatcher?controllerAction=UserManagement.gotoRegistration">Registrati</a>
-                    <%}%>
+            <% } else if (loggedOrganizzatore != null) { %>
+            <li <%=menuActiveLink.equals("Home Organizzatore") ? "class=\"active\"" : ""%>>
+                <a href="Dispatcher?controllerAction=OrganizzatoreManagement.view">Home Organizzatore</a>
+            </li>
+            <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+            <% } else if(loggedAzienda != null){ %>
+            <li <%=menuActiveLink.equals("Home Azienda") ? "class=\"active\"" : ""%>>
+                <a href="Dispatcher?controllerAction=AziendaManagement.view">Home Azienda</a>
+            </li>
+            <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+            <% }} else { %>
+            <li <%=menuActiveLink.equals("Accedi") ? "class=\"active\"" : ""%>>
+                <a href="Dispatcher?controllerAction=HomeManagement.gotoLogin">Accedi</a>
+            </li>
+            <li <%=menuActiveLink.equals("Registrati") ? "class=\"active\"" : ""%>>
+                <a href="Dispatcher?controllerAction=HomeManagement.gotoRegistration">Registrati</a>
+            </li>
+            <% } %>
         </ul>
     </nav>
 </header>

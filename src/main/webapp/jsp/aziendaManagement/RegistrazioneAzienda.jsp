@@ -71,7 +71,7 @@
 
 <form action="Dispatcher" method="post">
     <h2>Dati Aziendali</h2>
-    <input type="text" name="partitaIVA" id="partitaIVA" placeholder="PartitaIVA" required>
+    <input type="text" name="partitaIVA" id="partitaIVA" placeholder="PartitaIVA" maxlength="11" required>
     <input type="text" name="nome" placeholder="Nome" required>
     <input type="text" name="indirizzo" placeholder="Indirizzo" required>
     <input type="text" name="citta" placeholder="Citt&agrave;" required>

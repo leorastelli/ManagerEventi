@@ -15,13 +15,10 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class EventiManagement {
 
@@ -99,6 +96,8 @@ public class EventiManagement {
         Evento evento;
         List<Esibizione> esibizioni;
         List<Sponsorizzazione> sponsorizzazioni;
+        List<String> abbonati;
+        boolean isUserAbbonato = false;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -120,6 +119,7 @@ public class EventiManagement {
             EventoDAO eventoDAO = daoFactory.getEventoDAO();
             EsibizioneDAO esibizioneDAO = daoFactory.getEsibizioneDAO();
             SponsorizzazioneDAO sponsorizzazioneDAO = daoFactory.getSponsorizzazioneDAO();
+            AbbonamentoDAO abbonamentoDAO = daoFactory.getAbbonamentoDAO();
 
             loggedUser = sessionUserDAO.findLoggedUser();
             loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
@@ -128,6 +128,14 @@ public class EventiManagement {
             evento = eventoDAO.getEventoById(request.getParameter("idEvento"));
             esibizioni = esibizioneDAO.getEsibizioniByEvento(evento.getIdEvento());
             sponsorizzazioni = sponsorizzazioneDAO.getSponsorizzazioniByEvento(evento.getIdEvento());
+            abbonati = abbonamentoDAO.getAbbonatiEvento(evento.getIdEvento());
+
+            if (loggedUser != null){
+                isUserAbbonato = abbonati.contains(loggedUser.getIdUtente());
+            }
+
+
+
 
             sessionDAOFactory.commitTransaction();
 
@@ -138,6 +146,7 @@ public class EventiManagement {
             request.setAttribute("evento", evento);
             request.setAttribute("esibizioni", esibizioni);
             request.setAttribute("sponsorizzazioni", sponsorizzazioni);
+            request.setAttribute("isuserabbonato", isUserAbbonato);
             request.setAttribute("viewUrl", "eventiManagement/paginaEvento");
 
         } catch (Exception e) {

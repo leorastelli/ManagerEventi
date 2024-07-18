@@ -82,13 +82,13 @@
         }
 
         footer {
-
+            clear: both;
             text-align: center;
             padding: 10px;
             background-color: #ffb805;
             color: #ab00cc;
-            position: fixed;
-            bottom: 0;
+            margin-top: 20px;
+
         }
 
         .search-sort input, .search-sort select {

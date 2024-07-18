@@ -470,6 +470,14 @@
                 event.preventDefault(); // Ferma il submit del form
                 alert('Devi selezionare almeno un posto o indicare il numero di posti desiderati.');
             }
+
+
+
+            var tot = parseInt(selectPostiValue) +  selectedSeats.length;
+            if (tot > 6) {
+                event.preventDefault(); // Ferma il submit del form
+                alert('Non puoi selezionare più di 6 posti.');
+            }
         });
 
 

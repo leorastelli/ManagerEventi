@@ -120,7 +120,7 @@ public class UtenteDAOmysqlJDBCImpl implements UtenteDAO {
             String sql
                     = " SELECT IdUtente as IdUtente, Nome as Nome, Cognome as Cognome, Email as mail, Password as pwd"
                     + " FROM utente "
-                    + " WHERE IdUtente = ?";
+                    + " WHERE IdUtente = ? and deleted='N'";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, idUtente);
@@ -181,9 +181,7 @@ public class UtenteDAOmysqlJDBCImpl implements UtenteDAO {
         PreparedStatement ps;
 
         try{
-            String sql
-                    = " DELETE FROM utente "
-                    + " WHERE IdUtente = ?";
+            String sql= "UPDATE Utente SET deleted='Y' WHERE IdUtente = ?";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, utente.getIdUtente());
@@ -216,7 +214,7 @@ public class UtenteDAOmysqlJDBCImpl implements UtenteDAO {
                     + " SELECT Utente.Email as Email "
                     + " FROM Abbonamento "
                     + " JOIN Utente ON Abbonamento.IdUtente = Utente.IdUtente "
-                    + " WHERE Abbonamento.IdEsibizione = ?";
+                    + " WHERE Abbonamento.IdEvento = ?";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, idEvento);
