@@ -364,8 +364,10 @@ public class UserManagement {
 
             UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
             AbbonamentoDAO abbonamentoDAO = daoFactory.getAbbonamentoDAO();
+            EventoDAO eventoDAO = daoFactory.getEventoDAO();
 
             abbonamento = abbonamentoDAO.getAbbonamentoById(request.getParameter("idAbbonamento"));
+            Evento evento = eventoDAO.getEventoById(abbonamento.getIdEvento().getIdEvento());
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
@@ -377,6 +379,7 @@ public class UserManagement {
             request.setAttribute("abbonamento", abbonamento);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("qrcode", base64Encoded);
+            request.setAttribute("evento", evento);
             request.setAttribute("viewUrl", "homeManagement/StampaAbbonamento");
 
         } catch (Exception e) {
@@ -416,8 +419,12 @@ public class UserManagement {
 
             UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
             BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
+            EsibizioneDAO esibizioneDAO = daoFactory.getEsibizioneDAO();
+            EventoDAO eventoDAO = daoFactory.getEventoDAO();
 
             biglietto = bigliettoDAO.getBigliettoById(request.getParameter("idBiglietto"));
+            Esibizione esibizione = esibizioneDAO.getEsibizioneById(biglietto.getIdEsibizione().getIdEsibizione());
+            Evento evento = eventoDAO.getEventoById(esibizione.getIdEvento().getIdEvento());
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
@@ -429,6 +436,8 @@ public class UserManagement {
             request.setAttribute("biglietto", biglietto);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("qrcode", base64Encoded);
+            request.setAttribute("evento", evento);
+            request.setAttribute("esibizione", esibizione);
             request.setAttribute("viewUrl", "homeManagement/StampaBiglietto");
 
         } catch (Exception e) {

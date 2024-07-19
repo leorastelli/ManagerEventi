@@ -1,11 +1,15 @@
 <%@ page import="com.managereventi.managereventi.model.mo.Utente" %>
 <%@ page import="com.managereventi.managereventi.model.mo.Biglietto" %>
+<%@ page import="com.managereventi.managereventi.model.mo.Evento" %>
+<%@ page import="com.managereventi.managereventi.model.mo.Esibizione" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%
     Utente loggedUser = (Utente) request.getAttribute("loggedUser");
     Biglietto biglietto = (Biglietto) request.getAttribute("biglietto");
     String qrcode = (String) request.getAttribute("qrcode");
+    Evento evento = (Evento) request.getAttribute("evento");
+    Esibizione esibizione = (Esibizione) request.getAttribute("esibizione");
 %>
 <!DOCTYPE html>
 <html>
@@ -38,8 +42,8 @@
         <div class="ticket">
             <p><strong>ID Biglietto:</strong> <%= biglietto.getIdBiglietto() %></p>
             <p><strong>ID Utente:</strong> <%= loggedUser.getIdUtente() %></p>
-            <p><strong>Nome Evento:</strong> <%= biglietto.getIdEvento().getNome() %></p>
-            <p><strong>Nome Esibizione:</strong> <%= biglietto.getIdEsibizione().getNome() %></p>
+            <p><strong>Nome Evento:</strong> <%= evento.getNome() %></p>
+            <p><strong>Nome Esibizione:</strong> <%= esibizione.getNome()%></p>
             <p><strong>Posto:</strong> <%= biglietto.getPosto() %></p>
             <p><strong>Prezzo:</strong> <%= biglietto.getPrezzo() %> &euro;</p>
             <p><strong>Tipo:</strong> <%= biglietto.getTipo() %></p>

@@ -1,12 +1,14 @@
 <%@ page import="com.managereventi.managereventi.model.mo.Utente" %>
 <%@ page import="com.managereventi.managereventi.model.mo.Biglietto" %>
 <%@ page import="com.managereventi.managereventi.model.mo.Abbonamento" %>
+<%@ page import="com.managereventi.managereventi.model.mo.Evento" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%
     Utente loggedUser = (Utente) request.getAttribute("loggedUser");
     Abbonamento abbonamento = (Abbonamento) request.getAttribute("abbonamento");
     String qrcode = (String) request.getAttribute("qrcode");
+    Evento evento = (Evento) request.getAttribute("evento");
 %>
 <!DOCTYPE html>
 <html>
@@ -39,7 +41,7 @@
         <div class="ticket">
             <p><strong>ID Abbonamento:</strong> <%= abbonamento.getIdAbbonamento()%></p>
             <p><strong>ID Utente:</strong> <%= loggedUser.getIdUtente() %></p>
-            <p><strong>Nome Evento:</strong> <%= abbonamento.getIdEvento().getNome() %></p>
+            <p><strong>Nome Evento:</strong> <%= evento.getNome()%></p>
             <p><strong>Prezzo:</strong> <%= abbonamento.getPrezzo() %> &euro;</p>
             <p><strong>Tipo:</strong> <%= abbonamento.getTipo() %></p>
             <p><strong>Giornate:</strong> <%= abbonamento.getEntrate() %></p>

@@ -268,7 +268,7 @@
 
     </form>
     <% } else { %>
-    <p>Effettua il login per vedere i tuoi dati.</p>
+    <p>Effettua il login come utente per proseguire l'acquisto dell'abbonamento</p>
     <% } %>
 
 </main>
