@@ -104,6 +104,30 @@
             box-shadow: dimgray 0 0 5px;*/
         }
 
+        .container1{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr; /* 3 colonne */
+            grid-template-rows: auto auto auto auto; /* 4 righe */
+            gap: 20px; /* Spazio tra gli elementi */
+            max-width: 400px; /* Larghezza massima */
+            height: 200px; /* Altezza fissa */
+            transform: scale(0.5); /* Scala il contenitore a un quarto della dimensione originale */
+            transform-origin: center; /* Punto di origine per la trasformazione */
+            position: relative; /* Per posizionare gli elementi interni */
+            margin-right: 52%;
+            margin-top: 0;
+            margin-bottom: 1px;
+        }
+
+        .layout-esterno1 {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center; /* Centra i contenuti orizzontalmente */
+            align-items: start; /* Allinea i contenuti in alto */
+            gap: 10px; /* Distanza tra la piantina e le tariffe */
+        }
+
+
         .tariffe {
             margin-top: 10%;
             width: 500px;
@@ -168,6 +192,39 @@
             align-content: center;
         }
 
+        #palco1 {
+            grid-column: 2 / 3; /* Seconda colonna */
+            grid-row: 1; /* Prima riga */
+            border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
+            background-color: #fffdf3;
+            border-radius: 10px;
+            width: 450px;
+            height: 200px;
+            align-content: center;
+        }
+
+        #pit {
+            grid-column: 2; /* Seconda colonna */
+            grid-row: 3; /* Seconda riga */
+            border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
+            background-color: #fffdf3;
+            width: 450px;
+            height: 250px;
+
+        }
+
+        #pitgold {
+            grid-column: 2; /* Seconda colonna */
+            grid-row: 2; /* Seconda riga */
+            border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
+            background-color: #fffdf3;
+            border-radius: 10px;
+            width: 450px;
+            height: 150px;
+        }
 
         button {
             width: 40px;
@@ -292,7 +349,7 @@
     <%if (tipoLuogo.equals("Indoor")){%>
     <p class="centrato">Seleziona i posti numerati che desideri acquistare direttamente dalla piantina e i posti in parterre dal men&ugrave; sottostante</p>
     <form class="content" name="gotoForm" method="post" action="Dispatcher">
-        <section class="layout-esterno">
+        <section class="layout-esterno1">
             <article class="tariffe">
                 <h3>Tariffe:</h3>
                 <h4>Parterre 50 &euro;</h4>
@@ -344,7 +401,7 @@
         <input type="submit" style="margin-top: 20px" class="bottone-personalizzato" value="Procedi con l'acquisto">
     </form>
     <%} else if (tipoLuogo.equals("Outdoor")){%>
-    <p class="centrato">Seleziona i posti numerati che desideri acquistare direttamente dalla piantina e i posti in parterre dal men&ugrave; sottostante</p>
+    <p class="centrato">Seleziona i posti in Pit e Pit Gold mostrati nella piantina, dal men&ugrave; sottostante</p>
     <form class="content" name="gotoForm" method="post" action="Dispatcher">
         <section class="layout-esterno">
             <article class="tariffe">
@@ -352,7 +409,7 @@
                 <h4>PIT 50 &euro;</h4>
                 <h4>PIT GOLD 100 &euro;</h4>
             </article>
-            <section class="container">
+            <section class="container1">
                 <table id="palco1">
                     <tr>
                         <td style="text-align: center; font-size: 40px">PALCO</td>
