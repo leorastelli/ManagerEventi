@@ -209,7 +209,7 @@
             <p class="testo-centrato">Se desideri entrare a far parte del nostro Team, compila il modulo sottostante inserendo la posizione che preferisci ed inviaci la tua candidatura!</p>
             <form id="applicationForm" method="post" action="Dispatcher">
                 <label for="position">Posizione Lavorativa</label>
-                <select id="position"style=" box-sizing: border-box; border: #dddddd 1px solid; padding: 8px; border-radius: 5px; width: fit-content" name="position">
+                <select id="position"style=" box-sizing: border-box; border: #dddddd 1px solid; padding: 8px; border-radius: 5px; width: fit-content" name="position" required>
                     <option value="" >Tutte le posizioni</option>
                     <option value="socialmedia" >Social Media </option>
                     <option value="photographer" >Photographer </option>

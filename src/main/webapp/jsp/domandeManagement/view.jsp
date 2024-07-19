@@ -231,7 +231,7 @@
     <form id="inserimento" action="Dispatcher" method="post">
         <input type="hidden" name="controllerAction" value="DomandeManagement.addDomanda"/>
         <label for="descrizione" style="font-weight: bolder; font-size: 20px">Inserisci la tua domanda:</label> <br> <br>
-        <textarea id="descrizione" name="descrizione" style="border-radius: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); width: 500px; height: 100px"></textarea><br>
+        <textarea id="descrizione" name="descrizione" style="border-radius: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); width: 500px; height: 100px" required></textarea><br>
         <input type="submit" value="Invia" class="bottone-personalizzato">
     </form>
     <% } %>
@@ -256,7 +256,7 @@
             <input type="hidden" name="controllerAction" value="DomandeManagement.addRisposta"/>
             <input type="hidden" name="idDomanda" value="<%= domanda.getIdDomanda() %>"/>
             <label for="descrizioneRisposta<%= domanda.getIdDomanda() %>">Rispondi a questa domanda: </label><br>
-            <textarea id="descrizioneRisposta<%= domanda.getIdDomanda() %>" name="descrizioneRisposta" style="width:500px; height:100px; border-radius: 5px"></textarea><br>
+            <textarea id="descrizioneRisposta<%= domanda.getIdDomanda() %>" name="descrizioneRisposta" style="width:500px; height:100px; border-radius: 5px" required></textarea><br>
             <input type="submit" value="Invia" class="bottone-personalizzato">
         </form>
         <% } %>
