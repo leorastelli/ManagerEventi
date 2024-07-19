@@ -93,18 +93,15 @@
             margin: 20px;
         }
 
-        .content {
-            width: 100%;
-            margin-left: auto;
-
-        }
 
         .layout-esterno {
             margin-top: 20px;
+            margin-bottom: 12px;
+            width: 100%;
             display: flex;
             justify-content: center; /* Centra i contenuti orizzontalmente */
             align-items: start; /* Allinea i contenuti in alto */
-            gap: 10px; /* Distanza tra la piantina e le tariffe */
+            gap: 20px; /* Distanza tra la piantina e le tariffe */
         }
 
         .container {
@@ -117,7 +114,7 @@
             transform: scale(0.5); /* Scala il contenitore a un quarto della dimensione originale */
             transform-origin: center; /* Punto di origine per la trasformazione */
             position: relative; /* Per posizionare gli elementi interni */
-            margin-right: 52%;
+            margin-right: 30%;
             margin-top: 0;
             margin-bottom: 1px;
             /*background-color: #fffdf3;
@@ -125,15 +122,28 @@
             box-shadow: dimgray 0 0 5px;*/
         }
 
-        .tariffe {
-            margin-top: 10%;
-            width: 500px;
+        .resoconto {
+            margin-top: 0;
+            width: 900px;
             align-content: center;
             text-align: left;
             background-color: #fffdf3;
             border-radius: 8px;
             box-shadow: dimgray 0 0 5px;
             padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .tariffe {
+            margin-top: 10%;
+            width: 800px;
+            align-content: center;
+            text-align: left;
+            background-color: #fffdf3;
+            border-radius: 8px;
+            box-shadow: dimgray 0 0 5px;
+            padding-left: 20px;
+            padding-right: 20px;
         }
 
         #parterreVIP {
@@ -230,36 +240,6 @@
             outline: none; /* Rimuove il bordo azzurro quando l'input è in focus */
         }
 
-        .bottone-personalizzato {
-            background-color: #de32ff;
-            color: #fefefa;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: fit-content;
-            align-items: center;
-            text-align: center;
-            display: block;
-            margin: auto;
-            font-weight: bolder;
-        }
-
-        .bottone-personalizzato:hover {
-            background-color: #fceb00;
-            color: black;
-        }
-
-        .bottone-scelta {
-            width: 40px;
-            height: 40px;
-            border-radius: 5px;
-            border: 1px solid black;
-            background-color: #ffb805;
-            color: black;
-            margin: 0 5px;
-        }
-
         .centrato {
             text-align: center;
             margin: auto;
@@ -284,61 +264,62 @@
 </header>
 
 <main>
-        <section class="layout-esterno">
-            <article class="tariffe">
-                <h3>Tariffe:</h3>
-                <h4>Parterre 50 &euro;</h4>
-                <h4>Parterre VIP 100 &euro;</h4>
-                <h4>Tribuna frontale 70 &euro;</h4>
-                <h4>Tribuna laterale destra 90 &euro;</h4>
-                <h4>Tribuna laterale sinistra 90 &euro;</h4>
-            </article>
-            <section class="container">
-                <table id="palco">
-                    <tr>
-                        <td style="text-align: center; font-size: 40px">PALCO</td>
-                    </tr>
-                </table>
-                <table id="parterre" onclick="aggiornaNumeroPosti()">
-                    <tr>
-                        <td style="text-align: center; font-size: 40px">PARTERRE</td>
-                    </tr>
-                </table>
-                <table id="parterreVIP" onclick="aggiornaNumeroPosti()">
-                    <tr>
-                        <td style="text-align: center; font-size: 40px">PARTERRE VIP</td>
-                    </tr>
-                </table>
-                <table id="tribuna"></table>
+    <h1 class="centrato">Overview biglietti acquistati</h1>
+    <section class="layout-esterno">
+        <article class="tariffe">
+            <h3>Tariffe:</h3>
+            <h4>Parterre 50 &euro;</h4>
+            <h4>Parterre VIP 100 &euro;</h4>
+            <h4>Tribuna frontale 70 &euro;</h4>
+            <h4>Tribuna laterale destra 90 &euro;</h4>
+            <h4>Tribuna laterale sinistra 90 &euro;</h4>
+        </article>
+        <section class="container">
+            <table id="palco">
+                <tr>
+                    <td style="text-align: center; font-size: 40px">PALCO</td>
+                </tr>
+            </table>
+            <table id="parterre" onclick="aggiornaNumeroPosti()">
+                <tr>
+                    <td style="text-align: center; font-size: 40px">PARTERRE</td>
+                </tr>
+            </table>
+            <table id="parterreVIP" onclick="aggiornaNumeroPosti()">
+                <tr>
+                    <td style="text-align: center; font-size: 40px">PARTERRE VIP</td>
+                </tr>
+            </table>
+            <table id="tribuna"></table>
 
-                <table id="tribuna-sx"></table>
+            <table id="tribuna-sx"></table>
 
-                <table id="tribuna-dx"></table>
-            </section>
+            <table id="tribuna-dx"></table>
+        </section>
 
-            <section>
-                <h3>Biglietti venduti a Parterre:</h3>
-                <p > <%=numParterre%></p>
-                <h3>Biglietti venduti a Parterre VIP</h3>
-                <p ><%= numParterreVIP%></p>
+        <section class="resoconto">
+            <h4>Biglietti venduti in parterre:</h4>
+            <p > <%=numParterre%></p>
+            <h4>Biglietti venduti in parterre VIP:</h4>
+            <p ><%= numParterreVIP%></p>
 
-                <h3>Biglietti venduti a Tribuna Frontale</h3>
-                <p ><%= numTribunaFront%></p>
+            <h4>Biglietti venduti in tribuna frontale:</h4>
+            <p ><%= numTribunaFront%></p>
 
-                <h3>Biglietti venduti a Tribuna Laterale Sinistra</h3>
-                <p ><%= numTribunaSx%></p>
+            <h4>Biglietti venduti in tribuna laterale sinistra:</h4>
+            <p ><%= numTribunaSx%></p>
 
-                <h3>Biglietti venduti a Tribuna Laterale Destra</h3>
-                <p ><%= numTribunaDx%></p>
+            <h4>Biglietti venduti in tribuna laterale destra:</h4>
+            <p ><%= numTribunaDx%></p>
 
-                <h3>Totale incasso:</h3>
-                <p ><%= totale%> &euro;</p>
+            <h4>Totale incasso:</h4>
+            <p ><%= totale%> &euro;</p>
 
-
-            </section>
 
         </section>
-        <br>
+
+    </section>
+    <br>
 
 </main>
 
