@@ -214,6 +214,7 @@
             background-color: #fffdf3;
             width: 600px;
             height: 250px;
+            border-radius: 10px;
 
         }
 

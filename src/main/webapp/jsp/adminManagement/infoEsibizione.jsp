@@ -68,56 +68,35 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #fefefa;
-        }
-
-        header {
-            background-color: #ffb805;
-            padding: 10px;
-            color: #ab00cc;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        header h1 {
-            margin: 0;
-            font-family: 'Arial Black', sans-serif;
-            font-size: 24px;
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-        }
-        nav ul {
-            display: flex;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        nav ul li {
-            margin-left: 15px;
-        }
-        nav a {
-            color: #ab00cc;
-            text-decoration: none;
+            background-color:#ffb805;
         }
 
         main{
             margin: 20px;
+            height: 700px;
+            width: auto;
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #de32ff;
+            background-color: #fffdf3;
+            box-shadow: #de32ff 0 0 5px;
+            border-radius: 10px;
+            align-content: center;
+
         }
 
 
         .layout-esterno {
             margin-top: 20px;
             margin-bottom: 12px;
+            height: calc(100% - 20px);
             width: 100%;
             display: flex;
             justify-content: center; /* Centra i contenuti orizzontalmente */
             align-items: start; /* Allinea i contenuti in alto */
-            gap: 20px; /* Distanza tra la piantina e le tariffe */
+            gap: 15px; /* Distanza tra la piantina e le tariffe */
         }
+
 
         .container {
             display: grid;
@@ -138,7 +117,7 @@
         }
 
         .resoconto {
-            margin-top: 0;
+            margin-top: 5%;
             width: 900px;
             align-content: center;
             text-align: left;
@@ -151,14 +130,14 @@
 
         .tariffe {
             margin-top: 10%;
-            width: 800px;
+            width: 900px;
             align-content: center;
             text-align: left;
             background-color: #fffdf3;
             border-radius: 8px;
             box-shadow: dimgray 0 0 5px;
             padding-left: 20px;
-            padding-right: 20px;
+            padding-right: 10px;
         }
 
         #parterreVIP {
@@ -224,6 +203,22 @@
             border-radius: 5px;
         }
 
+
+        .container1{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr; /* 3 colonne */
+            grid-template-rows: auto auto auto auto; /* 4 righe */
+            gap: 20px; /* Spazio tra gli elementi */
+            max-width: 400px; /* Larghezza massima */
+            height: 200px; /* Altezza fissa */
+            transform: scale(0.5); /* Scala il contenitore a un quarto della dimensione originale */
+            transform-origin: center; /* Punto di origine per la trasformazione */
+            position: relative; /* Per posizionare gli elementi interni */
+            margin-right: 10%;
+            margin-top: 0;
+            margin-bottom: 1px;
+        }
+
         button.occupied {
             background-color: darkred;
             color: white;
@@ -261,13 +256,39 @@
             width: 100%;
         }
 
-        footer {
-            clear: both;
-            text-align: center;
-            padding: 10px;
-            background-color: #ffb805;
-            color: #ab00cc;
-            margin-top: 20px;
+        #palco1 {
+            grid-column: 2 ; /* Seconda colonna */
+            grid-row: 1; /* Prima riga */
+            border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
+            background-color: #fffdf3;
+            border-radius: 10px;
+            width: 200px;
+            height: 200px;
+            align-content: center;
+        }
+
+        #pit {
+            grid-column: 1 / -1; /* Seconda colonna */
+            grid-row: 3; /* Seconda riga */
+            border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
+            background-color: #fffdf3;
+            border-radius: 10px;
+            width: 600px;
+            height: 250px;
+
+        }
+
+        #pitgold {
+            grid-column: 1 / -1; /* Seconda colonna */
+            grid-row: 2; /* Seconda riga */
+            border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
+            background-color: #fffdf3;
+            border-radius: 10px;
+            width: 600px;
+            height: 150px;
         }
 
     </style>
@@ -275,7 +296,6 @@
 
 <body>
 <header>
-    <h1>PrimEvent</h1>
 </header>
 
 <main>
@@ -318,33 +338,29 @@
         <%}else if("Outdoor".equals(luogo.getTipologia())){%>
         <article class="tariffe">
             <h3>Tariffe:</h3>
-            <h4>PIT 50 &euro;</h4>
-            <h4>PIT Gold 100 &euro;</h4>
+            <h4>Pit 50 &euro;</h4>
+            <h4>Pit GOLD 100 &euro;</h4>
         </article>
 
-        <section class="container">
+        <section class="container1">
             <table id="palco1">
                 <tr>
                     <td style="text-align: center; font-size: 40px">PALCO</td>
                 </tr>
             </table>
-            <table id="PIT" onclick="aggiornaNumeroPosti()">
+            <table id="pit" onclick="aggiornaNumeroPosti()">
                 <tr>
                     <td style="text-align: center; font-size: 40px">PIT</td>
                 </tr>
             </table>
-            <table id="PITGOLD" onclick="aggiornaNumeroPosti()">
+            <table id="pitgold" onclick="aggiornaNumeroPosti()">
                 <tr>
                     <td style="text-align: center; font-size: 40px">PIT GOLD</td>
                 </tr>
             </table>
-
-
         </section>
 
         <%}%>
-
-
 
         <section class="resoconto">
 
@@ -367,9 +383,9 @@
             <p ><%= totale%> &euro;</p>
 
             <%}else if("Outdoor".equals(luogo.getTipologia())){%>
-            <h4>Biglietti venduti in PIT:</h4>
+            <h4>Biglietti venduti in Pit:</h4>
             <p > <%=numPIT%></p>
-            <h4>Biglietti venduti in PIT GOLD:</h4>
+            <h4>Biglietti venduti in Pit GOLD:</h4>
             <p ><%= numPitGold%></p>
             <h4>Totale incasso:</h4>
             <p ><%= totale%> &euro;</p>
@@ -443,8 +459,6 @@
 
 </script>
 <footer>
-    &copy; 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>
-    Credits: Leonardo Rastelli e Anna Ferri
 </footer>
 </body>
 </html>
