@@ -329,10 +329,7 @@ public class EventiManagement {
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
-            request.setAttribute("loggedOn",true);
-            request.setAttribute("loggedOrganizzatore", loggedOrganizzatore);
-            request.setAttribute("eventi", eventi);
-            request.setAttribute("viewUrl", "eventiManagement/homeEventi");
+            EventiManagement.view(request, response);
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
