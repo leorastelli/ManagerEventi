@@ -16,20 +16,25 @@
     List<String> biglietti = (List<String>) request.getAttribute("biglietti");
     Esibizione esibizione = (Esibizione) request.getAttribute("esibizione");
     Evento evento = (Evento) request.getAttribute("evento");
+    Luogo luogo = (Luogo) request.getAttribute("luogo");
     String bigliettiString = String.join(",", biglietti);
 
 
     String numParterreStr = (String) request.getAttribute("numParterre");
     String numParterreVIPStr = (String) request.getAttribute("numParterreVIP");
     String numTribunaFrontStr = (String) request.getAttribute("numTribunaFront");
-    String numTribunaSxStr = (String) request.getAttribute("numTribunaSx");
-    String numTribunaDxStr = (String) request.getAttribute("numTribunaDx");
+    String numTribunaSxStr = (String) request.getAttribute("numTribunasx");
+    String numTribunaDxStr = (String) request.getAttribute("numTribunadx");
+    String numPITstr = (String) request.getAttribute("numPit");
+    String numPitGoldstr = (String) request.getAttribute("numPitGold");
 
     int numParterre = (numParterreStr != null) ? Integer.parseInt(numParterreStr) : 0;
     int numParterreVIP = (numParterreVIPStr != null) ? Integer.parseInt(numParterreVIPStr) : 0;
     int numTribunaFront = (numTribunaFrontStr != null) ? Integer.parseInt(numTribunaFrontStr) : 0;
     int numTribunaSx = (numTribunaSxStr != null) ? Integer.parseInt(numTribunaSxStr) : 0;
     int numTribunaDx = (numTribunaDxStr != null) ? Integer.parseInt(numTribunaDxStr) : 0;
+    int numPIT = (numPITstr != null) ? Integer.parseInt(numPITstr) : 0;
+    int numPitGold = (numPitGoldstr != null) ? Integer.parseInt(numPitGoldstr) : 0;
 
     int totParterre = numParterre * 50;
     int totParterreVIP = numParterreVIP * 100;
@@ -37,7 +42,17 @@
     int totTribunaSx = numTribunaSx * 90;
     int totTribunaDx = numTribunaDx * 90;
 
-    int totale = totParterre + totParterreVIP + totTribunaFront + totTribunaSx + totTribunaDx;
+    int totPIT = numPIT * 50;
+    int totPitGold = numPitGold * 100;
+
+    int totale = 0;
+
+    if ("Indoor".equals(luogo.getTipologia())) {
+        totale = totParterre + totParterreVIP + totTribunaFront + totTribunaSx + totTribunaDx;
+    }else if("Outdoor".equals(luogo.getTipologia())){
+        totale = totPIT + totPitGold;
+    }
+
 %>
 
 
@@ -266,6 +281,7 @@
 <main>
     <h1 class="centrato">Overview biglietti acquistati</h1>
     <section class="layout-esterno">
+        <% if ("Indoor".equals(luogo.getTipologia())) {%>
         <article class="tariffe">
             <h3>Tariffe:</h3>
             <h4>Parterre 50 &euro;</h4>
@@ -274,6 +290,7 @@
             <h4>Tribuna laterale destra 90 &euro;</h4>
             <h4>Tribuna laterale sinistra 90 &euro;</h4>
         </article>
+
         <section class="container">
             <table id="palco">
                 <tr>
@@ -295,9 +312,43 @@
             <table id="tribuna-sx"></table>
 
             <table id="tribuna-dx"></table>
+
         </section>
 
+        <%}else if("Outdoor".equals(luogo.getTipologia())){%>
+        <article class="tariffe">
+            <h3>Tariffe:</h3>
+            <h4>PIT 50 &euro;</h4>
+            <h4>PIT Gold 100 &euro;</h4>
+        </article>
+
+        <section class="container">
+            <table id="palco1">
+                <tr>
+                    <td style="text-align: center; font-size: 40px">PALCO</td>
+                </tr>
+            </table>
+            <table id="PIT" onclick="aggiornaNumeroPosti()">
+                <tr>
+                    <td style="text-align: center; font-size: 40px">PIT</td>
+                </tr>
+            </table>
+            <table id="PITGOLD" onclick="aggiornaNumeroPosti()">
+                <tr>
+                    <td style="text-align: center; font-size: 40px">PIT GOLD</td>
+                </tr>
+            </table>
+
+
+        </section>
+
+        <%}%>
+
+
+
         <section class="resoconto">
+
+            <% if("Indoor".equals(luogo.getTipologia())){ %>
             <h4>Biglietti venduti in parterre:</h4>
             <p > <%=numParterre%></p>
             <h4>Biglietti venduti in parterre VIP:</h4>
@@ -315,7 +366,15 @@
             <h4>Totale incasso:</h4>
             <p ><%= totale%> &euro;</p>
 
+            <%}else if("Outdoor".equals(luogo.getTipologia())){%>
+            <h4>Biglietti venduti in PIT:</h4>
+            <p > <%=numPIT%></p>
+            <h4>Biglietti venduti in PIT GOLD:</h4>
+            <p ><%= numPitGold%></p>
+            <h4>Totale incasso:</h4>
+            <p ><%= totale%> &euro;</p>
 
+            <%}%>
         </section>
 
     </section>

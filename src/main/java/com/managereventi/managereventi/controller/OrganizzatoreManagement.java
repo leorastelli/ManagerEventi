@@ -938,12 +938,15 @@ public class OrganizzatoreManagement {
         DAOFactory daoFactory = null;
         Esibizione esibizione = null;
         Evento evento = null;
+        Luogo luogo = null;
         List<String> biglietti = new ArrayList<>();
         String numParterre = null;
         String numParterreVIP = null;
         String numTribunaFront = null;
         String numTribunasx = null;
         String numTribunadx = null;
+        String numPit = null;
+        String numPitGold = null;
         Logger logger = LogService.getApplicationLogger();
 
         try{
@@ -961,17 +964,31 @@ public class OrganizzatoreManagement {
 
             EsibizioneDAO esibizioneDAO = daoFactory.getEsibizioneDAO();
             BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
+            LuogoDAO luogoDAO = daoFactory.getLuogoDAO();
             EventoDAO eventoDAO = daoFactory.getEventoDAO();
 
             esibizione = esibizioneDAO.getEsibizioneById(request.getParameter("IdEsibizione"));
             evento = eventoDAO.getEventoById(esibizione.getIdEvento().getIdEvento());
             biglietti = bigliettoDAO.getPostiOccupatiEsibizione(esibizione.getIdEsibizione());
+            luogo = luogoDAO.getLuogoById(esibizione.getIdLuogo().getIdLuogo());
 
-            numParterre = bigliettoDAO.getBigliettiVendutiTipologia("Parterre", evento.getIdEvento(), esibizione.getIdEsibizione());
-            numParterreVIP = bigliettoDAO.getBigliettiVendutiTipologia("Parterre VIP", evento.getIdEvento(), esibizione.getIdEsibizione());
-            numTribunaFront = bigliettoDAO.getBigliettiVendutiTipologia("Tribuna Frontale", evento.getIdEvento(), esibizione.getIdEsibizione());
-            numTribunasx = bigliettoDAO.getBigliettiVendutiTipologia("Tribuna Sinistra", evento.getIdEvento(), esibizione.getIdEsibizione());
-            numTribunadx = bigliettoDAO.getBigliettiVendutiTipologia("Tribuna Destra", evento.getIdEvento(), esibizione.getIdEsibizione());
+            if("Indoor".equals(luogo.getTipologia())){
+
+                numParterre = bigliettoDAO.getBigliettiVendutiTipologia("Parterre", evento.getIdEvento(), esibizione.getIdEsibizione());
+                numParterreVIP = bigliettoDAO.getBigliettiVendutiTipologia("Parterre VIP", evento.getIdEvento(), esibizione.getIdEsibizione());
+                numTribunaFront = bigliettoDAO.getBigliettiVendutiTipologia("Tribuna Frontale", evento.getIdEvento(), esibizione.getIdEsibizione());
+                numTribunasx = bigliettoDAO.getBigliettiVendutiTipologia("Tribuna Sinistra", evento.getIdEvento(), esibizione.getIdEsibizione());
+                numTribunadx = bigliettoDAO.getBigliettiVendutiTipologia("Tribuna Destra", evento.getIdEvento(), esibizione.getIdEsibizione());
+
+
+            } else if ("Outdoor".equals(luogo.getTipologia())){
+
+                numPit = bigliettoDAO.getBigliettiVendutiTipologia("PIT", evento.getIdEvento(), esibizione.getIdEsibizione());
+                numPitGold = bigliettoDAO.getBigliettiVendutiTipologia("PIT GOLD", evento.getIdEvento(), esibizione.getIdEsibizione());
+            }
+
+
+
 
 
             sessionDAOFactory.commitTransaction();
@@ -982,11 +999,14 @@ public class OrganizzatoreManagement {
             request.setAttribute("esibizione", esibizione);
             request.setAttribute("evento", evento);
             request.setAttribute("biglietti", biglietti);
+            request.setAttribute("luogo", luogo);
             request.setAttribute("numParterre", numParterre);
             request.setAttribute("numParterreVIP", numParterreVIP);
             request.setAttribute("numTribunaFront", numTribunaFront);
             request.setAttribute("numTribunasx", numTribunasx);
             request.setAttribute("numTribunadx", numTribunadx);
+            request.setAttribute("numPit", numPit);
+            request.setAttribute("numPitGold", numPitGold);
             request.setAttribute("viewUrl", "adminManagement/infoEsibizione");
 
         } catch (Exception e) {
@@ -1011,6 +1031,7 @@ public class OrganizzatoreManagement {
         List<Esibizione> esibizioni;
         List<Sponsorizzazione> sponsorizzazioni = new ArrayList<>();
         List<Recensione> recensioni = new ArrayList<>();
+        List<String> abbonamentoVenduti = new ArrayList<>();
         Organizzatore loggedOrganizzatore;
 
         OrganizzatoreDAO sessionOrganizzatoreDAO = sessionDAOFactory.getOrganizzatoreDAO();
@@ -1019,6 +1040,7 @@ public class OrganizzatoreManagement {
         EsibizioneDAO esibizioneDAO = daoFactory.getEsibizioneDAO();
         SponsorizzazioneDAO sponsorizzazioneDAO = daoFactory.getSponsorizzazioneDAO();
         RecensioneDAO recensioneDAO = daoFactory.getRecensioneDAO();
+        AbbonamentoDAO abbonamentoDAO = daoFactory.getAbbonamentoDAO();
 
 
         loggedOrganizzatore = sessionOrganizzatoreDAO.finLoggedOrganizzatore();
@@ -1035,6 +1057,11 @@ public class OrganizzatoreManagement {
             if (recensioniEvento != null) {
                 recensioni.addAll(recensioniEvento);
             }
+
+            String numAbbonamenti = String.valueOf(abbonamentoDAO.getAbbonamentiVendutiEvento(evento.getIdEvento()));
+            if (numAbbonamenti != null) {
+                abbonamentoVenduti.add(numAbbonamenti);
+            }
         }
 
         request.setAttribute("loggedOn",loggedOrganizzatore!=null);
@@ -1043,5 +1070,6 @@ public class OrganizzatoreManagement {
         request.setAttribute("esibizioni", esibizioni);
         request.setAttribute("sponsorizzazioni", sponsorizzazioni);
         request.setAttribute("recensioni", recensioni);
+        request.setAttribute("abbonamentiVenduti", abbonamentoVenduti);
     }
 }

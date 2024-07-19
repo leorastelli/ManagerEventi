@@ -209,21 +209,16 @@
             <p class="testo-centrato">Se desideri entrare a far parte del nostro Team, compila il modulo sottostante inserendo la posizione che preferisci ed inviaci la tua candidatura!</p>
             <form id="applicationForm" method="post" action="Dispatcher">
                 <label for="position">Posizione Lavorativa</label>
-                <select id="position" name="position" style="width: fit-content">
-                    <option value="">Tutte le posizioni</option>
-                    <option value="marketing">Marketing</option>
-                    <option value="socialmedia">Social Media</option>
-                    <option value="eventmanager">Event Manager</option>
-                    <option value="photographer">Photographer</option>
-                    <option value="videomaker">Videomaker</option>
-                    <option value="graphicdesigner">Graphic Designer</option>
-                    <option value="uxuidesigner">UX/UI Designer</option>
-                    <option value="sales">Sales</option>
+                <select id="position"style=" box-sizing: border-box; border: #dddddd 1px solid; padding: 8px; border-radius: 5px; width: fit-content" name="position">
+                    <option value="" >Tutte le posizioni</option>
+                    <option value="socialmedia" >Social Media </option>
+                    <option value="photographer" >Photographer </option>
+                    <option value="videomaker" >Videomaker </option>
                     <option value="content manager">Content Manager</option>
-                    <option value="developer">Developer</option>
-                    <option value="designer">Designer</option>
-                    <option value="manager">Manager</option>
-                </select>
+                    <option value="barman">Barman</option>
+                    <option value="Security">Security</option>
+                    <option value="Cassiere">Cassiere</option>
+                </select> <br>
 
                 <label for="nome">Nome: </label>
                 <input type="text" id="nome" name="name" required> <br>

@@ -156,9 +156,7 @@ public class CandidatureManagement {
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
-            request.setAttribute("loggedOn", loggedUser != null);
-            request.setAttribute("loggedUser", loggedUser);
-            request.setAttribute("viewUrl", "homeManagement/view");
+            HomeManagement.view(request, response);
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
