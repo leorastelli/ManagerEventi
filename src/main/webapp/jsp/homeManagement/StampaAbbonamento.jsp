@@ -25,6 +25,26 @@
         .ticket:last-child { border-bottom: none; }
         .ticket p { margin: 5px 0; }
         .print-button { text-align: center; margin-top: 20px; }
+
+        .bottone-personalizzato {
+            background-color: #de32ff;
+            color: #fefefa;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: fit-content;
+            align-items: center;
+            text-align: center;
+            display: block;
+            margin: auto;
+            font-weight: bolder;
+        }
+
+        .bottone-personalizzato:hover {
+            background-color: #fceb00;
+        }
+
     </style>
     <script>
         function printPage() {
@@ -33,12 +53,12 @@
     </script>
 </head>
 <body>
-<div class="container">
-    <div class="header">
+<section class="container">
+    <section class="header">
         <h1>Conferma Acquisto Biglietti</h1>
-    </div>
-    <div class="content">
-        <div class="ticket">
+    </section>
+    <section class="content">
+        <section class="ticket">
             <p><strong>ID Abbonamento:</strong> <%= abbonamento.getIdAbbonamento()%></p>
             <p><strong>ID Utente:</strong> <%= loggedUser.getIdUtente() %></p>
             <p><strong>Nome Evento:</strong> <%= evento.getNome()%></p>
@@ -47,12 +67,12 @@
             <p><strong>Giornate:</strong> <%= abbonamento.getEntrate() %></p>
             <p><strong>QR Code:</strong></p>
             <img src="data:image/png;base64,<%= qrcode %>" alt="QR Code">
-        </div>
-    </div>
-    <div class="print-button">
-        <button onclick="printPage()">Stampa</button>
-    </div>
-    <p>Grazie per aver scelto PrimeEventi!</p>
-</div>
+        </section>
+    </section>
+    <section class="print-button">
+        <button class="bottone-personalizzato" onclick="printPage()">Stampa</button>
+    </section>
+    <p>Grazie per aver scelto PrimEvent!</p>
+</section>
 </body>
 </html>
