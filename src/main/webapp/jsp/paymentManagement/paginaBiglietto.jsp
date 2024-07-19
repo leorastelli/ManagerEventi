@@ -347,9 +347,9 @@
     <% if (loggedOn) { %>
     <h1 class="centrato">Seleziona il biglietto che preferisci!</h1>
     <br><br>
+    <form class="content" name="gotoForm" method="post" action="Dispatcher">
     <%if ("Indoor".equals(tipo)){%>
     <p class="centrato">Seleziona i posti numerati che desideri acquistare direttamente dalla piantina e i posti in parterre dal men&ugrave; sottostante</p>
-    <form class="content" name="gotoForm" method="post" action="Dispatcher">
         <section class="layout-esterno">
             <article class="tariffe">
                 <h3>Tariffe:</h3>
@@ -443,18 +443,18 @@
         select.innerHTML = '';
 
         // Definisce le nuove opzioni in base a tipoLuogo
-        let options = [];
+        let options = {};
+
         if (tipoLuogo === 'Indoor') {
-            options = ['Parterre', 'Parterre VIP'];
+            options = {'Parterre': 1, 'Parterre VIP': 2};
         } else if (tipoLuogo === 'Outdoor') {
-            options = ['Pit', 'Pit GOLD'];
+            options = {'Pit': 1, 'Pit GOLD': 2};
         }
 
-        // Aggiunge le nuove opzioni al select
-        for (const option of options) {
+        for (const [optionText, optionValue] of Object.entries(options)) {
             const optElement = document.createElement('option');
-            optElement.value = option;
-            optElement.text = option;
+            optElement.value = optionValue;
+            optElement.text = optionText;
             select.appendChild(optElement);
         }
 
@@ -472,7 +472,6 @@
         var seatsPerRow = 9;
         var rows = 6;
         var selectedSeats = [];
-        const selectPosti = document.getElementById('numeroPosti');
 
         impostaTipoLuogo('<%=tipo%>');
 
@@ -577,10 +576,13 @@
         // Calcola il numero totale di posti per fila nella tribuna come il triplo delle altre sezioni
         var seatsPerRowInTribuna = seatsPerRow * 2.5;
 
-        // Popola ogni sezione passando il numero corretto di posti per fila
-        populateSection(tribunaTable, 'tribuna', seatsPerRowInTribuna); // Usa il valore calcolato per tribuna
-        populateSection(tribunaDxTable, 'tribuna-dx', seatsPerRow); // Usa il valore originale per tribuna-dx
-        populateSection(tribunaSxTable, 'tribuna-sx', seatsPerRow); // Usa il valore originale per tribuna-sx
+        // Popola le sezioni Indoor
+        if ('<%=tipo%>' === 'Indoor') {
+
+            populateSection(tribunaTable, 'tribuna', seatsPerRow * 2.5, 201);
+            populateSection(tribunaDxTable, 'tribuna-dx', seatsPerRow, 101);
+            populateSection(tribunaSxTable, 'tribuna-sx', seatsPerRow, 1);
+        }
 
         document.querySelector('form[name="gotoForm"]').addEventListener('submit', function(event) {
             var selectPostiValue = document.getElementById('numeroPosti').value;

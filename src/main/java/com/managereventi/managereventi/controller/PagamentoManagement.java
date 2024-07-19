@@ -208,9 +208,11 @@ public class PagamentoManagement {
             EventoDAO eventoDAO = daoFactory.getEventoDAO();
             EsibizioneDAO esibizioneDAO = daoFactory.getEsibizioneDAO();
             BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
+            LuogoDAO luogoDAO = daoFactory.getLuogoDAO();
 
             Esibizione esibizione = esibizioneDAO.getEsibizioneById(request.getParameter("idEsibizione"));
             Evento evento = eventoDAO.getEventoById(request.getParameter("idEvento"));
+            Luogo luogo = luogoDAO.getLuogoById(esibizione.getIdLuogo().getIdLuogo());
 
 
             int cont = Integer.parseInt(request.getParameter("numPosti"));
@@ -224,12 +226,23 @@ public class PagamentoManagement {
                 biglietto.setPosto(0);
 
                 Integer categoria = Integer.parseInt(request.getParameter("categoria"));
-                if (categoria == 1) {
-                    biglietto.setTipo("Parterre");
-                    biglietto.setPrezzo(50L);
-                } else {
-                    biglietto.setTipo("Parterre VIP");
-                    biglietto.setPrezzo(100L);
+
+                if("Indoor".equals(luogo.getTipologia())) {
+                    if (categoria == 1) {
+                        biglietto.setTipo("Parterre");
+                        biglietto.setPrezzo(50L);
+                    } else {
+                        biglietto.setTipo("Parterre VIP");
+                        biglietto.setPrezzo(100L);
+                    }
+                } else if("Outdoor".equals(luogo.getTipologia())) {
+                    if (categoria == 1) {
+                        biglietto.setTipo("PIT");
+                        biglietto.setPrezzo(50L);
+                    } else {
+                        biglietto.setTipo("PIT GOLD");
+                        biglietto.setPrezzo(100L);
+                    }
                 }
 
                 biglietti.add(biglietto);
