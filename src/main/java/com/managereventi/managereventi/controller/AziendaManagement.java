@@ -281,7 +281,7 @@ public class AziendaManagement {
             String username = "primeevent@virgilio.it";
             String password = "Eventiprimi1!";
 
-            String htmlContent = "<h1>Grazie per la registrazione come azienda sponsor " + azienda.getNome() + "</h1>";
+            String htmlContent = "<h3>Grazie per la registrazione come azienda sponsor " + azienda.getNome() + "</h3>";
 
 
             Session session = Session.getInstance(properties, new Authenticator() {
@@ -294,7 +294,7 @@ public class AziendaManagement {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(azienda.getEmail()));
-            message.setSubject("Registrazione come azienda sponsor avvenuta con successo");
+            message.setSubject("La registrazione come azienda sponsor è avvenuta con successo!");
 
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
             mimeBodyPart.setContent(htmlContent, "text/html");
@@ -596,9 +596,9 @@ public class AziendaManagement {
             String username = "primeevent@virgilio.it";
             String password = "Eventiprimi1!";
 
-            String htmlContent = "<h1>Ci dispiace che tu ci abbandoni!" + loggedAzienda.getNome() + "</h1>"
+            String htmlContent = "<h3>Ci dispiace che tu abbia deciso di abbandonarci!" + loggedAzienda.getNome() + "</h3>"
                     + "<p>I tuoi spazi pubblicitari rimarranno validi fino al termine degli eventi" + "</p>"
-                    + "<p>PrimeEventi</p>";
+                    + "<p>PrimEvent</p>";
 
             Session session = Session.getInstance(properties, new Authenticator() {
                 @Override

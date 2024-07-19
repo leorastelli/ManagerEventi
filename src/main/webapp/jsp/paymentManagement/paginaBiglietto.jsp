@@ -597,7 +597,7 @@
             var tot = parseInt(selectPostiValue) +  selectedSeats.length;
             if (tot > 6) {
                 event.preventDefault(); // Ferma il submit del form
-                alert('Non puoi selezionare più di 6 posti.');
+                alert('Puoi selezionare al massimo 6 posti.');
             }
         });
     });

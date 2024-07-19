@@ -126,10 +126,10 @@ public class UserManagement {
             String username = "primeevent@virgilio.it";
             String password = "Eventiprimi1!";
 
-            String htmlContent = "<h1>Ci dispiace che tu ci abbandoni!" + loggedUser.getIdUtente() + "</h1>"
-                    + "<p>I tuoi biglietti e abbonamenti rimarranno validi li trovi all'interno delle mail che ti abbiamo" +
-                    " mandato al momento dell'acquisto</p>"
-                    + "<p>PrimeEventi</p>";
+            String htmlContent = "<h3>Ci dispiace che tu abbia deciso di abbandonarci!" + loggedUser.getIdUtente() + "</h3>"
+                    + "<p>I tuoi biglietti e abbonamenti rimarranno validi. Li trovi all'interno delle e-mail che ti abbiamo" +
+                    " inviato al momento dell'acquisto</p>"
+                    + "<p>PrimEvent</p>";
 
             Session session = Session.getInstance(properties, new Authenticator() {
                 @Override
@@ -289,7 +289,7 @@ public class UserManagement {
             String username = "primeevent@virgilio.it";
             String password = "Eventiprimi1!";
 
-            String htmlContent = "<h1>Grazie per la registrazione " + utente.getIdUtente() + "</h1>";
+            String htmlContent = "<h3>Grazie per la registrazione " + utente.getNome() + "</h3>";
 
             if (newsletterParam != null){
                 htmlContent += "<p>Ti sei iscritto alla nostra newsletter</p>";
@@ -481,9 +481,9 @@ public class UserManagement {
             String username = "primeevent@virgilio.it";
             String password = "Eventiprimi1!";
 
-            String htmlContent = "<h1>Ci dispiace che tu non riesca a partecipare!" + utente.getIdUtente() + "</h1>"
-                    + "<p>Stiamo provvedendo ad effettuare il reso</p>"
-                    + "<p>PrimeEventi</p>";
+            String htmlContent = "<h3>Ci dispiace che tu non riesca a partecipare!" + utente.getNome() + "</h3>"
+                    + "<p>Stiamo provvedendo ad effettuare il rimborso</p>"
+                    + "<p>PrimEvent</p>";
 
             Session session = Session.getInstance(properties, new Authenticator() {
                 @Override
@@ -563,9 +563,9 @@ public class UserManagement {
             String username = "primeevent@virgilio.it";
             String password = "Eventiprimi1!";
 
-            String htmlContent = "<h1>Ci dispiace che tu non riesca a partecipare!" + utente.getIdUtente() + "</h1>"
-                    + "<p>Stiamo provvedendo ad effettuare il reso</p>"
-                    + "<p>PrimeEventi</p>";
+            String htmlContent = "<h3>Ci dispiace che tu non riesca a partecipare!" + utente.getIdUtente() + "</h3>"
+                    + "<p>Stiamo provvedendo ad effettuare il rimborso</p>"
+                    + "<p>PrimEvent</p>";
 
             Session session = Session.getInstance(properties, new Authenticator() {
                 @Override

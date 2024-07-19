@@ -425,7 +425,7 @@ public class OrganizzatoreManagement {
             String username = "primeevent@virgilio.it";
             String password = "Eventiprimi1!";
 
-            String htmlContent = "<h1>Grazie per la registrazione come organizzatore " + organizzatore.getIdOrganizzatore() + "</h1>";
+            String htmlContent = "<h3>Grazie per la registrazione come organizzatore " + organizzatore.getNome() + "</h3>";
 
 
             Session session = Session.getInstance(properties, new Authenticator() {
@@ -438,7 +438,7 @@ public class OrganizzatoreManagement {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(organizzatore.getEmail()));
-            message.setSubject("Registrazione come organizzatore avvenuta con successo");
+            message.setSubject("Registrazione come organizzatore avvenuta con successo!");
 
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
             mimeBodyPart.setContent(htmlContent, "text/html");
@@ -606,7 +606,7 @@ public class OrganizzatoreManagement {
             String username = "primeevent@virgilio.it";
             String password = "Eventiprimi1!";
 
-            String htmlContent = "<h1>Ci dispiace ma il tuo evento " + request.getParameter("idEvento") + " è stato annullato. Provvederemo ad eseguire il rimborso</h1>";
+            String htmlContent = "<h3>Ci dispiace ma il tuo evento " + request.getParameter("idEvento") + " è stato annullato. Provvederemo ad eseguire il rimborso</h3>";
 
             Session session = Session.getInstance(properties, new Authenticator() {
                 @Override
@@ -702,7 +702,7 @@ public class OrganizzatoreManagement {
             String username = "primeevent@virgilio.it";
             String password = "Eventiprimi1!";
 
-            String htmlContent = "<h1>Ci dispiace ma la tua esibizione " + request.getParameter("IdEsibizione") + " è stata annullata. Provvederemo ad eseguire il rimborso</h1>";
+            String htmlContent = "<h3>Ci dispiace ma la tua esibizione " + request.getParameter("IdEsibizione") + " è stata annullata. Provvederemo ad eseguire il rimborso</h3>";
 
             Session session = Session.getInstance(properties, new Authenticator() {
                 @Override
@@ -792,8 +792,8 @@ public class OrganizzatoreManagement {
             String username = "primeevent@virgilio.it";
             String password = "Eventiprimi1!";
 
-            String htmlContent = "<h1>" + "L'organizzatore: " + loggedOrganizzatore.getNome() + loggedOrganizzatore.getCognome() + " ti sta contattando. "
-                    + "</h1>"+"<p>" +  request.getParameter("mailtext") + "</p>";
+            String htmlContent = "<h3>" + "L'organizzatore: " + loggedOrganizzatore.getNome() + loggedOrganizzatore.getCognome() + " ti sta contattando. "
+                    + "</h3>"+"<p>" +  request.getParameter("mailtext") + "</p>";
 
 
             Session session = Session.getInstance(properties, new Authenticator() {

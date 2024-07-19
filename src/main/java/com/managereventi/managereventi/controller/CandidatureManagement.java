@@ -126,9 +126,9 @@ public class CandidatureManagement {
             String username = "primeevent@virgilio.it";
             String password = "Eventiprimi1!";
 
-            String htmlContent = "<h1>Grazie per la candidatura " + candidatura.getNome() +
-                    " " + candidatura.getCognome() +  "</h1>"
-                    + "<p> Ti sei candidato per la posizione di: </p>" + candidatura.getPosizione();
+            String htmlContent = "<h3>Grazie per la candidatura " + candidatura.getNome() +
+                    " " + candidatura.getCognome() +  "</h3>"
+                    + "<p> Abbiamo registrato la tua candidatura per la posizione di: </p>" + candidatura.getPosizione();
 
             Session session = Session.getInstance(properties, new Authenticator() {
                 @Override
@@ -140,7 +140,7 @@ public class CandidatureManagement {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(candidatura.getEmail()));
-            message.setSubject("Candidatura avvenuta con successo");
+            message.setSubject("Candidatura ricevuta");
 
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
             mimeBodyPart.setContent(htmlContent, "text/html");

@@ -223,7 +223,7 @@ public class DomandeManagement {
             String username = "primeevent@virgilio.it";
             String password = "Eventiprimi1!";
 
-            String htmlContent = "<h1>La tua domanda ha ricevuto una risposta</h1><br><p>La tua domanda ha ricevuto una risposta" +
+            String htmlContent = "<h3>Hai ricevuto una risposta alla tua domanda</h3><br><p>Risposta ricevuta" +
                     "da parte di " + loggedUser.getIdUtente() + ": "+ request.getParameter("descrizioneRisposta")+  "</p>";
 
 
@@ -237,7 +237,7 @@ public class DomandeManagement {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail));
-            message.setSubject("Hanno risposto alla tua domanda");
+            message.setSubject("Ricevuta risposta");
 
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
             mimeBodyPart.setContent(htmlContent, "text/html");
