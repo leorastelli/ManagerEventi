@@ -224,10 +224,6 @@
     <h1>Esibizioni</h1>
     <div class="search-sort">
         <input type="text" id="search" placeholder="Cerca per genere" oninput="filterEvents()">
-        <select id="sort" style="border-radius: 5px" onchange="sortEvents()">
-            <option value="default">Ordinamento di default</option>
-            <option value="date">Ordina per data</option>
-        </select>
     </div>
     <div id="esibizioniList">
         <% for (i=0; i<esibizioni.size();i++){
@@ -249,7 +245,7 @@
     </div>
     <%}%>
 
-    <% if(!isuserabbonato){ %>
+    <% if(!isuserabbonato && loggedUser != null){ %>
     <form action="Dispatcher" method="post">
         <input type="hidden" name="controllerAction" value="PagamentoManagement.gotoAbbonamento">
         <input type="hidden" name="idEvento" value=<%= evento.getIdEvento()%>>
@@ -291,52 +287,6 @@
             esibizione.style.display = eventGenre.includes(searchValue) ? 'flex' : 'none'; // Modifica la visibilità della sezione .esibizione
         });
     }
-
-    function sortEvents() {
-        const sortValue = document.getElementById('sort').value;
-        const esibizioniList = document.getElementById('esibizioniList');
-        let esibizioni = Array.from(esibizioniList.getElementsByClassName('esibizione1'));
-
-        console.log('Sort Value:', sortValue);
-
-        if (sortValue === 'date') {
-            esibizioni.sort((a, b) => {
-                const dateA = new Date(a.getAttribute('data-date'));
-                const dateB = new Date(b.getAttribute('data-date'));
-
-                console.log('Confronto date:', dateA, dateB, dateA - dateB);
-
-                return dateA - dateB;
-            });
-        } else if (sortValue === 'default') {
-            esibizioni.sort((a, b) => {
-                const nameA = a.getAttribute('data-nome').toUpperCase();
-                const nameB = b.getAttribute('data-nome').toUpperCase();
-
-                console.log('Confronto nomi:', nameA, nameB, nameA.localeCompare(nameB));
-
-                return nameA.localeCompare(nameB);
-            });
-        }
-
-        console.log('Esibizioni dopo l\'ordinamento:', esibizioni);
-
-        // Svuota la lista delle esibizioni
-        esibizioniList.innerHTML = '';
-
-        // Riaggiungi le esibizioni ordinate
-        esibizioni.forEach(esibizione => esibizioniList.appendChild(esibizione));
-    }
-
-    // Aggiungi questo per verificare che la funzione venga chiamata correttamente
-    document.getElementById('sort').addEventListener('change', () => {
-        console.log('Event change triggered');
-        sortEvents();
-    });
-
-    // Esegui la funzione una volta all'avvio per garantire l'ordine iniziale
-    sortEvents();
-
 
 
     document.addEventListener("DOMContentLoaded", function() { //quando la pagina è caricata completamente esegue la funzione che segue

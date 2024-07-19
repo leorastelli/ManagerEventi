@@ -182,10 +182,6 @@
     <h1>Tutti gli Eventi</h1>
     <section class="search-sort">
         <input type="text" id="search" placeholder="Cerca evento per nome" oninput="filterEvents()">
-        <select id="sort" style="border-radius: 5px" onchange="sortEvents()">
-            <option value="default">Ordina per default</option>
-            <option value="date">Ordina per data</option>
-        </select>
     </section>
     <section id="eventList">
         <% for (i=0; i<eventi.size();i++){
@@ -224,27 +220,6 @@
             const eventName = event.querySelector('img').alt.toLowerCase();
             event.style.display = eventName.includes(searchValue) ? 'block' : 'none';
         });
-    }
-
-    function sortEvents() {
-        const sortValue = document.getElementById('sort').value;
-        const eventList = document.getElementById('eventList');
-        const events = Array.from(eventList.getElementsByClassName('event'));
-
-        if (sortValue === 'date') {
-            events.sort((a, b) => {
-                return new Date(a.getAttribute('data-date')) - new Date(b.getAttribute('data-date'));
-            });
-        }
-
-        if (sortValue === 'default') {
-            events.sort((a, b) => {
-                return a.getAttribute('data-nome') - b.getAttribute('data-nome');
-            });
-
-        }
-
-        events.forEach(event => eventList.appendChild(event));
     }
 
     document.addEventListener("DOMContentLoaded", function() {
