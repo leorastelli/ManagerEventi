@@ -16,7 +16,7 @@
     List<String> biglietti = (List<String>) request.getAttribute("biglietti");
     Esibizione esibizione = (Esibizione) request.getAttribute("esibizione");
     Evento evento = (Evento) request.getAttribute("evento");
-    TipoLuogo tipoLuogo = (TipoLuogo) request.getAttribute("tipoLuogo");
+    String tipo = (String) request.getAttribute("tipoLuogo");
     String bigliettiString = String.join(",", biglietti);
 %>
 
@@ -346,7 +346,7 @@
     <% if (loggedOn) { %>
     <h1 class="centrato">Seleziona il biglietto che preferisci!</h1>
     <br><br>
-    <%if (tipoLuogo.equals("Indoor")){%>
+    <%if ("Indoor".equals(tipo)){%>
     <p class="centrato">Seleziona i posti numerati che desideri acquistare direttamente dalla piantina e i posti in parterre dal men&ugrave; sottostante</p>
     <form class="content" name="gotoForm" method="post" action="Dispatcher">
         <section class="layout-esterno1">
@@ -400,9 +400,9 @@
         <input type="hidden" name="idEvento" value="<%=evento.getIdEvento()%>">
         <input type="submit" style="margin-top: 20px" class="bottone-personalizzato" value="Procedi con l'acquisto">
     </form>
-    <%} else if (tipoLuogo.equals("Outdoor")){%>
+    <%} else if ("Outdoor".equals(tipo)){%>
     <p class="centrato">Seleziona i posti in Pit e Pit Gold mostrati nella piantina, dal men&ugrave; sottostante</p>
-    <form class="content" name="gotoForm" method="post" action="Dispatcher">
+    <form class="content" name="gotoForm1" method="post" action="Dispatcher">
         <section class="layout-esterno">
             <article class="tariffe">
                 <h3>Tariffe:</h3>
@@ -448,7 +448,7 @@
     </form>
     <%}%>
             <% } else { %>
-        <p>Effettua il login per vedere i tuoi dati.</p>
+        <p>Effettua il login per vedere le informazioni sui biglietti.</p>
             <% } %>
 </main>
 
@@ -480,19 +480,19 @@
         });
 
 
-        var numeroPostiInput = document.getElementById('numeroPosti1');
+        var numeroPostiInput1 = document.getElementById('numeroPosti1');
         document.getElementById('incrementa1').addEventListener('click', function(event) {
             event.preventDefault();
-            if (numeroPostiInput.value < numeroPostiInput.max) {
-                numeroPostiInput.value = parseInt(numeroPostiInput.value) + 1;
+            if (numeroPostiInput1.value < numeroPostiInput1.max) {
+                numeroPostiInput1.value = parseInt(numeroPostiInput1.value) + 1;
                 aggiornaNumeroPosti();
             }
         });
 
         document.getElementById('decrementa1').addEventListener('click', function(event) {
             event.preventDefault();
-            if (numeroPostiInput.value > numeroPostiInput.min) {
-                numeroPostiInput.value = parseInt(numeroPostiInput.value) - 1;
+            if (numeroPostiInput1.value > numeroPostiInput1.min) {
+                numeroPostiInput1.value = parseInt(numeroPostiInput1.value) - 1;
                 aggiornaNumeroPosti();
             }
         });
@@ -594,8 +594,6 @@
                 alert('Devi selezionare almeno un posto o indicare il numero di posti desiderati.');
             }
 
-
-
             var tot = parseInt(selectPostiValue) +  selectedSeats.length;
             if (tot > 6) {
                 event.preventDefault(); // Ferma il submit del form
@@ -603,15 +601,15 @@
             }
         });
 
-        document.querySelector('form[name="gotoForm"]').addEventListener('submit', function(event) {
-            var selectPostiValue = document.getElementById('numeroPosti1').value;
+        document.querySelector('form[name="gotoForm1"]').addEventListener('submit', function(event) {
+            var selectPostiValue1 = document.getElementById('numeroPosti1').value;
             // Controlla se selectedSeats è vuoto (contiene solo una stringa vuota) o selectPostiValue è 0
-            if (selectPostiValue === '0' && selectedSeats.length === 0) {
+            if (selectPostiValue1 === '0' && selectedSeats.length === 0) {
                 event.preventDefault(); // Ferma il submit del form
                 alert('Devi selezionare almeno un posto o indicare il numero di posti desiderati.');
             }
 
-            var tot = parseInt(selectPostiValue) +  selectedSeats.length;
+            var tot = parseInt(selectPostiValue1) +  selectedSeats.length;
             if (tot > 6) {
                 event.preventDefault(); // Ferma il submit del form
                 alert('Non puoi selezionare più di 6 posti.');
@@ -622,9 +620,6 @@
     });
 
     });
-
-
-
 
 </script>
 <footer>

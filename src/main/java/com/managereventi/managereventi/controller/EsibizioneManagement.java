@@ -94,6 +94,7 @@ public class EsibizioneManagement {
         Utente loggedUser;
         Esibizione esibizione;
         Evento evento;
+        Luogo luogo;
         List<String> biglietti;
 
         Logger logger = LogService.getApplicationLogger();
@@ -115,12 +116,14 @@ public class EsibizioneManagement {
             EventoDAO eventoDAO = daoFactory.getEventoDAO();
             BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
             EsibizioneDAO esibizioneDAO = daoFactory.getEsibizioneDAO();
+            LuogoDAO luogoDAO = daoFactory.getLuogoDAO();
 
 
             loggedUser = sessionUserDAO.findLoggedUser();
 
 
             esibizione = esibizioneDAO.getEsibizioneById((request.getParameter("idEsibizione")));
+            luogo = luogoDAO.getLuogoById(esibizione.getIdLuogo().getIdLuogo());
             evento = eventoDAO.getEventoById(request.getParameter("idEvento"));
             biglietti = bigliettoDAO.getPostiOccupatiEsibizione(esibizione.getIdEsibizione());
 
@@ -132,6 +135,7 @@ public class EsibizioneManagement {
             request.setAttribute("esibizione", esibizione);
             request.setAttribute("evento", evento);
             request.setAttribute("biglietti", biglietti);
+            request.setAttribute("tipoLuogo", luogo.getTipologia());
             request.setAttribute("viewUrl", "paymentManagement/paginaBiglietto");
 
         } catch (Exception e) {
