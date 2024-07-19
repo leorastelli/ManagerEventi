@@ -284,6 +284,38 @@ public class BigliettoDAOmysqlJDBCImpl implements BigliettoDAO {
     }
 
     @Override
+    public String getBigliettiVendutiTipologia(String tipologia, String idEvento, String idEsibizione) {
+        PreparedStatement ps;
+        String bigliettiVenduti = null;
+
+        try {
+
+            String sql = "SELECT COUNT(*) as bigliettiVenduti FROM Biglietto WHERE Tipo =" +
+                    " ? AND IdEvento = ? AND IdEsibizione = ? " +
+                    "AND Stato = 1";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, tipologia);
+            ps.setString(2, idEvento);
+            ps.setString(3, idEsibizione);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+               bigliettiVenduti = rs.getString("bigliettiVenduti");
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return bigliettiVenduti;
+
+
+
+    }
+
+    @Override
     public void deleteBiglietto(String idBiglietto) {
         PreparedStatement ps;
 

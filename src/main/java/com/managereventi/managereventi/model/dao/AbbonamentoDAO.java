@@ -14,5 +14,7 @@ public interface AbbonamentoDAO {
     public List<String> getAbbonatiEvento(String idEvento);
 
     public List<Abbonamento> getAbbonamentiUtente(Utente utente);
+
+    public String getAbbonamentiVendutiEvento(String idEvento);
 }
 

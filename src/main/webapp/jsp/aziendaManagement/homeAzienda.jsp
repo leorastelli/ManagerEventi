@@ -23,6 +23,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Area Azienda - PrimEvent</title>
     <style>
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .popup-content h3 {
+            margin-top: 0;
+        }
+
+        .popup-buttons {
+            margin-top: 20px;
+        }
+
+        .popup-buttons button {
+            margin: 0 10px;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -192,6 +224,17 @@
             });
         }
 
+        function showDeleteConfirmation() {
+            var popup = document.getElementById('deleteConfirmationPopup');
+            popup.style.display = 'flex';
+        }
+
+        function hideDeleteConfirmation() {
+            var popup = document.getElementById('deleteConfirmationPopup');
+            popup.style.display = 'none';
+        }
+
+
     </script>
 </head>
 <body>
@@ -226,6 +269,7 @@
         <a href="#dati-aziendali">Dati aziendali</a>
         <a href="#spazipubblicitari">Spazi pubblicitari acquistati</a>
         <a href="#acquista">Acquista altri spazi </a>
+        <a style="background-color: darkred" href="#" onclick="showDeleteConfirmation()">Elimina Account</a>
     </div>
     <div class="content">
         <section id="dati-aziendali">
@@ -360,5 +404,19 @@
     &copy; 2024 EventPrime - Italia IT | Cookie e Privacy Policy<br>
     Credits: Leonardo Rastelli e Anna Ferri
 </footer>
+
+<!-- Popup di conferma eliminazione -->
+<div id="deleteConfirmationPopup" class="popup">
+    <div class="popup-content">
+        <h3>Sei sicuro di voler eliminare il tuo account?</h3>
+        <div class="popup-buttons">
+            <form name="deleteUserForm" action="Dispatcher" method="post">
+                <input type="hidden" name="controllerAction" value="AziendaManagement.deleteAzienda"/>
+                <input style="background-color: red" type="submit" value="Conferma">
+            </form>
+            <button style="background-color: #cccccc" onclick="hideDeleteConfirmation()">Esci</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>

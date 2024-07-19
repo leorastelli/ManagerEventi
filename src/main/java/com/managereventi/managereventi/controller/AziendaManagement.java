@@ -560,6 +560,86 @@ public class AziendaManagement {
 
     }
 
+    public static void deleteAzienda(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory= null;
+        Azienda loggedAzienda;
+        DAOFactory daoFactory = null;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            AziendaDAO sessionUserDAO = sessionDAOFactory.getAziendDAO();
+            loggedAzienda = sessionUserDAO.findLoggedUser();
+
+            sessionUserDAO.deleteAzienda(loggedAzienda.getPartitaIVA());
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            AziendaDAO aziendaDAO = daoFactory.getAziendDAO();
+            aziendaDAO.deleteAzienda(loggedAzienda.getPartitaIVA());
+
+            Properties properties = new Properties();
+            properties.put("mail.smtp.host", "out.virgilio.it");
+            properties.put("mail.smtp.port", "587");
+            properties.put("mail.smtp.auth", "true");
+            properties.put("mail.smtp.starttls.enable", "true");
+
+            String username = "primeevent@virgilio.it";
+            String password = "Eventiprimi1!";
+
+            String htmlContent = "<h1>Ci dispiace che tu ci abbandoni!" + loggedAzienda.getNome() + "</h1>"
+                    + "<p>I tuoi spazi pubblicitari rimarranno validi fino al termine degli eventi" + "</p>"
+                    + "<p>PrimeEventi</p>";
+
+            Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(loggedAzienda.getEmail()));
+            message.setSubject("Disattivazione account");
+
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            mimeBodyPart.setContent(htmlContent, "text/html");
+
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mimeBodyPart);
+
+            message.setContent(multipart);
+
+            Transport.send(message);
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            HomeManagement.logout(request, response);
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
 
     private static Blob inputStreamToBlob(InputStream inputStream) {
         try {

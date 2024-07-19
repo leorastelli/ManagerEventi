@@ -87,6 +87,90 @@ public class UserManagement {
 
     }
 
+    public static void deleteUtente(HttpServletRequest request, HttpServletResponse response){
+
+        DAOFactory sessionDAOFactory= null;
+        Utente loggedUser;
+        DAOFactory daoFactory = null;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUser = sessionUserDAO.findLoggedUser();
+
+            sessionUserDAO.deleteUtente(loggedUser);
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
+            NewsletterDAO newsletterDAO = daoFactory.getNewsletterDAO();
+            utenteDAO.deleteUtente(loggedUser);
+            newsletterDAO.unsubscribeFromNewsletter(loggedUser.getIdUtente(), loggedUser.getEmail());
+
+
+            Properties properties = new Properties();
+            properties.put("mail.smtp.host", "out.virgilio.it");
+            properties.put("mail.smtp.port", "587");
+            properties.put("mail.smtp.auth", "true");
+            properties.put("mail.smtp.starttls.enable", "true");
+
+            String username = "primeevent@virgilio.it";
+            String password = "Eventiprimi1!";
+
+            String htmlContent = "<h1>Ci dispiace che tu ci abbandoni!" + loggedUser.getIdUtente() + "</h1>"
+                    + "<p>I tuoi biglietti e abbonamenti rimarranno validi li trovi all'interno delle mail che ti abbiamo" +
+                    " mandato al momento dell'acquisto</p>"
+                    + "<p>PrimeEventi</p>";
+
+            Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(loggedUser.getEmail()));
+            message.setSubject("Disattivazione account");
+
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            mimeBodyPart.setContent(htmlContent, "text/html");
+
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mimeBodyPart);
+
+            message.setContent(multipart);
+
+            Transport.send(message);
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            HomeManagement.logout(request, response);
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        }
+
+
+    }
 
     public static void modifyUtente(HttpServletRequest request, HttpServletResponse response) {
         DAOFactory sessionDAOFactory= null;

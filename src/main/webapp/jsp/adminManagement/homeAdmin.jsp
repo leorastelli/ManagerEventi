@@ -17,7 +17,7 @@
     List<Sponsorizzazione> sponsorizzazioni = (List<Sponsorizzazione>) request.getAttribute("sponsorizzazioni");
     List<Recensione> recensioni = (List<Recensione>) request.getAttribute("recensioni");
     List<Candidature> candidature = (List<Candidature>) request.getAttribute("candidature");
-
+    List<String> abbonamentiVenduti = (List<String>) request.getAttribute("abbonamentiVenduti");
 %>
 
 <!DOCTYPE html>
@@ -303,6 +303,10 @@
 
                 <input type="hidden" name="IdEsibizione" value="<%=esibizioni.get(i).getIdEsibizione()%>"/>
 
+                <button type="submit" class="bottone-personalizzato" name="controllerAction" value="OrganizzatoreManagement.infoEsibizione">
+                    Info esibizione
+                </button>
+
 
                 <!-- Bottone per eliminare l'esibizione -->
                 <button type="submit" class="bottone-personalizzato" name="controllerAction" value="OrganizzatoreManagement.deleteEsibizione">
@@ -330,11 +334,13 @@
                 <label for="nome-evento">Nome evento: </label>
                 <input type="text" id="nome-evento" name="nome-evento" value="<%= eventi.get(i).getNome() %>"> <br>
                 <label for="data-inizio">Data di inizio: </label>
-                <input type="date" id="data-inizio" name="data-inizio" value="<%= eventi.get(i).getDataInizio() %>" > <br>
+                <input type="date" id="data-inizio" name="data-inizio" value="<%= eventi.get(i).getDataInizio() %>" readonly> <br>
                 <label for="data-fine">Data di fine: </label>
-                <input type="date" id="data-fine" name="data-fine" value="<%= eventi.get(i).getDataFine() %>" > <br>
+                <input type="date" id="data-fine" name="data-fine" value="<%= eventi.get(i).getDataFine() %>" readonly > <br>
                 <label for="descrizione-evento" >Descrizione:  </label>
                 <input type="text" id="descrizione-evento" name="descrizione-evento" value="<%= eventi.get(i).getDescrizione() %>" > <br>
+                <label for="abbonamenti">Abbonamenti Venduti: </label>
+                <input type="text" id="abbonamenti" name="abbonamenti" value="<%= abbonamentiVenduti.get(i)%>" readonly>
                 <input type="hidden" name="idEvento" value="<%=eventi.get(i).getIdEvento()%>">
                 <!-- Bottone per eliminare l'esibizione -->
                 <button type="submit" class="bottone-personalizzato" name="controllerAction" value="OrganizzatoreManagement.deleteEvento">

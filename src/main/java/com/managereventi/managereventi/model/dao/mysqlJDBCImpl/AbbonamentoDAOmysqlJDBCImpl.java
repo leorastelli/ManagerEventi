@@ -216,4 +216,34 @@ public class AbbonamentoDAOmysqlJDBCImpl implements AbbonamentoDAO {
         }
         return abbonamenti;
     }
+
+    @Override
+    public String getAbbonamentiVendutiEvento(String idEvento) {
+        PreparedStatement ps;
+        String abbonamenti = null;
+
+        try {
+            String sql
+                    = " SELECT count(*) as AbbonamentiVenduti "
+                    + "   FROM abbonamento "
+                    + " WHERE "
+                    + "   IdEvento = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, idEvento);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                abbonamenti = rs.getString("AbbonamentiVenduti");
+            }
+
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return abbonamenti;
+    }
 }
