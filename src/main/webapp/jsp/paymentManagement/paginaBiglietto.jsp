@@ -475,55 +475,6 @@
         var tribunaDxTable = document.getElementById('tribuna-dx');
         var tribunaSxTable = document.getElementById('tribuna-sx');
 
-        var pitTable = document.getElementById('pit');
-        var pitGoldTable = document.getElementById('pitgold');
-
-        function populateSection1(table, sectionId, seatsPerRowForSection) {
-            var startId;
-            switch (sectionId) {
-                case 'pit':
-                    startId = 1;
-                    break;
-                case 'pitgold':
-                    startId = 101;
-                    break;
-                default:
-                    startId = 1; // Default case, se non corrisponde a nessuna delle sezioni specificate
-            }
-
-            for (var i = 0; i < rows; i++) {
-                var row = document.createElement('tr');
-                table.appendChild(row);
-                for (var j = 0; j < seatsPerRowForSection; j++) {
-                    var cell = document.createElement('td');
-                    var button = document.createElement('button');
-                    var seatId = startId++; // Incrementa startId per ogni posto creato
-                    button.id = seatId; // Assegna l'ID incrementato al bottone
-                    //button.textContent = seatId; // Opzionale: mostra l'ID sul bottone per facilitare il riconoscimento
-                    button.addEventListener('click', function(event) {
-                        event.preventDefault();
-                        if (this.classList.contains('occupied')) {
-                            alert('Seat already occupied');
-                        } else {
-                            this.classList.toggle('selected');
-                            updateSelectedSeats(this.id);
-                        }
-                    });
-
-                    cell.appendChild(button);
-                    row.appendChild(cell);
-
-                    if (occupiedSeats.includes(seatId)) {
-                        button.classList.add('occupied');
-                    }
-                }
-            }
-        }
-
-        populateSection1(pitTable, 'pit', seatsPerRow); // Usa il valore originale per pit
-        populateSection1(pitGoldTable, 'pitgold', seatsPerRow); // Usa il valore originale per pitgold
-
-
         // Modifica la funzione per accettare un parametro aggiuntivo: seatsPerRowForSection
         function populateSection(table, sectionId, seatsPerRowForSection) {
             var startId;
