@@ -16,7 +16,7 @@
     List<String> biglietti = (List<String>) request.getAttribute("biglietti");
     Esibizione esibizione = (Esibizione) request.getAttribute("esibizione");
     Evento evento = (Evento) request.getAttribute("evento");
-
+    TipoLuogo tipoLuogo = (TipoLuogo) request.getAttribute("tipoLuogo");
     String bigliettiString = String.join(",", biglietti);
 %>
 
@@ -289,6 +289,7 @@
     <% if (loggedOn) { %>
     <h1 class="centrato">Seleziona il biglietto che preferisci!</h1>
     <br><br>
+    <%if (tipoLuogo.equals("Indoor")){%>
     <p class="centrato">Seleziona i posti numerati che desideri acquistare direttamente dalla piantina e i posti in parterre dal men&ugrave; sottostante</p>
     <form class="content" name="gotoForm" method="post" action="Dispatcher">
         <section class="layout-esterno">
@@ -342,7 +343,53 @@
         <input type="hidden" name="idEvento" value="<%=evento.getIdEvento()%>">
         <input type="submit" style="margin-top: 20px" class="bottone-personalizzato" value="Procedi con l'acquisto">
     </form>
+    <%} else if (tipoLuogo.equals("Outdoor")){%>
+    <p class="centrato">Seleziona i posti numerati che desideri acquistare direttamente dalla piantina e i posti in parterre dal men&ugrave; sottostante</p>
+    <form class="content" name="gotoForm" method="post" action="Dispatcher">
+        <section class="layout-esterno">
+            <article class="tariffe">
+                <h3>Tariffe:</h3>
+                <h4>PIT 50 &euro;</h4>
+                <h4>PIT GOLD 100 &euro;</h4>
+            </article>
+            <section class="container">
+                <table id="palco1">
+                    <tr>
+                        <td style="text-align: center; font-size: 40px">PALCO</td>
+                    </tr>
+                </table>
+                <table id="pit" onclick="aggiornaNumeroPosti()">
+                    <tr>
+                        <td style="text-align: center; font-size: 40px">PIT</td>
+                    </tr>
+                </table>
+                <table id="pitgold" onclick="aggiornaNumeroPosti()">
+                    <tr>
+                        <td style="text-align: center; font-size: 40px">PIT GOLD</td>
+                    </tr>
+                </table>
+            </section>
 
+        </section>
+        <br>
+        <h3 style="margin-top: 10%; margin-left: 26%">Seleziona la categoria di posti che desideri acquistare:</h3>
+        <select id="categoria1" name="categoria" style="width: fit-content; margin-left: 26%" onchange="aggiornaNumeroPosti()">
+            <option value="1">Pit</option>
+            <option value="2">Pit Gold</option>
+        </select>
+        <br>
+        <h3 style="margin-left: 26%">Seleziona il numero di posti che desideri acquistare:</h3>
+        <label style="margin-left: 26%" for="numeroPosti">Numero di posti </label>
+        <button class="bottone-scelta" id="decrementa1" style="border: none; font-size: 20px; font-weight: bolder">-</button>
+        <input type="number" id="numeroPosti1" name="numPosti" style="margin-bottom:30px; font-size: 20px; border: none" min="0" max="6" value="0" readonly>
+        <button class="bottone-scelta" id="incrementa1" style="border: none; font-size: 20px; font-weight: bolder">+</button>
+        <input type="hidden" name="controllerAction" value="PagamentoManagement.gotoPagamentoBiglietto">
+        <input type="hidden" id="allSelectedSeats2" name="allSelectedSeats1">
+        <input type="hidden" name="idEsibizione" value="<%=esibizione.getIdEsibizione()%>">
+        <input type="hidden" name="idEvento" value="<%=evento.getIdEvento()%>">
+        <input type="submit" style="margin-top: 20px" class="bottone-personalizzato" value="Procedi con l'acquisto">
+    </form>
+    <%}%>
             <% } else { %>
         <p>Effettua il login per vedere i tuoi dati.</p>
             <% } %>
@@ -356,6 +403,7 @@
 
         var selectedSeats = []; // Array per memorizzare i posti selezionati
         const selectPosti = document.getElementById('numeroPosti');
+        const selectPosti1 = document.getElementById('numeroPosti1');
 
         var numeroPostiInput = document.getElementById('numeroPosti');
         document.getElementById('incrementa').addEventListener('click', function(event) {
@@ -367,6 +415,24 @@
         });
 
         document.getElementById('decrementa').addEventListener('click', function(event) {
+            event.preventDefault();
+            if (numeroPostiInput.value > numeroPostiInput.min) {
+                numeroPostiInput.value = parseInt(numeroPostiInput.value) - 1;
+                aggiornaNumeroPosti();
+            }
+        });
+
+
+        var numeroPostiInput = document.getElementById('numeroPosti1');
+        document.getElementById('incrementa1').addEventListener('click', function(event) {
+            event.preventDefault();
+            if (numeroPostiInput.value < numeroPostiInput.max) {
+                numeroPostiInput.value = parseInt(numeroPostiInput.value) + 1;
+                aggiornaNumeroPosti();
+            }
+        });
+
+        document.getElementById('decrementa1').addEventListener('click', function(event) {
             event.preventDefault();
             if (numeroPostiInput.value > numeroPostiInput.min) {
                 numeroPostiInput.value = parseInt(numeroPostiInput.value) - 1;
@@ -408,6 +474,55 @@
         var tribunaTable = document.getElementById('tribuna');
         var tribunaDxTable = document.getElementById('tribuna-dx');
         var tribunaSxTable = document.getElementById('tribuna-sx');
+
+        var pitTable = document.getElementById('pit');
+        var pitGoldTable = document.getElementById('pitgold');
+
+        function populateSection1(table, sectionId, seatsPerRowForSection) {
+            var startId;
+            switch (sectionId) {
+                case 'pit':
+                    startId = 1;
+                    break;
+                case 'pitgold':
+                    startId = 101;
+                    break;
+                default:
+                    startId = 1; // Default case, se non corrisponde a nessuna delle sezioni specificate
+            }
+
+            for (var i = 0; i < rows; i++) {
+                var row = document.createElement('tr');
+                table.appendChild(row);
+                for (var j = 0; j < seatsPerRowForSection; j++) {
+                    var cell = document.createElement('td');
+                    var button = document.createElement('button');
+                    var seatId = startId++; // Incrementa startId per ogni posto creato
+                    button.id = seatId; // Assegna l'ID incrementato al bottone
+                    //button.textContent = seatId; // Opzionale: mostra l'ID sul bottone per facilitare il riconoscimento
+                    button.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        if (this.classList.contains('occupied')) {
+                            alert('Seat already occupied');
+                        } else {
+                            this.classList.toggle('selected');
+                            updateSelectedSeats(this.id);
+                        }
+                    });
+
+                    cell.appendChild(button);
+                    row.appendChild(cell);
+
+                    if (occupiedSeats.includes(seatId)) {
+                        button.classList.add('occupied');
+                    }
+                }
+            }
+        }
+
+        populateSection1(pitTable, 'pit', seatsPerRow); // Usa il valore originale per pit
+        populateSection1(pitGoldTable, 'pitgold', seatsPerRow); // Usa il valore originale per pitgold
+
 
         // Modifica la funzione per accettare un parametro aggiuntivo: seatsPerRowForSection
         function populateSection(table, sectionId, seatsPerRowForSection) {
@@ -480,8 +595,26 @@
             }
         });
 
+        document.querySelector('form[name="gotoForm"]').addEventListener('submit', function(event) {
+            var selectPostiValue = document.getElementById('numeroPosti1').value;
+            // Controlla se selectedSeats è vuoto (contiene solo una stringa vuota) o selectPostiValue è 0
+            if (selectPostiValue === '0' && selectedSeats.length === 0) {
+                event.preventDefault(); // Ferma il submit del form
+                alert('Devi selezionare almeno un posto o indicare il numero di posti desiderati.');
+            }
+
+            var tot = parseInt(selectPostiValue) +  selectedSeats.length;
+            if (tot > 6) {
+                event.preventDefault(); // Ferma il submit del form
+                alert('Non puoi selezionare più di 6 posti.');
+            }
+
+
 
     });
+
+    });
+
 
 
 
