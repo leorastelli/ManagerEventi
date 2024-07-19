@@ -132,6 +132,39 @@
             text-align: left;
         }
 
+        .bottone-esci{
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: fit-content;
+            align-items: center;
+            text-align: center;
+            display: block;
+            font-weight: bolder;
+            align-content: center;
+            background-color: #cccccc;
+        }
+
+        .bottone-conferma{
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: fit-content;
+            align-items: center;
+            text-align: center;
+            display: block;
+            font-weight: bolder;
+            margin: auto;
+            background-color: red
+        }
+
+        .popup-buttons{
+            display: flex;
+            justify-content: center;
+        }
+
         section#dati-aziendali form input[type="text"]{
             padding: 5px;
             border: 1px solid #ccc;
@@ -412,9 +445,9 @@
         <div class="popup-buttons">
             <form name="deleteUserForm" action="Dispatcher" method="post">
                 <input type="hidden" name="controllerAction" value="AziendaManagement.deleteAzienda"/>
-                <input style="background-color: red" type="submit" value="Conferma">
+                <input class="bottone-conferma" type="submit" value="Conferma">
             </form>
-            <button style="background-color: #cccccc" onclick="hideDeleteConfirmation()">Esci</button>
+            <button onclick="hideDeleteConfirmation()" class="bottone-esci">Esci</button>
         </div>
     </div>
 </div>

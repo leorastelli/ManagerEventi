@@ -193,7 +193,7 @@
             int blobLength = (int) logoBlob.length();
             byte[] logoBytes = logoBlob.getBytes(1, blobLength);
             String base64Image = Base64.getEncoder().encodeToString(logoBytes); %>
-        <section class="event" data-date="<%=eventi.get(i).getDataInizio()%>" data-id-evento="<%=eventi.get(i).getIdEvento()%>"> <!-- serve per ordinare gli eventi -->
+        <section class="event" data-nome="<%=eventi.get(i).getNome()%> "data-date="<%=eventi.get(i).getDataInizio()%>" data-id-evento="<%=eventi.get(i).getIdEvento()%>"> <!-- serve per ordinare gli eventi -->
             <p style="text-align: right; top: 0; right: 0;"><%=eventi.get(i).getNome()%></p>
             <img src="data:image/jpeg;base64, <%= base64Image%>" alt="<%=eventi.get(i).getNome()%>">
             <p> Da <%=eventi.get(i).getDataInizio()%> a <%=eventi.get(i).getDataFine()%></p>
@@ -239,7 +239,7 @@
 
         if (sortValue === 'default') {
             events.sort((a, b) => {
-                return a.getAttribute('data-id-evento') - b.getAttribute('data-id-evento');
+                return a.getAttribute('data-nome') - b.getAttribute('data-nome');
             });
 
         }

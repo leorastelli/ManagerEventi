@@ -96,7 +96,7 @@
             transform: scale(0.5); /* Scala il contenitore a un quarto della dimensione originale */
             transform-origin: center; /* Punto di origine per la trasformazione */
             position: relative; /* Per posizionare gli elementi interni */
-            margin-right: 52%;
+            margin-right: 45%;
             margin-top: 0;
             margin-bottom: 1px;
             /*background-color: #fffdf3;
@@ -125,7 +125,7 @@
             display: flex;
             justify-content: end; /* Centra i contenuti orizzontalmente */
             align-items: start; /* Allinea i contenuti in alto */
-            gap: 200px; /* Distanza tra la piantina e le tariffe */
+            gap: 100px; /* Distanza tra la piantina e le tariffe */
         }
 
 
@@ -138,6 +138,7 @@
             border-radius: 8px;
             box-shadow: dimgray 0 0 5px;
             padding-left: 20px;
+            margin-left: 50px;
         }
 
         #parterreVIP {

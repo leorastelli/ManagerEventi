@@ -123,9 +123,6 @@
             margin-left: auto;
 
         }
-        .section {
-            margin-bottom: 30px;
-        }
 
         form {
             display: grid;
@@ -152,6 +149,38 @@
             font-weight: bolder;
         }
 
+        .bottone-esci{
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: fit-content;
+            align-items: center;
+            text-align: center;
+            display: block;
+            font-weight: bolder;
+            align-content: center;
+            background-color: #cccccc;
+        }
+
+        .bottone-conferma{
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: fit-content;
+            align-items: center;
+            text-align: center;
+            display: block;
+            font-weight: bolder;
+            margin: auto;
+            background-color: red
+        }
+
+        .popup-buttons{
+            display: flex;
+            justify-content: center;
+        }
         .bottone-personalizzato:hover {
             background-color: #fceb00;
             color: black;
@@ -478,18 +507,18 @@
 </footer>
 
 <!-- Popup di conferma eliminazione -->
-<div id="deleteConfirmationPopup" class="popup">
-    <div class="popup-content">
+<section id="deleteConfirmationPopup" class="popup">
+    <section class="popup-content">
         <h3>Sei sicuro di voler eliminare il tuo account?</h3>
-        <div class="popup-buttons">
+        <section class="popup-buttons">
             <form name="deleteUserForm" action="Dispatcher" method="post">
                 <input type="hidden" name="controllerAction" value="UserManagement.deleteUtente"/>
-                <input style="background-color: red" type="submit" value="Conferma">
+                <input type="submit" class="bottone-conferma" value="Conferma">
             </form>
-            <button style="background-color: #cccccc" onclick="hideDeleteConfirmation()">Esci</button>
-        </div>
-    </div>
-</div>
+            <button class="bottone-esci"onclick="hideDeleteConfirmation()">Esci</button>
+        </section>
+    </section>
+</section>
 
 </body>
 </html>

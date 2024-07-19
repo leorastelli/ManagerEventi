@@ -129,6 +129,13 @@
             text-align: right;
             padding-right: 10px;
         }
+        .esibizione {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 250px; /* Assicurati che ci sia spazio sufficiente per ogni esibizione */
+        }
+
         .bottone-personalizzato {
             background-color: #de32ff;
             color: #fefefa;
@@ -229,7 +236,7 @@
             byte[] logoBytes = logoBlob.getBytes(1, blobLength);
             String base64Image = Base64.getEncoder().encodeToString(logoBytes); %>
         <section class="esibizione">
-            <figure class="esibizione1" data-idesibizione="<%=esibizioni.get(i).getIdEsibizione()%>" data-idevento="<%=evento.getIdEvento()%>" data-date="<%=esibizioni.get(i).getIdEvento().getDataInizio()%>>">
+            <figure class="esibizione1" data-genere=" <%=esibizioni.get(i).getGenere()%>"   data-idesibizione="<%=esibizioni.get(i).getIdEsibizione()%>" data-idevento="<%=evento.getIdEvento()%>" data-date="<%=esibizioni.get(i).getDataEsibizione()%>" data-nome="<%=esibizioni.get(i).getNome()%>">
                 <figcaption class="date" ><%=esibizioni.get(i).getDataEsibizione()%></figcaption>
                 <img class="immagine" src="data:image/jpeg;base64, <%= base64Image%>" style="max-width: 200px; max-height: 200px" alt=<%=esibizioni.get(i).getNome()%>>
                 <figcaption style="margin-left: 20px">
@@ -277,33 +284,63 @@
 <script>
     function filterEvents() {
         const searchValue = document.getElementById('search').value.toLowerCase();
-        const events = document.querySelectorAll('.event');
-        events.forEach(event => {
-            const eventName = event.querySelector('img').alt.toLowerCase();
-            event.style.display = eventName.includes(searchValue) ? 'block' : 'none';
+        const esibizioni = document.querySelectorAll('.esibizione'); // Seleziona le sezioni .esibizione
+
+        esibizioni.forEach(esibizione => {
+            const eventGenre = esibizione.querySelector('.esibizione1').getAttribute('data-genere').toLowerCase();
+            esibizione.style.display = eventGenre.includes(searchValue) ? 'flex' : 'none'; // Modifica la visibilità della sezione .esibizione
         });
     }
 
     function sortEvents() {
         const sortValue = document.getElementById('sort').value;
-        const eventList = document.getElementById('eventList');
-        const events = Array.from(eventList.getElementsByClassName('event'));
+        const esibizioniList = document.getElementById('esibizioniList');
+        let esibizioni = Array.from(esibizioniList.getElementsByClassName('esibizione1'));
 
-        events.sort((a, b) => {
-            if (sortValue === 'date') {
-                return new Date(a.getAttribute('data-date')) - new Date(b.getAttribute('data-date'));
-            } else if (sortValue === 'name') {
-                const nameA = a.querySelector('img').alt.toLowerCase();
-                const nameB = b.querySelector('img').alt.toLowerCase();
+        console.log('Sort Value:', sortValue);
+
+        if (sortValue === 'date') {
+            esibizioni.sort((a, b) => {
+                const dateA = new Date(a.getAttribute('data-date'));
+                const dateB = new Date(b.getAttribute('data-date'));
+
+                console.log('Confronto date:', dateA, dateB, dateA - dateB);
+
+                return dateA - dateB;
+            });
+        } else if (sortValue === 'default') {
+            esibizioni.sort((a, b) => {
+                const nameA = a.getAttribute('data-nome').toUpperCase();
+                const nameB = b.getAttribute('data-nome').toUpperCase();
+
+                console.log('Confronto nomi:', nameA, nameB, nameA.localeCompare(nameB));
+
                 return nameA.localeCompare(nameB);
-            }
-        });
+            });
+        }
 
-        events.forEach(event => eventList.appendChild(event));
+        console.log('Esibizioni dopo l\'ordinamento:', esibizioni);
+
+        // Svuota la lista delle esibizioni
+        esibizioniList.innerHTML = '';
+
+        // Riaggiungi le esibizioni ordinate
+        esibizioni.forEach(esibizione => esibizioniList.appendChild(esibizione));
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
-        var events = document.querySelectorAll('.esibizione1');
+    // Aggiungi questo per verificare che la funzione venga chiamata correttamente
+    document.getElementById('sort').addEventListener('change', () => {
+        console.log('Event change triggered');
+        sortEvents();
+    });
+
+    // Esegui la funzione una volta all'avvio per garantire l'ordine iniziale
+    sortEvents();
+
+
+
+    document.addEventListener("DOMContentLoaded", function() { //quando la pagina è caricata completamente esegue la funzione che segue
+        var events = document.querySelectorAll('.esibizione1'); //  prende tutti gli elementi con classe event e li mette in un array
 
         events.forEach(function(event) {
             event.addEventListener('click', function() {
