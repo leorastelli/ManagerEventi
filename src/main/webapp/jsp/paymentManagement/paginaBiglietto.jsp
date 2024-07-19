@@ -16,7 +16,7 @@
     List<String> biglietti = (List<String>) request.getAttribute("biglietti");
     Esibizione esibizione = (Esibizione) request.getAttribute("esibizione");
     Evento evento = (Evento) request.getAttribute("evento");
-
+    String tipo = (String) request.getAttribute("tipoLuogo");
     String bigliettiString = String.join(",", biglietti);
 %>
 
@@ -104,9 +104,34 @@
             box-shadow: dimgray 0 0 5px;*/
         }
 
+        .container1{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr; /* 3 colonne */
+            grid-template-rows: auto auto auto auto; /* 4 righe */
+            gap: 20px; /* Spazio tra gli elementi */
+            max-width: 400px; /* Larghezza massima */
+            height: 200px; /* Altezza fissa */
+            transform: scale(0.5); /* Scala il contenitore a un quarto della dimensione originale */
+            transform-origin: center; /* Punto di origine per la trasformazione */
+            position: relative; /* Per posizionare gli elementi interni */
+            margin-right: 41%;
+            margin-top: 0;
+            margin-bottom: 1px;
+        }
+
+        .layout-esterno1 {
+            margin-top: 20px;
+            margin-right: 0;
+            display: flex;
+            justify-content: end; /* Centra i contenuti orizzontalmente */
+            align-items: start; /* Allinea i contenuti in alto */
+            gap: 200px; /* Distanza tra la piantina e le tariffe */
+        }
+
+
         .tariffe {
             margin-top: 10%;
-            width: 500px;
+            width: 900px;
             align-content: center;
             text-align: left;
             background-color: #fffdf3;
@@ -168,6 +193,39 @@
             align-content: center;
         }
 
+        #palco1 {
+            grid-column: 2 ; /* Seconda colonna */
+            grid-row: 1; /* Prima riga */
+            border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
+            background-color: #fffdf3;
+            border-radius: 10px;
+            width: 200px;
+            height: 200px;
+            align-content: center;
+        }
+
+        #pit {
+            grid-column: 1 / -1; /* Seconda colonna */
+            grid-row: 3; /* Seconda riga */
+            border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
+            background-color: #fffdf3;
+            width: 600px;
+            height: 250px;
+
+        }
+
+        #pitgold {
+            grid-column: 1 / -1; /* Seconda colonna */
+            grid-row: 2; /* Seconda riga */
+            border: 1px solid #ccc;
+            box-shadow: dimgray 0 0 5px;
+            background-color: #fffdf3;
+            border-radius: 10px;
+            width: 600px;
+            height: 150px;
+        }
 
         button {
             width: 40px;
@@ -289,6 +347,7 @@
     <% if (loggedOn) { %>
     <h1 class="centrato">Seleziona il biglietto che preferisci!</h1>
     <br><br>
+    <%if ("Indoor".equals(tipo)){%>
     <p class="centrato">Seleziona i posti numerati che desideri acquistare direttamente dalla piantina e i posti in parterre dal men&ugrave; sottostante</p>
     <form class="content" name="gotoForm" method="post" action="Dispatcher">
         <section class="layout-esterno">
@@ -306,12 +365,12 @@
                         <td style="text-align: center; font-size: 40px">PALCO</td>
                     </tr>
                 </table>
-                <table id="parterre" onclick="aggiornaNumeroPosti()">
+                <table id="parterre" >
                     <tr>
                         <td style="text-align: center; font-size: 40px">PARTERRE</td>
                     </tr>
                 </table>
-                <table id="parterreVIP" onclick="aggiornaNumeroPosti()">
+                <table id="parterreVIP" >
                     <tr>
                         <td style="text-align: center; font-size: 40px">PARTERRE VIP</td>
                     </tr>
@@ -324,11 +383,38 @@
             </section>
 
         </section>
+        <%} else if ("Outdoor".equals(tipo)){%>
+        <p class="centrato">Seleziona i posti in Pit e Pit Gold mostrati nella piantina, dal men&ugrave; sottostante</p>
+        <section class="layout-esterno1">
+            <article class="tariffe">
+                <h3>Tariffe:</h3>
+                <h4>Pit 50 &euro;</h4>
+                <h4>Pit Gold 100 &euro;</h4>
+            </article>
+            <section class="container1">
+                <table id="palco1">
+                    <tr>
+                        <td style="text-align: center; font-size: 40px">PALCO</td>
+                    </tr>
+                </table>
+                <table id="pit" >
+                    <tr>
+                        <td style="text-align: center; font-size: 40px">PIT</td>
+                    </tr>
+                </table>
+                <table id="pitgold" >
+                    <tr>
+                        <td style="text-align: center; font-size: 40px">PIT GOLD</td>
+                    </tr>
+                </table>
+            </section>
+
+        </section>
         <br>
+        <%}%>
+
         <h3 style="margin-top: 10%; margin-left: 26%">Seleziona la categoria di posti che desideri acquistare:</h3>
         <select id="categoria" name="categoria" style="width: fit-content; margin-left: 26%" onchange="aggiornaNumeroPosti()">
-            <option value="1">Parterre</option>
-            <option value="2">Parterre VIP</option>
         </select>
         <br>
         <h3 style="margin-left: 26%">Seleziona il numero di posti che desideri acquistare:</h3>
@@ -337,25 +423,58 @@
         <input type="number" id="numeroPosti" name="numPosti" style="margin-bottom:30px; font-size: 20px; border: none" min="0" max="6" value="0" readonly>
         <button class="bottone-scelta" id="incrementa" style="border: none; font-size: 20px; font-weight: bolder">+</button>
         <input type="hidden" name="controllerAction" value="PagamentoManagement.gotoPagamentoBiglietto">
-        <input type="hidden" id="allSelectedSeats1" name="allSelectedSeats1">
+        <input type="hidden" id="allSelectedSeats" name="allSelectedSeats">
         <input type="hidden" name="idEsibizione" value="<%=esibizione.getIdEsibizione()%>">
         <input type="hidden" name="idEvento" value="<%=evento.getIdEvento()%>">
         <input type="submit" style="margin-top: 20px" class="bottone-personalizzato" value="Procedi con l'acquisto">
     </form>
-
     <% } else { %>
-    <p>Effettua il login per vedere i tuoi dati.</p>
+    <p>Effettua il login per vedere le informazioni sui biglietti.</p>
     <% } %>
 </main>
 
+
+
 <script>
+    function impostaTipoLuogo(tipoLuogo) {
+        const select = document.getElementById('categoria');
+
+        // Pulisce le opzioni esistenti
+        select.innerHTML = '';
+
+        // Definisce le nuove opzioni in base a tipoLuogo
+        let options = [];
+        if (tipoLuogo === 'Indoor') {
+            options = ['Parterre', 'Parterre VIP'];
+        } else if (tipoLuogo === 'Outdoor') {
+            options = ['Pit', 'Pit GOLD'];
+        }
+
+        // Aggiunge le nuove opzioni al select
+        for (const option of options) {
+            const optElement = document.createElement('option');
+            optElement.value = option;
+            optElement.text = option;
+            select.appendChild(optElement);
+        }
+
+        // Chiama la funzione per aggiornare il numero di posti
+        aggiornaNumeroPosti();
+    }
+
+    function aggiornaNumeroPosti() {
+        var selectPosti = document.getElementById('numeroPosti');
+        selectPosti.value = selectPosti.value;
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         var occupiedSeats = [<%=bigliettiString%>];
-        var seatsPerRow = 9; // Numero di posti per fila nelle sezioni tribuna-sx, parterre, tribuna-dx
-        var rows = 6; // Numero di file per ogni sezione
-
-        var selectedSeats = []; // Array per memorizzare i posti selezionati
+        var seatsPerRow = 9;
+        var rows = 6;
+        var selectedSeats = [];
         const selectPosti = document.getElementById('numeroPosti');
+
+        impostaTipoLuogo('<%=tipo%>');
 
         var numeroPostiInput = document.getElementById('numeroPosti');
         document.getElementById('incrementa').addEventListener('click', function(event) {
@@ -471,18 +590,13 @@
                 alert('Devi selezionare almeno un posto o indicare il numero di posti desiderati.');
             }
 
-
-
             var tot = parseInt(selectPostiValue) +  selectedSeats.length;
             if (tot > 6) {
                 event.preventDefault(); // Ferma il submit del form
                 alert('Non puoi selezionare più di 6 posti.');
             }
         });
-
-
     });
-
 
 
 </script>
